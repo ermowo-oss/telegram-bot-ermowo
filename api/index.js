@@ -1,10 +1,11 @@
+require('dotenv').config();
 const { Telegraf } = require('telegraf');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const BOT_TOKEN = '8048626993:AAFh13Aqhg5P0vZz0Ich-U2sohqAgb53ZaU';
-const ADMIN_CHAT_ID = '2004468668'; // ID Telegram Mas Ermowo
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '2004468668'; 
 const MASTER_SALT = "ERMOWO_UGC_ADS_SECURE_KEY_2026_MASTER";
 const bot = new Telegraf(BOT_TOKEN);
 
@@ -145,12 +146,22 @@ bot.on('photo', async (ctx) => {
             const highestPhoto = photos[photos.length - 1].file_id;
             const captionText = ctx.message.caption || '';
             
+            // Deteksi Device ID bermotif UGC-XXXX-XXXX dari caption
+            const match = captionText.match(/UGC-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
+            const detectedDeviceId = match ? match[0].toUpperCase() : 'DEVICE_ID';
+            
+            let deviceIdDisplay = `Detected: <code>${detectedDeviceId}</code>`;
+            if (detectedDeviceId === 'DEVICE_ID') {
+                deviceIdDisplay = `<i>(Tidak terdeteksi otomatis, silakan cek manual)</i>`;
+            }
+
             const adminMsg = `🚨 <b>NOTIFIKASI BUKTI TRANSFER MASUK!</b>\n\n` +
                              `Dari Konsumen: <b>${userInfo}</b>\n` +
                              `User ID Konsumen: <code>${fromUser.id}</code>\n` +
                              `Pesan/Caption: ${captionText || '(Tanpa caption)'}\n\n` +
+                             `Device ID: ${deviceIdDisplay}\n\n` +
                              `Salin & edit perintah di bawah ini untuk kirim lisensi:\n` +
-                             `<code>/sendkey ${fromUser.id} DEVICE_ID PRO</code>`;
+                             `<code>/sendkey ${fromUser.id} ${detectedDeviceId} PRO</code>`;
                              
             await bot.telegram.sendPhoto(ADMIN_CHAT_ID, highestPhoto, { caption: adminMsg, parse_mode: 'HTML' });
         } catch (err) {
@@ -182,12 +193,22 @@ bot.on('message', async (ctx) => {
                                  ` [ID: ${fromUser.id}]`;
                 const text = ctx.message.text || '';
                 
+                // Deteksi Device ID bermotif UGC-XXXX-XXXX dari teks
+                const match = text.match(/UGC-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
+                const detectedDeviceId = match ? match[0].toUpperCase() : 'DEVICE_ID';
+                
+                let deviceIdDisplay = `Detected: <code>${detectedDeviceId}</code>`;
+                if (detectedDeviceId === 'DEVICE_ID') {
+                    deviceIdDisplay = `<i>(Tidak terdeteksi otomatis, silakan cek manual)</i>`;
+                }
+
                 const adminMsg = `💬 <b>PESAN KONSUMEN MASUK!</b>\n\n` +
                                  `Dari: <b>${userInfo}</b>\n` +
                                  `User ID Konsumen: <code>${fromUser.id}</code>\n` +
                                  `Pesan: ${text}\n\n` +
+                                 `Device ID: ${deviceIdDisplay}\n\n` +
                                  `Salin & edit perintah di bawah ini untuk kirim lisensi:\n` +
-                                 `<code>/sendkey ${fromUser.id} DEVICE_ID PRO</code>`;
+                                 `<code>/sendkey ${fromUser.id} ${detectedDeviceId} PRO</code>`;
                                  
                 await bot.telegram.sendMessage(ADMIN_CHAT_ID, adminMsg, { parse_mode: 'HTML' });
             } catch (err) {
