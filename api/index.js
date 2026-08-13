@@ -78,12 +78,17 @@ bot.command('sendkey', async (ctx) => {
     
     const args = ctx.message.text.split(' ').filter(Boolean);
     if (args.length < 4) {
-        return ctx.reply('Cara Pakai Perintah Sendkey:\n/sendkey [UserIDKonsumen] [DeviceID] [Tier]\n\nContoh:\n/sendkey 123456789 UGC-41A1-856D PRO');
+        return ctx.reply('⚠️ Format Salah!\n\nFormat Benar:\n/sendkey [UserIDKonsumen] [DeviceID] [Tier]\n\nContoh:\n/sendkey 123456789 UGC-41A1-856D PRO');
     }
     
     const targetUserId = args[1].trim();
     const deviceId = args[2].trim().toUpperCase();
     const tier = args[3].trim().toUpperCase();
+    
+    if (!/^\d+$/.test(targetUserId)) {
+        return ctx.reply(`⚠️ Target User ID harus berupa ANGKA (ID Telegram Konsumen).\nAnda memasukkan: "${targetUserId}"\n\nContoh Benar:\n/sendkey 123456789 UGC-41A1-856D PRO`);
+    }
+    
     const key = generateLicense(deviceId, tier);
     
     const userMsg = `🎉 SELAMAT! LISENSI APLIKASI ANDA TELAH AKTIF!\n\n` +
@@ -129,10 +134,8 @@ bot.on('photo', async (ctx) => {
     const isFromAdmin = String(fromUser.id) === ADMIN_CHAT_ID;
     
     if (!isFromAdmin) {
-        // Balas ke konsumen
         await ctx.reply('Bukti transfer & foto Anda telah diterima!\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci lisensi akan dikirimkan di sini dalam 1-5 menit.');
         
-        // NOTIFIKASI OTOMATIS KE ADMIN TELEGRAM (Ermowo)
         try {
             const userInfo = `${fromUser.first_name || ''} ${fromUser.last_name || ''}`.trim() + 
                              (fromUser.username ? ` (@${fromUser.username})` : '') + 
@@ -146,8 +149,8 @@ bot.on('photo', async (ctx) => {
                              `Dari Konsumen: ${userInfo}\n` +
                              `User ID Konsumen: ${fromUser.id}\n` +
                              `Pesan/Caption: ${captionText || '(Tanpa caption)'}\n\n` +
-                             `Ketik perintah ini di bot untuk KIRIM LANGSUNG lisensi ke konsumen:\n` +
-                             `/sendkey ${fromUser.id} [DeviceID] [STARTER/PRO/ULTRA]`;
+                             `Salin & edit perintah di bawah ini untuk kirim lisensi:\n` +
+                             `/sendkey ${fromUser.id} DEVICE_ID PRO`;
                              
             await bot.telegram.sendPhoto(ADMIN_CHAT_ID, highestPhoto, { caption: adminMsg });
         } catch (err) {
@@ -164,7 +167,6 @@ bot.on('message', async (ctx) => {
         const isFromAdmin = String(fromUser.id) === ADMIN_CHAT_ID;
         
         if (!isFromAdmin) {
-            // Balas ke konsumen
             if (fs.existsSync(qrisImagePath)) {
                 await ctx.replyWithPhoto(
                     { source: qrisImagePath },
@@ -174,7 +176,6 @@ bot.on('message', async (ctx) => {
                 await ctx.reply(paymentMessage);
             }
             
-            // NOTIFIKASI OTOMATIS KE ADMIN TELEGRAM (Ermowo)
             try {
                 const userInfo = `${fromUser.first_name || ''} ${fromUser.last_name || ''}`.trim() + 
                                  (fromUser.username ? ` (@${fromUser.username})` : '') + 
@@ -185,8 +186,8 @@ bot.on('message', async (ctx) => {
                                  `Dari: ${userInfo}\n` +
                                  `User ID Konsumen: ${fromUser.id}\n` +
                                  `Pesan: ${text}\n\n` +
-                                 `Ketik perintah ini di bot untuk KIRIM LANGSUNG lisensi ke konsumen:\n` +
-                                 `/sendkey ${fromUser.id} [DeviceID] [STARTER/PRO/ULTRA]`;
+                                 `Salin & edit perintah di bawah ini untuk kirim lisensi:\n` +
+                                 `/sendkey ${fromUser.id} DEVICE_ID PRO`;
                                  
                 await bot.telegram.sendMessage(ADMIN_CHAT_ID, adminMsg);
             } catch (err) {
