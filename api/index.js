@@ -1,11 +1,10 @@
-require('dotenv').config();
 const { Telegraf } = require('telegraf');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8048626993:AAFh13Aqhg5P0vZz0Ich-U2sohqAgb53ZaU';
-const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID || '2004468668'; 
+const BOT_TOKEN = '8048626993:AAFh13Aqhg5P0vZz0Ich-U2sohqAgb53ZaU';
+const ADMIN_CHAT_ID = '2004468668'; 
 const MASTER_SALT = "ERMOWO_UGC_ADS_SECURE_KEY_2026_MASTER";
 const bot = new Telegraf(BOT_TOKEN);
 
