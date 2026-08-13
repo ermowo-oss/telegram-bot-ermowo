@@ -1,8 +1,10 @@
 const { Telegraf } = require('telegraf');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const BOT_TOKEN = '8048626993:AAFh13Aqhg5P0vZz0Ich-U2sohqAgb53ZaU';
+const MASTER_SALT = "ERMOWO_UGC_ADS_SECURE_KEY_2026_MASTER";
 const bot = new Telegraf(BOT_TOKEN);
 
 const qrisImagePath = path.join(__dirname, '..', 'qris.png');
@@ -11,6 +13,49 @@ const paymentMessage = `Selamat datang di Sistem Berlangganan Official UGC Ads G
 Untuk menyelesaikan aktivasi lisensi aplikasi Anda:
 Silakan lakukan scan & pembayaran via Kode QRIS Resmi UGC Ads generator di atas. Setelah pembayaran berhasil, kirimkan BUKTI TRANSFER / RESI pembayaran di obrolan chat ini.
 Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin secara otomatis dalam 1-5 menit!`;
+
+// Helper Generator Kunci Lisensi SHA-256 (Persis Algoritma Android)
+function generateLicense(deviceId, tierStr) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const period = `${year}${month}`;
+    
+    let prefix = "ST";
+    const t = tierStr.toUpperCase();
+    if (t.includes("PRO")) prefix = "PRO";
+    else if (t.includes("ULTRA")) prefix = "ULT";
+    
+    const inputStr = `${deviceId}-${MASTER_SALT}-${period}-${prefix}`;
+    const hash = crypto.createHash('sha256').update(inputStr).digest('hex').toUpperCase();
+    
+    const p1 = hash.substring(0, 4);
+    const p2 = hash.substring(4, 8);
+    const p3 = hash.substring(8, 12);
+    
+    return `${prefix}-${p1}-${p2}-${p3}`;
+}
+
+// Command Rahasia Generator Lisensi untuk Admin
+// Contoh: /keygen UGC-8F92-A14C PRO
+bot.command('keygen', (ctx) => {
+    const args = ctx.message.text.split(' ').filter(Boolean);
+    if (args.length < 3) {
+        return ctx.reply('⚠️ Cara Pakai Perintah Keygen:\n/keygen [DeviceID] [Tier]\n\nContoh:\n/keygen UGC-8F92-A14C PRO\n/keygen UGC-8F92-A14C ULTRA\n/keygen UGC-8F92-A14C STARTER');
+    }
+    
+    const deviceId = args[1].trim().toUpperCase();
+    const tier = args[2].trim().toUpperCase();
+    const key = generateLicense(deviceId, tier);
+    
+    const replyText = `🔑 *KUNCI LISENSI RESMI UGC ADS GENERATOR*\n\n` +
+                      `📱 Device ID: \`${deviceId}\`\n` +
+                      `⭐ Paket: *${tier}*\n` +
+                      `🔐 License Key: \`${key}\`\n\n` +
+                      `Salin kode di atas dan berikan ke konsumen untuk di-paste di aplikasi!`;
+                      
+    return ctx.replyWithMarkdown(replyText);
+});
 
 bot.start((ctx) => {
     if (fs.existsSync(qrisImagePath)) {
