@@ -170,7 +170,7 @@ bot.on('photo', async (ctx) => {
 });
 
 // Penanganan Pesan Teks dari Konsumen
-bot.on('message', async (ctx) => {
+bot.on('text', async (ctx) => {
     const isCommand = ctx.message.text && ctx.message.text.startsWith('/');
     if (!isCommand) {
         const fromUser = ctx.from;
