@@ -90,13 +90,13 @@ bot.command('sendkey', async (ctx) => {
     
     const key = generateLicense(deviceId, tier);
     
-    const userMsg = `🎉 <b>SELAMAT! LISENSI APLIKASI ANDA TELAH AKTIF!</b>\n\n` +
+    const userMsg = `🎉 <b>LISENSI APLIKASI ANDA TELAH AKTIF!</b>\n\n` +
                     `Detail Lisensi Resmi Anda:\n` +
                     `• Device ID: <code>${deviceId}</code>\n` +
                     `• Paket: <b>${tier}</b>\n\n` +
-                    `🔑 <b>KUNCI LISENSI (Ketuk kode di bawah untuk menyalin):</b>\n` +
+                    `🔑 <b>KUNCI LISENSI (Ketuk kode di bawah untuk menyalin):</b>\n\n` +
                     `<code>${key}</code>\n\n` +
-                    `Silakan ketuk kode lisensi <code>${key}</code> di atas, buka aplikasi UGC Ads Generator di HP Anda, lalu tempel di menu Settings / Layar Aktivasi. Terima kasih!`;
+                    `Silakan ketuk kode lisensi di atas untuk menyalin otomatis, lalu buka aplikasi UGC Ads Generator di HP Anda, masuk ke menu Settings dan tempelkan kodenya. Terima kasih!`;
                     
     try {
         await bot.telegram.sendMessage(targetUserId, userMsg, { parse_mode: 'HTML' });
