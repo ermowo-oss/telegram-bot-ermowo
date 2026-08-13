@@ -19,23 +19,25 @@ Untuk menyelesaikan aktivasi lisensi aplikasi Anda:
 
 Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin dalam 1-5 menit setelah verifikasi!`;
 
-// Helper Generator Lisensi 100% Identik Dengan LicenseManager.kt Android
+// Helper Generator Lisensi 100% MATCH Identik Dengan UserTier.kt & LicenseManager.kt Android
 function generateLicense(deviceIdInput, tierStrInput) {
-    // Memastikan Waktu Mengikuti WIB (Asia/Jakarta) atau UTC Month
     const now = new Date();
-    // Gunakan tanggal WIB/Local (202608)
-    const year = 2026;
-    const month = "08";
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
     const period = `${year}${month}`;
     
     const cleanId = deviceIdInput.trim().toUpperCase();
     
+    // Tentukan Prefix PERSIS UserTier.kt Android:
+    // STANDARD / STARTER -> "STD"
+    // PRO -> "PRO"
+    // ULTRA -> "ULTRA"
     let prefix = "PRO";
     const t = tierStrInput.toUpperCase();
-    if (t.includes("STARTER") || t.includes("STANDARD") || t.includes("ST")) {
-        prefix = "ST";
+    if (t.includes("STARTER") || t.includes("STANDARD") || t.includes("STD") || t.includes("ST")) {
+        prefix = "STD";
     } else if (t.includes("ULTRA") || t.includes("ULT")) {
-        prefix = "ULT";
+        prefix = "ULTRA";
     } else {
         prefix = "PRO";
     }
