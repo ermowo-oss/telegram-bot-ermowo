@@ -20,7 +20,6 @@ Untuk menyelesaikan aktivasi lisensi aplikasi Anda:
 
 Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin dalam 1-5 menit setelah verifikasi!`;
 
-// Helper Generator Lisensi 100% MATCH Identik Dengan UserTier.kt & LicenseManager.kt Android
 function generateLicense(deviceIdInput, tierStrInput) {
     const now = new Date();
     const year = now.getFullYear();
@@ -60,16 +59,16 @@ bot.command('keygen', (ctx) => {
     const tier = args[2].trim().toUpperCase();
     const key = generateLicense(deviceId, tier);
     
-    const replyText = `KUNCI LISENSI RESMI UGC ADS GENERATOR\n\n` +
-                      `Device ID: ${deviceId}\n` +
-                      `Paket: ${tier}\n` +
-                      `License Key: ${key}\n\n` +
-                      `Salin kode di atas dan berikan ke konsumen!`;
+    const replyText = `<b>KUNCI LISENSI RESMI UGC ADS GENERATOR</b>\n\n` +
+                      `Device ID: <code>${deviceId}</code>\n` +
+                      `Paket: <b>${tier}</b>\n` +
+                      `License Key (Ketuk untuk salin):\n<code>${key}</code>\n\n` +
+                      `<i>Ketuk kode di atas untuk menyalin otomatis!</i>`;
                       
-    return ctx.reply(replyText);
+    return ctx.replyWithHTML(replyText);
 });
 
-// Command Admin /sendkey (Buat Lisensi + Kirim Langsung ke Chat Konsumen)
+// Command Admin /sendkey (Buat Lisensi + Kirim Langsung ke Chat Konsumen dengan MonoSpace Copy)
 bot.command('sendkey', async (ctx) => {
     const fromUser = ctx.from;
     if (String(fromUser.id) !== ADMIN_CHAT_ID) {
@@ -86,21 +85,22 @@ bot.command('sendkey', async (ctx) => {
     const tier = args[3].trim().toUpperCase();
     
     if (!/^\d+$/.test(targetUserId)) {
-        return ctx.reply(`⚠️ Target User ID harus berupa ANGKA (ID Telegram Konsumen).\nAnda memasukkan: "${targetUserId}"\n\nContoh Benar:\n/sendkey 123456789 UGC-41A1-856D PRO`);
+        return ctx.reply(`⚠️ Target User ID harus berupa ANGKA.\nAnda memasukkan: "${targetUserId}"\n\nContoh Benar:\n/sendkey 123456789 UGC-41A1-856D PRO`);
     }
     
     const key = generateLicense(deviceId, tier);
     
-    const userMsg = `🎉 SELAMAT! LISENSI APLIKASI ANDA TELAH AKTIF!\n\n` +
+    const userMsg = `🎉 <b>SELAMAT! LISENSI APLIKASI ANDA TELAH AKTIF!</b>\n\n` +
                     `Detail Lisensi Resmi Anda:\n` +
-                    `• Device ID: ${deviceId}\n` +
-                    `• Paket: ${tier}\n` +
-                    `• KUNCI LISENSI: ${key}\n\n` +
-                    `Silakan salin Kode Lisensi (${key}) di atas, buka aplikasi UGC Ads Generator di HP Anda, lalu tempel di menu Settings / Layar Aktivasi. Terima kasih!`;
+                    `• Device ID: <code>${deviceId}</code>\n` +
+                    `• Paket: <b>${tier}</b>\n\n` +
+                    `🔑 <b>KUNCI LISENSI (Ketuk kode di bawah untuk menyalin):</b>\n` +
+                    `<code>${key}</code>\n\n` +
+                    `Silakan ketuk kode lisensi <code>${key}</code> di atas, buka aplikasi UGC Ads Generator di HP Anda, lalu tempel di menu Settings / Layar Aktivasi. Terima kasih!`;
                     
     try {
-        await bot.telegram.sendMessage(targetUserId, userMsg);
-        return ctx.reply(`✅ BERHASIL! Kunci Lisensi (${key}) telah dikirimkan langsung ke chat konsumen (ID: ${targetUserId})!`);
+        await bot.telegram.sendMessage(targetUserId, userMsg, { parse_mode: 'HTML' });
+        return ctx.replyWithHTML(`✅ BERHASIL! Kunci Lisensi (<code>${key}</code>) telah dikirimkan langsung ke chat konsumen (ID: ${targetUserId})!`);
     } catch (err) {
         return ctx.reply(`❌ GAGAL Mengirim ke konsumen ID ${targetUserId}: ${err.message}`);
     }
@@ -145,14 +145,14 @@ bot.on('photo', async (ctx) => {
             const highestPhoto = photos[photos.length - 1].file_id;
             const captionText = ctx.message.caption || '';
             
-            const adminMsg = `🚨 NOTIFIKASI BUKTI TRANSFER MASUK!\n\n` +
-                             `Dari Konsumen: ${userInfo}\n` +
-                             `User ID Konsumen: ${fromUser.id}\n` +
+            const adminMsg = `🚨 <b>NOTIFIKASI BUKTI TRANSFER MASUK!</b>\n\n` +
+                             `Dari Konsumen: <b>${userInfo}</b>\n` +
+                             `User ID Konsumen: <code>${fromUser.id}</code>\n` +
                              `Pesan/Caption: ${captionText || '(Tanpa caption)'}\n\n` +
                              `Salin & edit perintah di bawah ini untuk kirim lisensi:\n` +
-                             `/sendkey ${fromUser.id} DEVICE_ID PRO`;
+                             `<code>/sendkey ${fromUser.id} DEVICE_ID PRO</code>`;
                              
-            await bot.telegram.sendPhoto(ADMIN_CHAT_ID, highestPhoto, { caption: adminMsg });
+            await bot.telegram.sendPhoto(ADMIN_CHAT_ID, highestPhoto, { caption: adminMsg, parse_mode: 'HTML' });
         } catch (err) {
             console.error("Gagal meneruskan foto ke admin:", err);
         }
@@ -182,14 +182,14 @@ bot.on('message', async (ctx) => {
                                  ` [ID: ${fromUser.id}]`;
                 const text = ctx.message.text || '';
                 
-                const adminMsg = `💬 PESAN KONSUMEN MASUK!\n\n` +
-                                 `Dari: ${userInfo}\n` +
-                                 `User ID Konsumen: ${fromUser.id}\n` +
+                const adminMsg = `💬 <b>PESAN KONSUMEN MASUK!</b>\n\n` +
+                                 `Dari: <b>${userInfo}</b>\n` +
+                                 `User ID Konsumen: <code>${fromUser.id}</code>\n` +
                                  `Pesan: ${text}\n\n` +
                                  `Salin & edit perintah di bawah ini untuk kirim lisensi:\n` +
-                                 `/sendkey ${fromUser.id} DEVICE_ID PRO`;
+                                 `<code>/sendkey ${fromUser.id} DEVICE_ID PRO</code>`;
                                  
-                await bot.telegram.sendMessage(ADMIN_CHAT_ID, adminMsg);
+                await bot.telegram.sendMessage(ADMIN_CHAT_ID, adminMsg, { parse_mode: 'HTML' });
             } catch (err) {
                 console.error("Gagal meneruskan pesan ke admin:", err);
             }
