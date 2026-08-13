@@ -10,11 +10,15 @@ const bot = new Telegraf(BOT_TOKEN);
 const qrisImagePath = path.join(__dirname, '..', 'qris.png');
 
 const paymentMessage = `Selamat datang di Sistem Berlangganan Official UGC Ads Generator!
-Untuk menyelesaikan aktivasi lisensi aplikasi Anda:
-Silakan lakukan scan & pembayaran via Kode QRIS Resmi UGC Ads generator di atas. Setelah pembayaran berhasil, kirimkan BUKTI TRANSFER / RESI pembayaran di obrolan chat ini.
-Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin secara otomatis dalam 1-5 menit!`;
 
-// Helper Generator Kunci Lisensi SHA-256 (Persis Algoritma Android)
+Untuk menyelesaikan aktivasi lisensi aplikasi Anda:
+
+1. Silakan lakukan scan & pembayaran via Kode QRIS Resmi UGC Ads generator di atas.
+
+2. Kirimkan BUKTI TRANSFER & DEVICE ID Anda (Device ID dapat dilihat di menu Settings aplikasi) di obrolan chat ini.
+
+Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin dalam 1-5 menit setelah verifikasi!`;
+
 function generateLicense(deviceId, tierStr) {
     const now = new Date();
     const year = now.getFullYear();
@@ -36,25 +40,23 @@ function generateLicense(deviceId, tierStr) {
     return `${prefix}-${p1}-${p2}-${p3}`;
 }
 
-// Command Rahasia Generator Lisensi untuk Admin
-// Contoh: /keygen UGC-8F92-A14C PRO
 bot.command('keygen', (ctx) => {
     const args = ctx.message.text.split(' ').filter(Boolean);
     if (args.length < 3) {
-        return ctx.reply('⚠️ Cara Pakai Perintah Keygen:\n/keygen [DeviceID] [Tier]\n\nContoh:\n/keygen UGC-8F92-A14C PRO\n/keygen UGC-8F92-A14C ULTRA\n/keygen UGC-8F92-A14C STARTER');
+        return ctx.reply('Cara Pakai Perintah Keygen:\n/keygen [DeviceID] [Tier]\n\nContoh:\n/keygen UGC-8F92-A14C PRO\n/keygen UGC-8F92-A14C ULTRA\n/keygen UGC-8F92-A14C STARTER');
     }
     
     const deviceId = args[1].trim().toUpperCase();
     const tier = args[2].trim().toUpperCase();
     const key = generateLicense(deviceId, tier);
     
-    const replyText = `🔑 *KUNCI LISENSI RESMI UGC ADS GENERATOR*\n\n` +
-                      `📱 Device ID: \`${deviceId}\`\n` +
-                      `⭐ Paket: *${tier}*\n` +
-                      `🔐 License Key: \`${key}\`\n\n` +
+    const replyText = `KUNCI LISENSI RESMI UGC ADS GENERATOR\n\n` +
+                      `Device ID: ${deviceId}\n` +
+                      `Paket: ${tier}\n` +
+                      `License Key: ${key}\n\n` +
                       `Salin kode di atas dan berikan ke konsumen untuk di-paste di aplikasi!`;
                       
-    return ctx.replyWithMarkdown(replyText);
+    return ctx.reply(replyText);
 });
 
 bot.start((ctx) => {
@@ -80,7 +82,7 @@ bot.command('langganan', (ctx) => {
 });
 
 bot.on('photo', (ctx) => {
-    return ctx.reply('✅ Bukti transfer Anda telah diterima!\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci lisensi akan dikirimkan di sini dalam 1-5 menit.');
+    return ctx.reply('Bukti transfer & foto Anda telah diterima!\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci lisensi akan dikirimkan di sini dalam 1-5 menit.');
 });
 
 bot.on('message', (ctx) => {
