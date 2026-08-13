@@ -19,18 +19,33 @@ Untuk menyelesaikan aktivasi lisensi aplikasi Anda:
 
 Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin dalam 1-5 menit setelah verifikasi!`;
 
-function generateLicense(deviceId, tierStr) {
+// Helper Generator Lisensi 100% Persis Algoritma LicenseManager.kt Android
+function generateLicense(deviceIdInput, tierStrInput) {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const period = `${year}${month}`;
     
-    let prefix = "ST";
-    const t = tierStr.toUpperCase();
-    if (t.includes("PRO")) prefix = "PRO";
-    else if (t.includes("ULTRA")) prefix = "ULT";
+    // Normalisasi Device ID ke format "UGC-XXXX-XXXX"
+    const cleanId = deviceIdInput.trim().toUpperCase();
     
-    const inputStr = `${deviceId}-${MASTER_SALT}-${period}-${prefix}`;
+    // Tentukan Prefix persis UserTier.kt Android:
+    // STANDARD / STARTER -> "ST"
+    // PRO -> "PRO"
+    // ULTRA -> "ULT"
+    let prefix = "PRO";
+    const t = tierStrInput.toUpperCase();
+    if (t.includes("STARTER") || t.includes("STANDARD") || t.includes("ST")) {
+        prefix = "ST";
+    } else if (t.includes("ULTRA") || t.includes("ULT")) {
+        prefix = "ULT";
+    } else {
+        prefix = "PRO";
+    }
+    
+    // String Input Hash PERSIS LicenseManager.kt:
+    // val input = "$deviceId-$MASTER_SALT-$period-$prefix"
+    const inputStr = `${cleanId}-${MASTER_SALT}-${period}-${prefix}`;
     const hash = crypto.createHash('sha256').update(inputStr).digest('hex').toUpperCase();
     
     const p1 = hash.substring(0, 4);
@@ -43,7 +58,7 @@ function generateLicense(deviceId, tierStr) {
 bot.command('keygen', (ctx) => {
     const args = ctx.message.text.split(' ').filter(Boolean);
     if (args.length < 3) {
-        return ctx.reply('Cara Pakai Perintah Keygen:\n/keygen [DeviceID] [Tier]\n\nContoh:\n/keygen UGC-8F92-A14C PRO\n/keygen UGC-8F92-A14C ULTRA\n/keygen UGC-8F92-A14C STARTER');
+        return ctx.reply('Cara Pakai Perintah Keygen:\n/keygen [DeviceID] [Tier]\n\nContoh:\n/keygen UGC-41A1-856D PRO\n/keygen UGC-41A1-856D ULTRA\n/keygen UGC-41A1-856D STARTER');
     }
     
     const deviceId = args[1].trim().toUpperCase();
