@@ -4,6 +4,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 const BOT_TOKEN = '8048626993:AAFh13Aqhg5P0vZz0Ich-U2sohqAgb53ZaU';
+const ADMIN_CHAT_ID = '2004468668'; // ID Telegram Mas Ermowo
 const MASTER_SALT = "ERMOWO_UGC_ADS_SECURE_KEY_2026_MASTER";
 const bot = new Telegraf(BOT_TOKEN);
 
@@ -28,10 +29,6 @@ function generateLicense(deviceIdInput, tierStrInput) {
     
     const cleanId = deviceIdInput.trim().toUpperCase();
     
-    // Tentukan Prefix PERSIS UserTier.kt Android:
-    // STANDARD / STARTER -> "STD"
-    // PRO -> "PRO"
-    // ULTRA -> "ULTRA"
     let prefix = "PRO";
     const t = tierStrInput.toUpperCase();
     if (t.includes("STARTER") || t.includes("STANDARD") || t.includes("STD") || t.includes("ST")) {
@@ -42,7 +39,6 @@ function generateLicense(deviceIdInput, tierStrInput) {
         prefix = "PRO";
     }
     
-    // input = "$deviceId-$MASTER_SALT-$period-$prefix"
     const inputStr = `${cleanId}-${MASTER_SALT}-${period}-${prefix}`;
     const hash = crypto.createHash('sha256').update(inputStr).digest('hex').toUpperCase();
     
@@ -53,6 +49,7 @@ function generateLicense(deviceIdInput, tierStrInput) {
     return `${prefix}-${p1}-${p2}-${p3}`;
 }
 
+// Command Admin /keygen
 bot.command('keygen', (ctx) => {
     const args = ctx.message.text.split(' ').filter(Boolean);
     if (args.length < 3) {
@@ -94,19 +91,65 @@ bot.command('langganan', (ctx) => {
     }
 });
 
-bot.on('photo', (ctx) => {
-    return ctx.reply('Bukti transfer & foto Anda telah diterima!\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci lisensi akan dikirimkan di sini dalam 1-5 menit.');
+// Penanganan Pesan Foto (Bukti Transfer dari Konsumen)
+bot.on('photo', async (ctx) => {
+    // Balas ke konsumen
+    await ctx.reply('Bukti transfer & foto Anda telah diterima!\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci lisensi akan dikirimkan di sini dalam 1-5 menit.');
+    
+    // NOTIFIKASI OTOMATIS KE ADMIN TELEGRAM (Ermowo)
+    try {
+        const fromUser = ctx.from;
+        const userInfo = `${fromUser.first_name || ''} ${fromUser.last_name || ''}`.trim() + 
+                         (fromUser.username ? ` (@${fromUser.username})` : '') + 
+                         ` [ID: ${fromUser.id}]`;
+        
+        const photos = ctx.message.photo;
+        const highestPhoto = photos[photos.length - 1].file_id;
+        const captionText = ctx.message.caption || '';
+        
+        const adminMsg = `🚨 NOTIFIKASI BUKTI TRANSFER MASUK!\n\n` +
+                         `Dari Konsumen: ${userInfo}\n` +
+                         `Pesan/Caption: ${captionText || '(Tanpa caption)'}\n\n` +
+                         `Gunakan /keygen di bot untuk membuat lisensi.`;
+                         
+        await bot.telegram.sendPhoto(ADMIN_CHAT_ID, highestPhoto, { caption: adminMsg });
+    } catch (err) {
+        console.error("Gagal meneruskan foto ke admin:", err);
+    }
 });
 
-bot.on('message', (ctx) => {
-    if (ctx.message.text && !ctx.message.text.startsWith('/')) {
+// Penanganan Pesan Teks dari Konsumen
+bot.on('message', async (ctx) => {
+    const isCommand = ctx.message.text && ctx.message.text.startsWith('/');
+    if (!isCommand) {
+        // Balas ke konsumen
         if (fs.existsSync(qrisImagePath)) {
-            return ctx.replyWithPhoto(
+            await ctx.replyWithPhoto(
                 { source: qrisImagePath },
                 { caption: paymentMessage }
             );
         } else {
-            return ctx.reply(paymentMessage);
+            await ctx.reply(paymentMessage);
+        }
+        
+        // NOTIFIKASI OTOMATIS KE ADMIN TELEGRAM (Ermowo)
+        try {
+            const fromUser = ctx.from;
+            if (String(fromUser.id) !== ADMIN_CHAT_ID) {
+                const userInfo = `${fromUser.first_name || ''} ${fromUser.last_name || ''}`.trim() + 
+                                 (fromUser.username ? ` (@${fromUser.username})` : '') + 
+                                 ` [ID: ${fromUser.id}]`;
+                const text = ctx.message.text || '';
+                
+                const adminMsg = `💬 PESAN KONSUMEN MASUK!\n\n` +
+                                 `Dari: ${userInfo}\n` +
+                                 `Pesan: ${text}\n\n` +
+                                 `Gunakan /keygen [DeviceID] [Tier] untuk buat lisensi.`;
+                                 
+                await bot.telegram.sendMessage(ADMIN_CHAT_ID, adminMsg);
+            }
+        } catch (err) {
+            console.error("Gagal meneruskan pesan ke admin:", err);
         }
     }
 });
