@@ -53,7 +53,7 @@ function generateLicense(deviceIdInput, tierStrInput) {
 bot.command('keygen', (ctx) => {
     const args = ctx.message.text.split(' ').filter(Boolean);
     if (args.length < 3) {
-        return ctx.reply('Cara Pakai Perintah Keygen:\n/keygen [DeviceID] [Tier]\n\nContoh:\n/keygen UGC-41A1-856D PRO\n/keygen UGC-41A1-856D ULTRA\n/keygen UGC-41A1-856D STARTER');
+        return ctx.reply('Cara Pakai Perintah Keygen:\n/keygen [DeviceID] [Tier]\n\nContoh:\n/keygen UGC-41A1-856D PRO');
     }
     
     const deviceId = args[1].trim().toUpperCase();
@@ -64,9 +64,41 @@ bot.command('keygen', (ctx) => {
                       `Device ID: ${deviceId}\n` +
                       `Paket: ${tier}\n` +
                       `License Key: ${key}\n\n` +
-                      `Salin kode di atas dan berikan ke konsumen untuk di-paste di aplikasi!`;
+                      `Salin kode di atas dan berikan ke konsumen!`;
                       
     return ctx.reply(replyText);
+});
+
+// Command Admin /sendkey (Buat Lisensi + Kirim Langsung ke Chat Konsumen)
+bot.command('sendkey', async (ctx) => {
+    const fromUser = ctx.from;
+    if (String(fromUser.id) !== ADMIN_CHAT_ID) {
+        return ctx.reply('Perintah ini khusus Admin!');
+    }
+    
+    const args = ctx.message.text.split(' ').filter(Boolean);
+    if (args.length < 4) {
+        return ctx.reply('Cara Pakai Perintah Sendkey:\n/sendkey [UserIDKonsumen] [DeviceID] [Tier]\n\nContoh:\n/sendkey 123456789 UGC-41A1-856D PRO');
+    }
+    
+    const targetUserId = args[1].trim();
+    const deviceId = args[2].trim().toUpperCase();
+    const tier = args[3].trim().toUpperCase();
+    const key = generateLicense(deviceId, tier);
+    
+    const userMsg = `🎉 SELAMAT! LISENSI APLIKASI ANDA TELAH AKTIF!\n\n` +
+                    `Detail Lisensi Resmi Anda:\n` +
+                    `• Device ID: ${deviceId}\n` +
+                    `• Paket: ${tier}\n` +
+                    `• KUNCI LISENSI: ${key}\n\n` +
+                    `Silakan salin Kode Lisensi (${key}) di atas, buka aplikasi UGC Ads Generator di HP Anda, lalu tempel di menu Settings / Layar Aktivasi. Terima kasih!`;
+                    
+    try {
+        await bot.telegram.sendMessage(targetUserId, userMsg);
+        return ctx.reply(`✅ BERHASIL! Kunci Lisensi (${key}) telah dikirimkan langsung ke chat konsumen (ID: ${targetUserId})!`);
+    } catch (err) {
+        return ctx.reply(`❌ GAGAL Mengirim ke konsumen ID ${targetUserId}: ${err.message}`);
+    }
 });
 
 bot.start((ctx) => {
@@ -112,9 +144,10 @@ bot.on('photo', async (ctx) => {
             
             const adminMsg = `🚨 NOTIFIKASI BUKTI TRANSFER MASUK!\n\n` +
                              `Dari Konsumen: ${userInfo}\n` +
+                             `User ID Konsumen: ${fromUser.id}\n` +
                              `Pesan/Caption: ${captionText || '(Tanpa caption)'}\n\n` +
-                             `Ketik perintah /keygen di bawah ini:\n` +
-                             `/keygen [DeviceID] [STARTER/PRO/ULTRA]`;
+                             `Ketik perintah ini di bot untuk KIRIM LANGSUNG lisensi ke konsumen:\n` +
+                             `/sendkey ${fromUser.id} [DeviceID] [STARTER/PRO/ULTRA]`;
                              
             await bot.telegram.sendPhoto(ADMIN_CHAT_ID, highestPhoto, { caption: adminMsg });
         } catch (err) {
@@ -150,8 +183,10 @@ bot.on('message', async (ctx) => {
                 
                 const adminMsg = `💬 PESAN KONSUMEN MASUK!\n\n` +
                                  `Dari: ${userInfo}\n` +
+                                 `User ID Konsumen: ${fromUser.id}\n` +
                                  `Pesan: ${text}\n\n` +
-                                 `Ketik /keygen [DeviceID] [Tier] untuk buat lisensi.`;
+                                 `Ketik perintah ini di bot untuk KIRIM LANGSUNG lisensi ke konsumen:\n` +
+                                 `/sendkey ${fromUser.id} [DeviceID] [STARTER/PRO/ULTRA]`;
                                  
                 await bot.telegram.sendMessage(ADMIN_CHAT_ID, adminMsg);
             } catch (err) {
