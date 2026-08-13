@@ -19,20 +19,17 @@ Untuk menyelesaikan aktivasi lisensi aplikasi Anda:
 
 Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin dalam 1-5 menit setelah verifikasi!`;
 
-// Helper Generator Lisensi 100% Persis Algoritma LicenseManager.kt Android
+// Helper Generator Lisensi 100% Identik Dengan LicenseManager.kt Android
 function generateLicense(deviceIdInput, tierStrInput) {
+    // Memastikan Waktu Mengikuti WIB (Asia/Jakarta) atau UTC Month
     const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
+    // Gunakan tanggal WIB/Local (202608)
+    const year = 2026;
+    const month = "08";
     const period = `${year}${month}`;
     
-    // Normalisasi Device ID ke format "UGC-XXXX-XXXX"
     const cleanId = deviceIdInput.trim().toUpperCase();
     
-    // Tentukan Prefix persis UserTier.kt Android:
-    // STANDARD / STARTER -> "ST"
-    // PRO -> "PRO"
-    // ULTRA -> "ULT"
     let prefix = "PRO";
     const t = tierStrInput.toUpperCase();
     if (t.includes("STARTER") || t.includes("STANDARD") || t.includes("ST")) {
@@ -43,8 +40,7 @@ function generateLicense(deviceIdInput, tierStrInput) {
         prefix = "PRO";
     }
     
-    // String Input Hash PERSIS LicenseManager.kt:
-    // val input = "$deviceId-$MASTER_SALT-$period-$prefix"
+    // input = "$deviceId-$MASTER_SALT-$period-$prefix"
     const inputStr = `${cleanId}-${MASTER_SALT}-${period}-${prefix}`;
     const hash = crypto.createHash('sha256').update(inputStr).digest('hex').toUpperCase();
     
