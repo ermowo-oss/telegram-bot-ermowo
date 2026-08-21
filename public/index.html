@@ -196,7 +196,7 @@
             margin-top: 4px;
         }
 
-        /* Duration Slider Styling Lebar Penuh 100% dengan Track Cyan Murni */
+        /* DYNAMIC CYAN TRACK FILL SLIDER STYLING */
         .slider-container {
             width: 100%;
             background: rgba(0, 0, 0, 0.4);
@@ -212,7 +212,7 @@
             appearance: none;
             height: 6px;
             border-radius: 3px;
-            background: #00F5D4 !important;
+            background: linear-gradient(to right, #00F5D4 0%, #00F5D4 53.33%, #1E293B 53.33%, #1E293B 100%);
             outline: none;
         }
 
@@ -374,21 +374,29 @@
             cursor: not-allowed;
         }
 
-        /* Result Screen Scrollable Tab Bar */
+        /* RESULT SCREEN SCROLLABLE TAB BAR 100% HORIZONTAL SCROLL */
         .result-tab-bar {
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding-bottom: 8px;
+            white-space: nowrap;
+            padding-bottom: 10px;
             margin-bottom: 16px;
-            scrollbar-width: none;
+            border-bottom: 1px solid var(--card-border);
+            -webkit-overflow-scrolling: touch;
         }
 
         .result-tab-bar::-webkit-scrollbar {
-            display: none;
+            height: 4px;
+        }
+
+        .result-tab-bar::-webkit-scrollbar-thumb {
+            background: var(--primary-cyan);
+            border-radius: 2px;
         }
 
         .result-tab-item {
+            display: inline-block;
             padding: 10px 16px;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -396,8 +404,8 @@
             font-size: 13px;
             font-weight: 700;
             color: var(--text-secondary);
-            white-space: nowrap;
             cursor: pointer;
+            user-select: none;
         }
 
         .result-tab-item.active {
@@ -410,15 +418,17 @@
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid var(--card-border);
             border-radius: 16px;
-            padding: 16px;
+            padding: 18px;
             font-family: monospace;
             font-size: 13px;
             color: #E2E8F0;
             white-space: pre-wrap;
             word-break: break-word;
             line-height: 1.6;
-            max-height: 60vh;
+            min-height: 350px;
+            max-height: 65vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Lang Button Group */
@@ -753,7 +763,7 @@
                 </div>
             </div>
 
-            <!-- Form 4: Duration per Shot Slider (Cyan Murni 100%) -->
+            <!-- Form 4: Duration per Shot Slider (Dynamic Cyan Fill Track) -->
             <div class="form-group">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span class="form-label" style="margin: 0;" id="durationLabel">Duration per Shot</span>
@@ -893,7 +903,7 @@
                 <button style="background: var(--primary-cyan); color: var(--dark-bg); border: none; border-radius: 12px; padding: 8px 14px; font-size: 12px; font-weight: 800; cursor: pointer;" onclick="switchNav('wizard')" id="btnNewProjectResult">+ New Project</button>
             </div>
 
-            <!-- Result 7-Tab Scrollable Bar -->
+            <!-- Result 7-Tab Scrollable Bar (Scrollable Horizontal) -->
             <div class="result-tab-bar" id="resultTabBar"></div>
 
             <!-- Result Output Title & Copy Button -->
@@ -902,7 +912,7 @@
                 <button style="background: transparent; border: 1px solid var(--primary-cyan); color: var(--primary-cyan); border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer;" id="btnCopyOutput" onclick="copyResultOutput()">Copy</button>
             </div>
 
-            <!-- Result Output Box -->
+            <!-- Result Output Box (Scrollable Vertical) -->
             <div class="output-box" id="resultOutputBox"></div>
         </div>
 
@@ -1410,9 +1420,14 @@
             document.getElementById('descCounter').innerText = val.length + '/200';
         }
 
+        // DYNAMIC CYAN TRACK FILL SLIDER LOGIC
         function updateDurationValue(val) {
             selectedDurationSec = val;
             document.getElementById('durationVal').innerText = val + ' seconds';
+            
+            const pct = (val / 15) * 100;
+            const slider = document.getElementById('inputDurationSlider');
+            slider.style.background = `linear-gradient(to right, #00F5D4 0%, #00F5D4 ${pct}%, #1E293B ${pct}%, #1E293B 100%)`;
         }
 
         function onPhotoSelected(input) {
@@ -1707,36 +1722,194 @@
         // GENERATOR ENGINE PRESISI v1.1.1 (Sesuai PromptEngine.kt v1.1)
         function generateAdsProject() {
             const productName = document.getElementById('inputProductName').value.trim() || 'PRODUCT';
-            const productDesc = document.getElementById('inputProductDesc').value.trim() || 'High quality product';
+            const productDesc = document.getElementById('inputProductDesc').value.trim() || 'High quality commercial product';
             const shotCount = shotCounts4[selectedShotIndex].count;
             const targetPlatform = selectedProjectType === 'VIDEO' ? videoPlatformsList[selectedPlatformIndex] : photoPlatformsList[selectedPlatformIndex];
             const isVideo = selectedProjectType === 'VIDEO';
             const isId = currentLang === 'ID';
+            const category = categories12[selectedCategoryIndex];
+            const angle = angles5[selectedAngleIndex];
+            const concept = concepts6[selectedConceptIndex];
+            const framework = frameworks5[selectedFrameworkIndex];
 
-            const creatorInfo = selectedGender === 'NO_CREATOR' 
+            const isMale = selectedGender === 'MALE';
+            const genderTitle = selectedGender === 'NO_CREATOR'
                 ? (isId ? 'Tanpa Kreator (Fokus Produk)' : 'No Creator (Product Only)')
-                : `${selectedGender} ${ageGroups5[selectedAgeIndex].nameEn} (${personas7[selectedPersonaIndex].nameEn})`;
+                : (isMale ? 'MALE' : 'FEMALE');
+
+            const ageText = ageGroups5[selectedAgeIndex].nameEn;
+            const personaText = personas7[selectedPersonaIndex].nameEn;
+            const cDesc = `${genderTitle} ${ageText} (${personaText})`;
+            const costumeDesc = isMale ? 'clean casual t-shirt / neat male linen shirt' : 'neat casual linen top / pastel blouse';
+
+            // 1. CHARACTER BIBLE
+            const creatorPromptText = isId ? `
+[CHARACTER BIBLE & MODEL SHEET LOCK]
+Gender Karakter: ${genderTitle}
+Karakter Utama: ${cDesc}
+
+[PETUNJUK PENGGUNAAN PROMPT]
+Salin & tempel prompt di bawah ke AI Generator Gambar pilihanmu (Midjourney, GPT Image 2, Nano Banana Pro/Lite, ChatGPT Images, Grok Imagine / FLUX Kontext, Ideogram, dll.) untuk menghasilkan lembar Karakter Bible 3 Sudut Pandang (Tampak Depan, Kiri, dan Kanan) berlatar belakang Abu-Abu Studio:
+
+Character model sheet turnaround sheet, 3 view angles in a single image (Front View, Left Profile View, Right Profile View).
+Subjek Utama: ${genderTitle} (${cDesc}).
+Framing: Medium full-body shot, subjek tampil besar & jelas memenuhi area framing dari kepala hingga kaki, fokus tajam pada rincian wajah & detail pakaian.
+Kostum: Mengenakan ${costumeDesc}.
+Latar Belakang: background polos studio abu-abu netral (solid neutral gray studio backdrop), lighting studio softbox terang & jernih (polos tanpa properti ruangan/meja).
+Kualitas Visual: 8k resolution, photorealistic skin texture, sharp focus on face, consistent character design across 3 views, --ar ${targetPlatform.ratio}
+            `.trim() : `
+[CHARACTER BIBLE & MODEL SHEET LOCK]
+Character Gender: ${genderTitle}
+Main Character: ${cDesc}
+
+[PROMPT USAGE INSTRUCTIONS]
+Copy & paste the prompt below into your preferred AI Image Generator (Midjourney, GPT Image 2, Nano Banana Pro/Lite, ChatGPT Images, Grok Imagine / FLUX Kontext, Ideogram, etc.) to generate a 3-Angle Character Model Sheet (Front, Left, and Right views) on Neutral Gray Studio Backdrop:
+
+Character model sheet turnaround sheet, 3 view angles in a single image (Front View, Left Profile View, Right Profile View).
+Main Subject: ${genderTitle} (${cDesc}).
+Framing: Medium full-body shot, subject rendered large & clear filling the frame from head to toe, sharp focus on facial features & costume details.
+Costume: Wearing ${costumeDesc}.
+Backdrop: solid neutral gray photo studio backdrop, bright clean studio softbox lighting (clean background without room/furniture props).
+Visual Quality: 8k resolution, photorealistic skin texture, sharp focus on face, consistent character design across 3 views, --ar ${targetPlatform.ratio}
+            `.trim();
+
+            // 2. STORYBOARD SHEET GRID PROMPT
+            const storyboardText = isId ? `
+[CHARACTER BIBLE & FACE LOCK]
+Tag Foto Wajah Kreator: @creator1
+Karakter Utama: ${cDesc} (Wajah & gaya rambut konsisten persis, exact facial structure & hairstyle lock)
+
+[PRODUCT PACKAGING LOCK]
+Tag Foto Produk: @product1
+Ciri Fisik & Kemasan: ${productDesc}
+Aturan Kunci Kemasan: Bentuk fisik wadah/botol kemasan @product1 100% KONSISTEN BENTUK BOTOL, DILARANG BERUBAH MENJADI KOTAK/DUS DI PANEL MANAPUN
+
+[STORYBOARD GRID PROMPT - AI IMAGE GENERATOR]
+Format: Commercial Storyboard Sheet, ${shotCount}-Panel Grid Layout, Aspect Ratio ${targetPlatform.ratio}.
+Kategori Produk: ${category.nameId}
+Format Konsep Visual: ${concept.title}
+Topik Iklan: ${productName} (${angle.title})
+Detail Produk: ${productDesc}
+Setting Lokasi Shooting: Kamar tidur / Studio lighting
+Fokus Aksi Visual: Aplikasi produk & demo tekstur
+Hook Pembuka: "Masalah terbongkar, ini solusinya!"
+
+Deskripsi Adegan Per Panel (Kunci Fisik Produk & Wajah 100% Identik di Semua Panel):
+Panel 1 (Hook): Karakter mengekspresikan adegan hook awal di kamar tidur memegang kemasan fisik @product1.
+Panel 2 (Unboxing / Discovery): Karakter mengamati & memeriksa kemasan @product1 secara dekat dengan ekspresi antusias.
+Panel 3 (In-Action / Core Benefit): Extreme close-up demonstrasi penggunaan produk @product1.
+Panel 4 (Satisfaction / Result): Karakter tersenyum puas memperlihatkan hasil positif menggunakan produk @product1.
+Panel 5-7 (Call To Action): Karakter memegang & menampilkan kemasan produk @product1 ke arah kamera dengan percaya diri, gaya candid UGC Ads.
+
+Visual Style: Professional Commercial Storyboard Sheet, clean grid panels, photorealistic texture, soft morning window light, --ar ${targetPlatform.ratio}
+            `.trim() : `
+[CHARACTER BIBLE & FACE LOCK]
+Creator Face Image Tags: @creator1
+Main Character: ${cDesc} (Exact facial structure & hairstyle lock)
+
+[PRODUCT PACKAGING LOCK]
+Product Image Tags: @product1
+Packaging Physical Details: ${productDesc}
+Packaging Lock Rule: 100% exact physical bottle container lock for @product1 across all panels, strict no container transformation
+
+[STORYBOARD GRID PROMPT - AI IMAGE GENERATOR]
+Format: Commercial Storyboard Sheet, ${shotCount}-Panel Grid Layout, Aspect Ratio ${targetPlatform.ratio}.
+Product Category: ${category.nameEn}
+Visual Concept Format: ${concept.title}
+Ad Concept: ${productName} (${angle.title})
+Product Detail: ${productDesc}
+Shooting Setting: Bedroom / Studio lighting
+Visual Action Focus: Product application & texture demo
+Opening Hook: "Problem solved, here is the secret!"
+
+Panel Breakdown (100% Strict Bottle Container & Face Lock Across All Panels):
+Panel 1 (Hook): Character naturally experiencing scene: "Opening Hook" at bedroom holding @product1.
+Panel 2 (Unboxing / Discovery): Character examining the package (@product1) up close with an excited expression.
+Panel 3 (In-Action / Core Benefit): Extreme close-up demonstrating core performance of product (@product1).
+Panel 4 (Satisfaction / Result): Satisfied smile showing transformation delivered by product (@product1).
+Panel 5-7 (Call To Action): Character holding & presenting the package (@product1) confidently towards the camera, authentic UGC Ad style.
+
+Visual Style: Professional Commercial Storyboard Sheet, clean grid panels, photorealistic texture, soft morning window light, --ar ${targetPlatform.ratio}
+            `.trim();
+
+            // 3. SHOT LIST / LAYOUT CONCEPT
+            let shotListText = '';
+            if (isVideo) {
+                let sb = `VIDEO SHOT LIST — ${productName.toUpperCase()}\nAngle: ${angle.title}\nTarget: ${targetPlatform.name}\nCount: ${shotCount} Shots\n\n`;
+                for (let i = 0; i < shotCount; i++) {
+                    sb += `Shot ${i + 1}/${shotCount} — ${i === 0 ? 'Hook Scene' : (i === 1 ? 'Product Focus & Action' : 'Outro & CTA')}\n`;
+                    sb += `Environment: ${i === 0 ? 'Bedroom / Vanity desk' : 'Clean studio backdrop'}\n`;
+                    sb += `Action: ${i === 0 ? 'Creator looks at camera showing relatable concern' : 'Demonstrating product usage'}\n`;
+                    sb += `Dialogue: "${i === 0 ? 'Struggling with bad skin days?' : 'This changed everything!'}"\n`;
+                    sb += `Duration: ${selectedDurationSec} seconds\n\n`;
+                }
+                shotListText = sb.trim();
+            } else {
+                let sb = `PHOTO LAYOUT & FRAME CONCEPT — ${productName.toUpperCase()}\nTarget: ${targetPlatform.name}\nCount: ${shotCount} Frames\n\n`;
+                for (let i = 0; i < shotCount; i++) {
+                    sb += `Frame ${i + 1}/${shotCount} — ${i === 0 ? 'Hero Studio Shot' : (i === 1 ? 'Model Holding Product' : 'Lifestyle Setup')}\n`;
+                    sb += `Composition: ${i === 0 ? 'Centered 45-degree angle' : 'Rule of thirds placement'}\n`;
+                    sb += `Lighting: Soft studio softbox lighting\n\n`;
+                }
+                shotListText = sb.trim();
+            }
+
+            // 4. PROMPTS AI (SHOT / FRAME PROMPTS)
+            const promptsArray = Array.from({ length: shotCount }, (_, i) => {
+                if (isVideo) {
+                    return `Shot ${i + 1}/${shotCount}:\nUGC Commercial video shot of ${cDesc} using ${productName}. ${productDesc}. Shooting setting at modern bedroom with soft morning light. Camera movement: handheld feel with slight camera shake. 8k resolution, photorealistic skin texture, sharp focus on facial identity, vertical ${targetPlatform.ratio} aspect ratio.`;
+                } else {
+                    return `Frame ${i + 1}/${shotCount}:\nCommercial photoshoot of ${productName} (${productDesc}). Model: ${cDesc}. Professional studio lighting, clean backdrop, sharp focus on label details, 8k resolution, aspect ratio ${targetPlatform.ratio}.`;
+                }
+            });
+
+            // 5. VOICEOVER SCRIPT / DIRECTIVES
+            const voiceoverText = isVideo ? `
+VOICEOVER SCRIPT (NARRATION / DIALOGUE)
+----------------------------------------
+[00:00-00:03] "Kalau kamu masih punya masalah sama ${productName}, tonton video ini sampai habis!"
+[00:03-00:06] "Aku udah nyobain ${productName} selama 2 minggu, dan hasilnya beneran se-worth it itu!"
+[00:06-00:08] "Yuk checkout sekarang mumpung lagi diskon di keranjang kuning!"
+            `.trim() : `
+PHOTO DIRECTIVES & PRODUCTION LAYOUT
+----------------------------------------
+1. Format Canvas: Aspect ratio ${targetPlatform.ratio}.
+2. Negative Space: Sisakan 40% area kosong bersih untuk penempatan teks promosi/banner.
+3. Color Palette: Pastel neutral tone disesuaikan dengan warna produk ${productName}.
+            `.trim();
+
+            // 6. AUDIO BLUEPRINT (5 LAYERS)
+            const audioBlueprintText = `
+AUDIO STORYTELLING BLUEPRINT (5 AUDIO LAYERS)
+----------------------------------------
+1. Dialogue Layer: Swara narator kasual jernih, nada bicara ramah & bersahabat.
+2. SFX Layer: Efek suara 'click' saat kemasan dibuka pada detik 00:02.
+3. Ambience Layer: Suasana kamar yang tenang & estetik.
+4. Music Layer: Instrumental Upbeat Lo-Fi Hip-Hop santai.
+5. Silence Layer: Hening 0.5 detik tepat sebelum CTA pembuka keranjang kuning.
+            `.trim();
+
+            // 7. COPYWRITING ADVICE
+            const copywritingText = `
+PROMOTIONAL COPYWRITING ADVICE (OPTIONAL)
+----------------------------------------
+Primary Text: Ubah rutinitas harianmu dengan ${productName}! ✨ Stok terbatas.
+Headline: Promo Diskon 50% Hari Ini + Bebas Ongkir! 🚚
+Call To Action (CTA): Beli Sekarang / Checkout Sekarang
+            `.trim();
 
             // Construct Package Data
             generatedPackageData = {
                 productName: productName,
                 projectType: selectedProjectType,
                 shotCount: shotCount,
-                creatorPrompt: `CHARACTER BIBLE (FACE & POSTURE LOCK)\n----------------------------------------\nModel / Persona: ${creatorInfo}\nProduct: ${productName}\nVisual Specification: Photorealistic micro skin texture, 85mm lens f/1.4 shallow depth of field, 3-point softbox studio lighting, ultra-sharp product focus, zero AI artifacts, ABSOLUTELY NO CARTOON or ILLUSTRATION.\nConsistency Rules: Face structure and anatomy remain 100% consistent across all shots.`,
-                storyboardPrompt: `STORYBOARD SHEET GRID PROMPT (4-PANEL GRID)\n----------------------------------------\nA 4-panel storyboard grid sheet for ${productName} commercial. Panel 1: Closeup of product label. Panel 2: Model looking curious. Panel 3: Product in action. Panel 4: Happy result. Professional advertising storyboard sketch style, clean white borders, descriptive labels, high-end production --ar 16:9`,
-                shotList: isVideo 
-                    ? `SHOT LIST ENGINE (SPECS & DIRECTING)\n----------------------------------------\nShot 1 (0-3s): [HOOK] High energy opening with ${productName}.\nShot 2 (3-6s): [PRODUCT FOCUS] Texture & key benefit demonstration.\nShot 3 (6-8s): [CTA / OUTRO] Satisfied reaction and call to action.`
-                    : `PHOTO LAYOUT & FRAME CONCEPT\n----------------------------------------\nFrame 1: Hero Studio Shot on clean marble surface.\nFrame 2: Model holding product at 45 degree angle.\nFrame 3: Lifestyle placement on modern vanity table.`,
-                prompts: Array.from({ length: shotCount }, (_, i) => 
-                    isVideo 
-                    ? `Shot ${i + 1}/${shotCount}:\nUGC Commercial video shot of ${creatorInfo} using ${productName}. ${productDesc}. Cinematic lighting, handheld camera movement, 85mm lens f/1.4, 8k resolution, vertical 9:16 aspect ratio.`
-                    : `Frame ${i + 1}/${shotCount}:\nStudio commercial product photography of ${productName}. ${productDesc}. Soft lighting, clean backdrop, sharp focus, high depth of field, 4k.`
-                ),
-                voiceoverScript: isVideo
-                    ? `VOICEOVER SCRIPT (NARRATION / DIALOGUE)\n----------------------------------------\n[00:00-00:03] "Struggling with bad skin days? You need to see this!"\n[00:03-00:06] "I've been using ${productName} for 2 weeks, and the results are insane!"\n[00:06-00:08] "Check out the yellow cart below to get yours today!"`
-                    : `PHOTO DIRECTIVES & LAYOUT GUIDE\n----------------------------------------\nDirective 1: Place ${productName} at lower right third of canvas.\nDirective 2: Maintain 40% negative space on upper left for copywriting text placement.`,
-                audioBlueprint: `AUDIO STORYTELLING BLUEPRINT (5 AUDIO LAYERS)\n----------------------------------------\n1. Dialogue: Clear spoken voiceover, warm acoustic tone.\n2. SFX: Subtle product click sound at 00:02.\n3. Ambience: Soft aesthetic room ambience.\n4. Music: Modern upbeat lo-fi hip hop beat.\n5. Silence: 0.5s dramatic silence right before CTA.`,
-                copywritingAdvice: `PROMOTIONAL COPYWRITING ADVICE (OPTIONAL)\n----------------------------------------\nPrimary Text: Transform your daily routine with ${productName}! ✨ Limited stock available.\nHeadline: Get 50% Off Today + Free Shipping! 🚚\nCall To Action (CTA): Shop Now`
+                creatorPrompt: creatorPromptText,
+                storyboardPrompt: storyboardText,
+                shotList: shotListText,
+                prompts: promptsArray,
+                voiceoverScript: voiceoverText,
+                audioBlueprint: audioBlueprintText,
+                copywritingAdvice: copywritingText
             };
 
             // Switch to Result Screen
@@ -1758,7 +1931,7 @@
                 "👤 Character Bible", "🖼 Storyboard", "📐 Layout & Frame", "📸 Photo Prompts", "🎨 Directives", "🎧 Audio Blueprint", isId ? "💡 Copywriting (Opsional)" : "💡 Copywriting (Optional)"
             ];
 
-            // Render Scrollable Tab Bar
+            // Render Scrollable Horizontal Tab Bar
             const tabBar = document.getElementById('resultTabBar');
             tabBar.innerHTML = tabs.map((t, idx) => `
                 <div class="result-tab-item ${idx === activeResultTabIndex ? 'active' : ''}" onclick="switchResultTab(${idx})">
@@ -1776,7 +1949,7 @@
             if (activeResultTabIndex === 0) contentText = generatedPackageData.creatorPrompt;
             else if (activeResultTabIndex === 1) contentText = generatedPackageData.storyboardPrompt;
             else if (activeResultTabIndex === 2) contentText = generatedPackageData.shotList;
-            else if (activeResultTabIndex === 3) contentText = generatedPackageData.prompts.join('\n\n');
+            else if (activeResultTabIndex === 3) contentText = generatedPackageData.prompts.join('\n\n----------------------------------------\n\n');
             else if (activeResultTabIndex === 4) contentText = generatedPackageData.voiceoverScript;
             else if (activeResultTabIndex === 5) contentText = generatedPackageData.audioBlueprint;
             else if (activeResultTabIndex === 6) contentText = generatedPackageData.copywritingAdvice;
@@ -1919,6 +2092,7 @@
         }
 
         // Initialize Render
+        updateDurationValue(8);
         renderAffiliateTemplates();
     </script>
 </body>
