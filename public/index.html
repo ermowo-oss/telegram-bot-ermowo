@@ -240,26 +240,29 @@
             color: var(--primary-cyan);
         }
 
-        /* Range Slider Custom */
-        .slider-container {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 16px;
+        /* Chips Grid for Gender */
+        .chips-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
-        .slider-input {
-            width: 100%;
-            accent-color: var(--primary-cyan);
+        .chip-item {
+            padding: 10px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
             cursor: pointer;
         }
 
-        .slider-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 6px;
+        .chip-item.active {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+            border-color: var(--primary-cyan);
         }
 
         /* Custom Modal Popup Dropdown - Center Popup Position */
@@ -632,7 +635,7 @@
                 </div>
             </div>
 
-            <!-- Form 2B: Storytelling Framework (5 Framework Asli v1.1.1) -->
+            <!-- Form 2B: Storytelling Framework -->
             <div class="form-group">
                 <span class="form-label" id="frameworkLabel">2B. Storytelling Framework</span>
                 <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openFrameworkModal()">
@@ -681,7 +684,99 @@
             <button class="btn-primary" style="margin-top: 10px;" onclick="goToStep3()" id="btnNextStep2">Next →</button>
         </div>
 
-        <!-- ==================== 4. SETTINGS SCREEN ==================== -->
+        <!-- ==================== 4. WIZARD STEP 3 SCREEN (CREATOR & AI ENGINE v1.1 MURNI) ==================== -->
+        <div id="screenWizardStep3" class="screen">
+            <!-- Header Nav Bar Dengan Tombol Back Ke Step 2 -->
+            <div class="step-header-nav">
+                <button class="btn-back-header" onclick="goToStep2Back()">←</button>
+                <div class="section-header" id="wizardStep3Title">Step 3: Creator & AI Engine</div>
+            </div>
+            
+            <!-- Step Progress Indicator Bar (Step 3 Aktif 100%) -->
+            <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                <div style="flex: 1; height: 6px; background: var(--primary-cyan); border-radius: 3px;"></div>
+                <div style="flex: 1; height: 6px; background: var(--primary-cyan); border-radius: 3px;"></div>
+                <div style="flex: 1; height: 6px; background: var(--primary-cyan); border-radius: 3px;"></div>
+            </div>
+
+            <!-- SECTION A: CREATOR PROFILE -->
+            <div style="color: var(--primary-cyan); font-weight: 800; font-size: 14px; margin-bottom: 12px;" id="secATitle">SECTION A: CREATOR PROFILE</div>
+
+            <!-- Form 1: Gender Chips -->
+            <div class="form-group">
+                <span class="form-label" id="genderLabel">1. Creator Gender</span>
+                <div class="chips-group">
+                    <div class="chip-item active" id="chipFemale" onclick="setGender('FEMALE')">Female</div>
+                    <div class="chip-item" id="chipMale" onclick="setGender('MALE')">Male</div>
+                    <div class="chip-item" id="chipNoCreator" onclick="setGender('NO_CREATOR')">No Creator (Product Only)</div>
+                </div>
+            </div>
+
+            <!-- Container Profil Kreator (Hanya Tampak Jika Gender Bukan NO_CREATOR) -->
+            <div id="creatorProfileContainer">
+                <!-- Form 2: Age Group -->
+                <div class="form-group">
+                    <span class="form-label" id="ageLabel">2. Age Group</span>
+                    <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openAgeModal()">
+                        <span id="selectedAgeText" style="font-weight: 700; color: var(--primary-cyan);">Young Adult (21-30 y.o)</span>
+                        <span style="color: var(--primary-cyan); font-size: 12px;">▼</span>
+                    </div>
+                    <input type="text" class="input-text" id="inputCustomAge" style="display: none; margin-top: 8px;" placeholder="Specify custom age (e.g. 10 Year Old Child)">
+                </div>
+
+                <!-- Form 3: Occupation & Persona -->
+                <div class="form-group">
+                    <span class="form-label" id="personaLabel">3. Occupation & Persona</span>
+                    <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openPersonaModal()">
+                        <span id="selectedPersonaText" style="font-weight: 700; color: var(--primary-cyan);">Casual Everyday Person</span>
+                        <span style="color: var(--primary-cyan); font-size: 12px;">▼</span>
+                    </div>
+                    <input type="text" class="input-text" id="inputCustomPersona" style="display: none; margin-top: 8px;" placeholder="Specify custom persona (e.g. Vet Doctor / Gamer)">
+                </div>
+
+                <!-- Form 4: Upload Creator Face Photos -->
+                <div class="form-group">
+                    <span class="form-label" id="uploadCreatorLabel">👤 Upload Creator Face Photos (Gallery)</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+                        <span style="font-size: 12px; color: var(--text-secondary);" id="creatorUploadStatus">Tap + button to pick face photos from gallery</span>
+                        <button style="width: 48px; height: 48px; background: var(--card-bg); border: 1px solid var(--primary-cyan); border-radius: 12px; color: var(--primary-cyan); font-size: 20px; font-weight: 700; cursor: pointer;" onclick="document.getElementById('fileCreatorPhotos').click()" id="btnUploadCreatorPhoto">+</button>
+                        <input type="file" id="fileCreatorPhotos" accept="image/*" multiple style="display: none;" onchange="onCreatorPhotosSelected(this)">
+                    </div>
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid var(--card-border); margin: 20px 0;">
+
+            <!-- SECTION B: AI ENGINES -->
+            <div style="color: var(--primary-cyan); font-weight: 800; font-size: 14px; margin-bottom: 12px;" id="secBTitle">SECTION B: AI ENGINES</div>
+
+            <!-- Form 5: AI Video Engine -->
+            <div class="form-group" id="videoEngineGroup">
+                <span class="form-label" id="videoEngineLabel">4. AI Video Engine</span>
+                <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openVideoEngineModal()">
+                    <span id="selectedVideoEngineText" style="font-weight: 700; color: var(--primary-cyan);">Google Flow (Veo 3.1 / 3)</span>
+                    <span style="color: var(--primary-cyan); font-size: 12px;">▼</span>
+                </div>
+                <input type="text" class="input-text" id="inputCustomVideoEngine" style="display: none; margin-top: 8px;" placeholder="Specify custom AI Video Engine">
+            </div>
+
+            <!-- Form 6: AI Image Engine -->
+            <div class="form-group">
+                <span class="form-label" id="imageEngineLabel">5. AI Image / Storyboard Engine</span>
+                <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openImageEngineModal()">
+                    <span id="selectedImageEngineText" style="font-weight: 700; color: var(--primary-cyan);">Nano Banana (Pro / 2 / Lite)</span>
+                    <span style="color: var(--primary-cyan); font-size: 12px;">▼</span>
+                </div>
+                <input type="text" class="input-text" id="inputCustomImageEngine" style="display: none; margin-top: 8px;" placeholder="Specify custom AI Image Engine">
+            </div>
+
+            <!-- Single Full Width Generate Button -->
+            <button class="btn-primary" style="margin-top: 14px; padding: 18px; font-size: 16px;" onclick="generateAdsProject()" id="btnGenerate">
+                ⚡ Generate Ads Project
+            </button>
+        </div>
+
+        <!-- ==================== 5. SETTINGS SCREEN ==================== -->
         <div id="screenSettings" class="screen">
             <div class="section-header" style="margin-top: 0; margin-bottom: 12px;" id="settingsHeader">Settings & License Status</div>
 
@@ -756,7 +851,7 @@
             </div>
         </div>
 
-        <!-- ==================== 5. PRICING SCREEN ==================== -->
+        <!-- ==================== 6. PRICING SCREEN ==================== -->
         <div id="screenPricing" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <div class="section-header" style="margin: 0;" id="pricingHeaderTitle">Subscription Plans & Pricing</div>
@@ -818,7 +913,7 @@
             </div>
         </div>
 
-        <!-- ==================== 6. HISTORY SCREEN ==================== -->
+        <!-- ==================== 7. HISTORY SCREEN ==================== -->
         <div id="screenHistory" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <div class="section-header" style="margin: 0;" id="historyHeaderTitle">Project History</div>
@@ -831,7 +926,7 @@
             </div>
         </div>
 
-        <!-- ==================== 7. AFFILIATE TEMPLATES SCREEN ==================== -->
+        <!-- ==================== 8. AFFILIATE TEMPLATES SCREEN ==================== -->
         <div id="screenAffiliate" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <div class="section-header" style="margin: 0;" id="affiliateHeaderTitle">Affiliate Prompt Library (20 Blueprints)</div>
@@ -872,6 +967,13 @@
         let selectedShotIndex = 1;
         let selectedDurationSec = 8;
         let selectedPlatformIndex = 0;
+
+        // Step 3 States
+        let selectedGender = 'FEMALE';
+        let selectedAgeIndex = 1; // Young Adult
+        let selectedPersonaIndex = 5; // Casual
+        let selectedVideoEngineIndex = 0; // Google Flow
+        let selectedImageEngineIndex = 0; // Nano Banana
 
         const categories12 = [
             { id: "beauty", nameId: "Kecantikan & Skincare", nameEn: "Beauty & Skincare", tier: 1 },
@@ -935,6 +1037,50 @@
             { name: "Standard (4:3)", ratio: "4:3" }
         ];
 
+        // Step 3 Data Enums Asli Models.kt v1.1
+        const ageGroups5 = [
+            { nameEn: "Teenager (15-20 y.o)", nameId: "Remaja (15-20 thn)" },
+            { nameEn: "Young Adult (21-30 y.o)", nameId: "Dewasa Muda (21-30 thn)" },
+            { nameEn: "Mature Adult (31-45 y.o)", nameId: "Dewasa Matang (31-45 thn)" },
+            { nameEn: "Senior (45+ y.o)", nameId: "Senior (45+ thn)" },
+            { nameEn: "Other (Custom)", nameId: "Lainnya (Tulis Kustom)" }
+        ];
+
+        const personas7 = [
+            { nameEn: "Student", nameId: "Mahasiswa / Mahasiswi" },
+            { nameEn: "Homemaker / Young Parent", nameId: "Ibu Rumah Tangga / Ayah Muda" },
+            { nameEn: "Young Executive / Professional", nameId: "Eksekutif Muda / Profesional" },
+            { nameEn: "Athlete / Fitness Enthusiast", nameId: "Olahragawan / Olahragawati" },
+            { nameEn: "Mechanic / Field Worker", nameId: "Montir / Pekerja Lapangan" },
+            { nameEn: "Casual Everyday Person", nameId: "Casual Everyday Person" },
+            { nameEn: "Other (Custom)", nameId: "Lainnya (Tulis Kustom)" }
+        ];
+
+        // AI Video Engines + Lock Rules Asli InputScreen.kt v1.1 (Line 1234)
+        const videoEngines12 = [
+            { name: "Google Flow (Veo 3.1 / 3)", reqTier: "TRIAL" },
+            { name: "Seedance 2.5", reqTier: "PRO" },
+            { name: "Seedance 2.0", reqTier: "PRO" },
+            { name: "Seedance Mini", reqTier: "PRO" },
+            { name: "Kling 3.0", reqTier: "PRO" },
+            { name: "Gemini Video", reqTier: "PRO" },
+            { name: "FLUX Video", reqTier: "PRO" },
+            { name: "SuperGrok Video", reqTier: "PRO" },
+            { name: "Runway", reqTier: "PRO" },
+            { name: "Sora", reqTier: "ULTRA" },
+            { name: "Pika", reqTier: "PRO" },
+            { name: "Lainnya / Other", reqTier: "ULTRA" }
+        ];
+
+        const imageEngines6 = [
+            { name: "Nano Banana (Pro / 2 / Lite)" },
+            { name: "Midjourney" },
+            { name: "GPT Image 2" },
+            { name: "Grok Imagine" },
+            { name: "FLUX Kontext" },
+            { name: "Lainnya / Other" }
+        ];
+
         const affiliate20Templates = [
             { id: "AFF-001", name: "AI Clean Product Showcase (Foto)", cat: "Visual & Setup Guide", tier: "TRIAL", tierLabel: "Free Trial (7 Hari)", text: "A minimalist commercial product shot of [NAMA PRODUK] floating in mid-air. Solid pastel background, soft studio lighting, sharp focus, 8k resolution, high-end advertising, realistic textures --ar 4:5" },
             { id: "AFF-002", name: "AI Model Holding Product (Foto)", cat: "Visual & Setup Guide", tier: "TRIAL", tierLabel: "Free Trial (7 Hari)", text: "A candid lifestyle product photography of a modern [TARGET] model holding [NAMA PRODUK] naturally in hand. Authentic facial expression, soft daylight, warm neutral tone, background blur, highly realistic skin textures, 8k, shot on 85mm lens --ar 9:16" },
@@ -975,6 +1121,9 @@
                 f4Desc: "Engine-tailored syntax for Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, and GPT Image 2.",
                 wizardStepTitle: "Step 1: Project Specs",
                 wizardStep2Title: "Step 2: Concept & Angle",
+                wizardStep3Title: "Step 3: Creator & AI Engine",
+                secATitle: "SECTION A: CREATOR PROFILE",
+                secBTitle: "SECTION B: AI ENGINES",
                 typeLabel: "Project Type *",
                 nameLabel: "Product Name *",
                 categoryLabel: "Product Category *",
@@ -985,8 +1134,15 @@
                 shotCountLabel: "3. Shot Count / Photo Frame Count",
                 durationLabel: "Duration per Shot",
                 platformLabel: "4. Target Platform & Aspect Ratio",
+                genderLabel: "1. Creator Gender",
+                ageLabel: "2. Age Group",
+                personaLabel: "3. Occupation & Persona",
+                uploadCreatorLabel: "👤 Upload Creator Face Photos (Gallery)",
+                videoEngineLabel: "4. AI Video Engine",
+                imageEngineLabel: "5. AI Image / Storyboard Engine",
                 btnNextStep: "Next →",
                 btnNextStep2: "Next →",
+                btnGenerate: "⚡ Generate Ads Project",
                 settingsHeader: "Settings & License Status",
                 pricingTitle: "Subscription Plans & Pricing",
                 accountTitle: "Account & License Status",
@@ -1027,6 +1183,9 @@
                 f4Desc: "Sintaks khusus yang disesuaikan dengan Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, dan GPT Image.",
                 wizardStepTitle: "Langkah 1: Spesifikasi Project",
                 wizardStep2Title: "Langkah 2: Konsep & Angle",
+                wizardStep3Title: "Langkah 3: Kreator & AI Engine",
+                secATitle: "BAGIAN A: PROFIL KARAKTER KREATOR",
+                secBTitle: "BAGIAN B: PLATFORM AI ENGINE",
                 typeLabel: "Tipe Project *",
                 nameLabel: "Nama Produk *",
                 categoryLabel: "Kategori Produk *",
@@ -1037,8 +1196,15 @@
                 shotCountLabel: "3. Jumlah Shot Video / Frame Foto",
                 durationLabel: "Durasi per Shot",
                 platformLabel: "4. Target Platform & Rasio Layar",
+                genderLabel: "1. Jenis Kelamin / Gender Kreator",
+                ageLabel: "2. Kelompok Usia",
+                personaLabel: "3. Profesi & Persona",
+                uploadCreatorLabel: "👤 Upload Foto Wajah Kreator (Galeri HP)",
+                videoEngineLabel: "4. Engine AI Video",
+                imageEngineLabel: "5. Engine AI Gambar / Storyboard",
                 btnNextStep: "Lanjut →",
                 btnNextStep2: "Lanjut →",
+                btnGenerate: "⚡ Generate Project Iklan",
                 settingsHeader: "Pengaturan & Status Lisensi",
                 pricingTitle: "Paket & Harga Berlangganan",
                 accountTitle: "Akun & Status Lisensi",
@@ -1069,6 +1235,15 @@
             selectedProjectType = type;
             document.getElementById('typeVideo').className = type === 'VIDEO' ? 'project-type-card active' : 'project-type-card';
             document.getElementById('typePhoto').className = type === 'PHOTO' ? 'project-type-card active' : 'project-type-card';
+            document.getElementById('videoEngineGroup').style.display = type === 'VIDEO' ? 'block' : 'none';
+        }
+
+        function setGender(gender) {
+            selectedGender = gender;
+            document.getElementById('chipFemale').className = gender === 'FEMALE' ? 'chip-item active' : 'chip-item';
+            document.getElementById('chipMale').className = gender === 'MALE' ? 'chip-item active' : 'chip-item';
+            document.getElementById('chipNoCreator').className = gender === 'NO_CREATOR' ? 'chip-item active' : 'chip-item';
+            document.getElementById('creatorProfileContainer').style.display = gender === 'NO_CREATOR' ? 'none' : 'block';
         }
 
         function updateNameCounter(val) {
@@ -1089,6 +1264,17 @@
                 document.getElementById('btnUploadPhoto').innerText = '✓ ' + input.files.length;
                 document.getElementById('btnUploadPhoto').style.background = 'var(--primary-cyan)';
                 document.getElementById('btnUploadPhoto').style.color = 'var(--dark-bg)';
+            }
+        }
+
+        function onCreatorPhotosSelected(input) {
+            if (input.files && input.files.length > 0) {
+                const count = input.files.length;
+                document.getElementById('btnUploadCreatorPhoto').innerText = '✓ ' + count;
+                document.getElementById('btnUploadCreatorPhoto').style.background = 'var(--primary-cyan)';
+                document.getElementById('btnUploadCreatorPhoto').style.color = 'var(--dark-bg)';
+                document.getElementById('creatorUploadStatus').innerText = currentLang === 'ID' ? `📷 ${count} foto wajah dipilih` : `📷 ${count} face photo(s) selected`;
+                document.getElementById('creatorUploadStatus').style.color = 'var(--primary-cyan)';
             }
         }
 
@@ -1184,6 +1370,57 @@
             document.getElementById('modalGeneral').classList.add('active');
         }
 
+        function openAgeModal() {
+            document.getElementById('modalGeneralHeader').innerText = '2. Age Group';
+            const list = document.getElementById('modalGeneralList');
+            list.innerHTML = ageGroups5.map((a, idx) => `
+                <div class="modal-item ${idx === selectedAgeIndex ? 'active' : ''}" onclick="selectAge(${idx})">
+                    <span>${currentLang === 'ID' ? a.nameId : a.nameEn}</span>
+                    ${idx === selectedAgeIndex ? '<span>✓</span>' : ''}
+                </div>
+            `).join('');
+            document.getElementById('modalGeneral').classList.add('active');
+        }
+
+        function openPersonaModal() {
+            document.getElementById('modalGeneralHeader').innerText = '3. Occupation & Persona';
+            const list = document.getElementById('modalGeneralList');
+            list.innerHTML = personas7.map((p, idx) => `
+                <div class="modal-item ${idx === selectedPersonaIndex ? 'active' : ''}" onclick="selectPersona(${idx})">
+                    <span>${currentLang === 'ID' ? p.nameId : p.nameEn}</span>
+                    ${idx === selectedPersonaIndex ? '<span>✓</span>' : ''}
+                </div>
+            `).join('');
+            document.getElementById('modalGeneral').classList.add('active');
+        }
+
+        function openVideoEngineModal() {
+            document.getElementById('modalGeneralHeader').innerText = '4. AI Video Engine';
+            const list = document.getElementById('modalGeneralList');
+            list.innerHTML = videoEngines12.map((v, idx) => {
+                const isLocked = isTrialExpired && v.reqTier !== 'TRIAL';
+                return `
+                    <div class="modal-item ${idx === selectedVideoEngineIndex ? 'active' : ''} ${isLocked ? 'disabled' : ''}" onclick="${isLocked ? "alert('Engine AI ini terkunci untuk paket langganan kamu. Silakan upgrade.')" : `selectVideoEngine(${idx})`}">
+                        <span>${v.name}</span>
+                        ${isLocked ? '<span style="color:var(--locked-red);">🔒</span>' : (idx === selectedVideoEngineIndex ? '<span>✓</span>' : '')}
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('modalGeneral').classList.add('active');
+        }
+
+        function openImageEngineModal() {
+            document.getElementById('modalGeneralHeader').innerText = '5. AI Image / Storyboard Engine';
+            const list = document.getElementById('modalGeneralList');
+            list.innerHTML = imageEngines6.map((img, idx) => `
+                <div class="modal-item ${idx === selectedImageEngineIndex ? 'active' : ''}" onclick="selectImageEngine(${idx})">
+                    <span>${img.name}</span>
+                    ${idx === selectedImageEngineIndex ? '<span>✓</span>' : ''}
+                </div>
+            `).join('');
+            document.getElementById('modalGeneral').classList.add('active');
+        }
+
         function closeGeneralModal() {
             document.getElementById('modalGeneral').classList.remove('active');
         }
@@ -1232,6 +1469,36 @@
             closeGeneralModal();
         }
 
+        function selectAge(idx) {
+            selectedAgeIndex = idx;
+            const a = ageGroups5[idx];
+            document.getElementById('selectedAgeText').innerText = currentLang === 'ID' ? a.nameId : a.nameEn;
+            document.getElementById('inputCustomAge').style.display = idx === 4 ? 'block' : 'none';
+            closeGeneralModal();
+        }
+
+        function selectPersona(idx) {
+            selectedPersonaIndex = idx;
+            const p = personas7[idx];
+            document.getElementById('selectedPersonaText').innerText = currentLang === 'ID' ? p.nameId : p.nameEn;
+            document.getElementById('inputCustomPersona').style.display = idx === 6 ? 'block' : 'none';
+            closeGeneralModal();
+        }
+
+        function selectVideoEngine(idx) {
+            selectedVideoEngineIndex = idx;
+            document.getElementById('selectedVideoEngineText').innerText = videoEngines12[idx].name;
+            document.getElementById('inputCustomVideoEngine').style.display = idx === 11 ? 'block' : 'none';
+            closeGeneralModal();
+        }
+
+        function selectImageEngine(idx) {
+            selectedImageEngineIndex = idx;
+            document.getElementById('selectedImageEngineText').innerText = imageEngines6[idx].name;
+            document.getElementById('inputCustomImageEngine').style.display = idx === 5 ? 'block' : 'none';
+            closeGeneralModal();
+        }
+
         function goToStep2() {
             const name = document.getElementById('inputProductName').value.trim();
             const desc = document.getElementById('inputProductDesc').value.trim();
@@ -1247,8 +1514,18 @@
             document.getElementById('screenWizardStep2').classList.add('active');
         }
 
+        function goToStep2Back() {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById('screenWizardStep2').classList.add('active');
+        }
+
         function goToStep3() {
-            alert(currentLang === 'ID' ? 'Langkah 2 Selesai! Menuju Langkah 3...' : 'Step 2 Completed! Moving to Step 3...');
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById('screenWizardStep3').classList.add('active');
+        }
+
+        function generateAdsProject() {
+            alert(currentLang === 'ID' ? '⚡ Memproses Prompt Iklan UGC Sinematik Directing OS...' : '⚡ Processing Directing OS Cinematic UGC Ads Prompt...');
         }
 
         function renderAffiliateTemplates() {
@@ -1345,6 +1622,8 @@
             document.getElementById('selectedAngleDesc').innerText = lang === 'ID' ? angles5[selectedAngleIndex].descId : angles5[selectedAngleIndex].descEn;
             document.getElementById('selectedFrameworkDesc').innerText = lang === 'ID' ? frameworks5[selectedFrameworkIndex].descId : frameworks5[selectedFrameworkIndex].descEn;
             document.getElementById('selectedShotText').innerText = lang === 'ID' ? shotCounts4[selectedShotIndex].labelId : shotCounts4[selectedShotIndex].labelEn;
+            document.getElementById('selectedAgeText').innerText = lang === 'ID' ? ageGroups5[selectedAgeIndex].nameId : ageGroups5[selectedAgeIndex].nameEn;
+            document.getElementById('selectedPersonaText').innerText = lang === 'ID' ? personas7[selectedPersonaIndex].nameId : personas7[selectedPersonaIndex].nameEn;
         }
 
         function copyDeviceId() {
