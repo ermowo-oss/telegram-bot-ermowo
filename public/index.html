@@ -8,12 +8,14 @@
     <style>
         :root {
             --bg-color: #0A1118;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --primary: #00F5D4;
-            --accent: #00BBF9;
-            --text-main: #FFFFFF;
-            --text-sub: #A0AEC0;
+            --card-bg: rgba(20, 32, 45, 0.7);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --primary-cyan: #00F5D4;
+            --electric-blue: #00BBF9;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --success: #10B981;
+            --dark-bg: #050B10;
         }
 
         * {
@@ -26,262 +28,416 @@
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-main);
+            color: var(--text-primary);
             padding: 16px;
+            padding-bottom: 90px;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-top: 10px;
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .header h1 {
-            font-size: 22px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 6px;
+        /* Top Header Card */
+        .hero-card {
+            background: linear-gradient(180deg, rgba(13, 34, 53, 0.9) 0%, var(--card-bg) 100%);
+            border: 1.5px solid;
+            border-image: linear-gradient(90deg, rgba(0, 245, 212, 0.8), rgba(0, 187, 249, 0.4), rgba(255, 255, 255, 0.2)) 1;
+            border-radius: 24px;
+            padding: 22px;
+            margin-bottom: 16px;
         }
 
-        .header p {
-            font-size: 13px;
-            color: var(--text-sub);
-        }
-
-        .badge-lite {
+        .badge-os {
             display: inline-block;
             background: rgba(0, 245, 212, 0.15);
-            color: var(--primary);
+            border: 1px solid rgba(0, 245, 212, 0.4);
+            color: var(--primary-cyan);
             font-size: 11px;
             font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 16px;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-group {
+            letter-spacing: 1px;
+            padding: 5px 12px;
+            border-radius: 12px;
             margin-bottom: 14px;
         }
 
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-sub);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .hero-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
         }
 
-        input, select, textarea {
+        .hero-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .btn-primary {
             width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
-            color: var(--text-main);
-            font-size: 14px;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 8px rgba(0, 245, 212, 0.2);
-        }
-
-        button.btn-generate {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #050B10;
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
             border: none;
-            border-radius: 12px;
-            padding: 14px;
+            border-radius: 16px;
+            padding: 16px;
             font-size: 15px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 245, 212, 0.3);
-            transition: transform 0.1s active;
+            transition: transform 0.1s;
         }
 
-        button.btn-generate:active {
+        .btn-primary:active {
             transform: scale(0.98);
         }
 
-        .result-box {
-            display: none;
-            margin-top: 10px;
+        /* Card Section General */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 14px;
         }
 
-        .result-header {
+        .card-clickable {
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .card-clickable:hover {
+            border-color: var(--primary-cyan);
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .section-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 20px 0 12px 4px;
+        }
+
+        /* Input & Form Controls */
+        .form-group {
+            margin-top: 10px;
+            margin-bottom: 12px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input-text {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-text:focus {
+            border-color: var(--primary-cyan);
+        }
+
+        .device-box {
+            background: rgba(0, 245, 212, 0.05);
+            border: 1px solid rgba(0, 245, 212, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            cursor: pointer;
         }
 
-        .btn-copy {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border-color);
-            color: var(--primary);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
+        .device-id-text {
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            font-size: 14px;
+        }
+
+        /* Lang Button Group */
+        .lang-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-lang {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
         }
 
-        pre {
-            background: #05090D;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 14px;
-            white-space: pre-wrap;
-            word-break: break-word;
-            font-size: 13px;
-            line-height: 1.5;
-            color: #E2E8F0;
-            max-height: 400px;
-            overflow-y: auto;
+        .btn-lang.active {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+            border-color: var(--primary-cyan);
         }
 
-        .footer {
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 17, 24, 0.95);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .nav-item {
             text-align: center;
-            font-size: 11px;
-            color: var(--text-sub);
-            margin-top: auto;
-            padding-top: 20px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: var(--primary-cyan);
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="badge-lite">⚡ LITE WEBINAR EDITION (v1.1.1)</div>
-        <h1>ERMOWO UGC Ads Generator</h1>
-        <p>Solusi Pembuat Prompt UGC Ads Konten Affiliate & Komersial</p>
+    <div class="container">
+        
+        <!-- 1. Hero Card -->
+        <div class="hero-card">
+            <div class="badge-os">AI DIRECTING OS</div>
+            <div class="hero-title">UGC Ads Generator</div>
+            <div class="hero-desc" id="heroDesc">
+                Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.
+            </div>
+            <button class="btn-primary" id="btnStart" onclick="alert('Form Wizard Step 1 akan dibuka pada tahap selanjutnya.')">
+                Mulai Buat Project Prompt Baru
+            </button>
+        </div>
+
+        <!-- 2. Affiliate Banner Card -->
+        <div class="card card-clickable" onclick="alert('Pustaka Affiliate akan dibuka pada tahap selanjutnya.')">
+            <div class="card-title" id="affiliateTitle">Pustaka Prompt Affiliate</div>
+            <div class="card-subtitle" id="affiliateDesc">Salin cepat 20+ blueprint prompt siap pakai untuk iklan AI.</div>
+        </div>
+
+        <!-- 3. Directing OS Features Section -->
+        <div class="section-header" id="featuresHeader">Keunggulan Directing OS</div>
+
+        <div class="card">
+            <div class="card-title" id="f1Title">Sinematografi & Multi-Shot Engine</div>
+            <div class="card-subtitle" id="f1Desc">Struktur 3-4 Shot sinematik presisi (Hook, Focus, Action & CTA) dengan durasi per shot 4s/6s/8s/10s.</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" id="f2Title">Psikologi Hook & Storytelling</div>
+            <div class="card-subtitle" id="f2Desc">4 Angle Iklan Teruji (Problem Solver, Honest Review, Storytelling, & Lifestyle Unboxing) dengan retensi tinggi.</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" id="f3Title">Dukungan Dual Project (Video & Foto)</div>
+            <div class="card-subtitle" id="f3Desc">Hasilkan prompt video gerak sinematik atau prompt photoshoot gambar 4K untuk katalog & paid social.</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" id="f4Title">Optimasi Lintas AI Platform</div>
+            <div class="card-subtitle" id="f4Desc">Sintaks khusus yang disesuaikan dengan Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, dan GPT Image.</div>
+        </div>
+
+        <!-- 4. Settings & License Section -->
+        <div class="section-header" id="settingsHeader">Pengaturan & Status Lisensi</div>
+
+        <!-- Pricing Card Link -->
+        <div class="card card-clickable" onclick="alert('Pilihan Paket Berlangganan (Starter, Pro, Ultra) akan ditampilkan.')">
+            <div class="card-title" id="pricingTitle">Paket & Harga Berlangganan</div>
+            <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;">Starter · Pro · Ultra VIP</div>
+        </div>
+
+        <!-- License & Account Card -->
+        <div class="card">
+            <div class="card-title" id="accountTitle">Akun & Status Lisensi</div>
+            <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;" id="licenseStatus">
+                Status: Versi Trial 7 Hari (Sisa 7 Hari)
+            </div>
+
+            <div class="device-box" onclick="copyDeviceId()">
+                <div>
+                    <div style="font-size: 11px; color: var(--text-secondary);" id="deviceLabel">Device ID Anda (Ketuk untuk menyalin):</div>
+                    <div class="device-id-text" id="deviceIdVal">WEB-88A1-90F2</div>
+                </div>
+                <div style="color: var(--primary-cyan); font-size: 12px; font-weight: 700;">SALIN</div>
+            </div>
+
+            <div class="form-group">
+                <span class="form-label" id="keyLabel">Masukkan Kode Lisensi dari Telegram Bot Admin:</span>
+                <input type="text" class="input-text" id="keyInput" placeholder="PRO-XXXX-XXXX">
+            </div>
+            <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="activateLicense()" id="btnActivate">
+                Aktifkan Lisensi Sekarang
+            </button>
+        </div>
+
+        <!-- Language Selector Card -->
+        <div class="card">
+            <div class="card-title" id="langTitle">Bahasa / Language</div>
+            <div class="lang-group">
+                <button class="btn-lang active" id="btnLangId" onclick="setLang('ID')">Bahasa Indonesia</button>
+                <button class="btn-lang" id="btnLangEn" onclick="setLang('EN')">English</button>
+            </div>
+        </div>
+
+        <!-- Privacy & Support Cards -->
+        <div class="card card-clickable" onclick="alert('Aplikasi ini 100% Offline & Lokal. Tidak ada data bisnis yang dikirim ke internet.')">
+            <div class="card-title" id="privacyTitle">Syarat & Keamanan Privasi</div>
+            <div class="card-subtitle" id="privacyDesc">Aplikasi ini 100% Offline. Semua ide produk, skrip, dan lisensi tersimpan lokal di perangkat kamu.</div>
+        </div>
+
+        <div class="card card-clickable" onclick="window.open('https://t.me/erm_ugc_bot', '_blank')">
+            <div class="card-title" id="supportTitle">Lapor Kendala / Support</div>
+            <div class="card-subtitle" id="supportDesc">Butuh bantuan aktivasi atau kendala teknis? Hubungi Tim Pemilik ERMOWO (@erm_ugc_bot).</div>
+        </div>
+
+        <!-- About App Card -->
+        <div class="card">
+            <div class="card-title" id="aboutTitle">Tentang Aplikasi</div>
+            <div class="card-subtitle" style="line-height: 1.8; margin-top: 6px;">
+                <b>Versi:</b> v1.1.1 (Protected Web Edition)<br>
+                <b>Sistem Keamanan:</b> Hardware Locking + RSA Signed
+            </div>
+        </div>
+
     </div>
 
-    <div class="card">
-        <div class="form-group">
-            <label>Nama Produk / Brand</label>
-            <input type="text" id="productName" placeholder="Contoh: Skincare Serum Brightening ERMOWO">
-        </div>
-
-        <div class="form-group">
-            <label>Kategori Produk</label>
-            <select id="productCategory">
-                <option value="Skincare & Beauty">Skincare & Beauty</option>
-                <option value="Fashion & Outfit">Fashion & Outfit</option>
-                <option value="Food & Beverage">Food & Beverage</option>
-                <option value="Gadget & Tech">Gadget & Tech</option>
-                <option value="Home & Living">Home & Living</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Gaya Video / Angle Utama</label>
-            <select id="videoAngle">
-                <option value="Problem Solution">Problem - Solution (Masalah ke Solusi)</option>
-                <option value="Unboxing & Honest Review">Unboxing & Honest Review</option>
-                <option value="Before vs After Transformation">Before vs After Transformation</option>
-                <option value="Daily Vlog Lifestyle">Daily Vlog Lifestyle (Aesthetic)</option>
-            </select>
-        </div>
-
-        <button class="btn-generate" onclick="generatePrompt()">✨ GENERATE PROMPT MASTER UGC</button>
-    </div>
-
-    <div class="card result-box" id="resultBox">
-        <div class="result-header">
-            <label style="margin:0; color: var(--primary);">PROMPT MASTER AI GENERATOR</label>
-            <button class="btn-copy" onclick="copyResult()">📋 SALIN PROMPT</button>
-        </div>
-        <pre id="outputPrompt"></pre>
-    </div>
-
-    <div class="footer">
-        Powered by ERMOWO Creative AI OS • Compatible with iOS & Android
+    <!-- Bottom Navigation Bar (2 Clean Menus) -->
+    <div class="bottom-nav">
+        <div class="nav-item active" id="navHome">Home & Settings</div>
+        <div class="nav-item" id="navWizard" onclick="alert('Form Wizard Step 1 akan dibuka pada tahap selanjutnya.')">Wizard</div>
     </div>
 
     <script>
-        // Init Telegram Web App API jika dibuka via Telegram
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
+        let currentLang = 'ID';
+
+        const i18n = {
+            EN: {
+                heroDesc: "The #1 Directing OS UGC Prompt Generator. Build cinematic, multi-shot structured prompts optimized for Google Veo 3, Kling 3.0, Seedance & FLUX.",
+                btnStart: "Create New UGC Prompt Project",
+                affiliateTitle: "Affiliate Prompt Library",
+                affiliateDesc: "Quickly copy 20+ ready-to-use AI ad prompt blueprints.",
+                featuresHeader: "Directing OS Features",
+                f1Title: "Cinematography & Multi-Shot Engine",
+                f1Desc: "Precision 3-4 cinematic shot structure (Hook, Focus, Action & CTA) with customizable shot duration.",
+                f2Title: "Hook Psychology & Storytelling",
+                f2Desc: "4 Proven Ad Angles (Problem Solver, Honest Review, Storytelling, & Lifestyle Unboxing) built for high retention.",
+                f3Title: "Dual Project Support (Video & Photo)",
+                f3Desc: "Generate cinematic motion video prompts or studio 4K photoshoot image prompts for catalog & paid social.",
+                f4Title: "Cross-Platform AI Optimization",
+                f4Desc: "Engine-tailored syntax for Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, and GPT Image 2.",
+                settingsHeader: "Settings & License Status",
+                pricingTitle: "Subscription Plans & Pricing",
+                accountTitle: "Account & License Status",
+                licenseStatus: "Status: 7-Day Free Trial (7 Days Left)",
+                deviceLabel: "Your Device ID (Tap to copy):",
+                keyLabel: "Enter License Key from Telegram Support Bot:",
+                btnActivate: "Activate License Now",
+                langTitle: "Language / Bahasa",
+                privacyTitle: "Terms & Privacy Policy",
+                privacyDesc: "This app is 100% Offline. All product ideas, prompts, and licenses are stored locally on your device.",
+                supportTitle: "Report Problem / Support",
+                supportDesc: "Need activation help or technical support? Contact ERMOWO Support Team (@erm_ugc_bot).",
+                aboutTitle: "About App",
+                navHome: "Home & Settings",
+                navWizard: "Wizard"
+            },
+            ID: {
+                heroDesc: "Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.",
+                btnStart: "Mulai Buat Project Prompt Baru",
+                affiliateTitle: "Pustaka Prompt Affiliate",
+                affiliateDesc: "Salin cepat 20+ blueprint prompt siap pakai untuk iklan AI.",
+                featuresHeader: "Keunggulan Directing OS",
+                f1Title: "Sinematografi & Multi-Shot Engine",
+                f1Desc: "Struktur 3-4 Shot sinematik presisi (Hook, Focus, Action & CTA) dengan durasi per shot 4s/6s/8s/10s.",
+                f2Title: "Psikologi Hook & Storytelling",
+                f2Desc: "4 Angle Iklan Teruji (Problem Solver, Honest Review, Storytelling, & Lifestyle Unboxing) dengan retensi tinggi.",
+                f3Title: "Dukungan Dual Project (Video & Foto)",
+                f3Desc: "Hasilkan prompt video gerak sinematik atau prompt photoshoot gambar 4K untuk katalog & paid social.",
+                f4Title: "Optimasi Lintas AI Platform",
+                f4Desc: "Sintaks khusus yang disesuaikan dengan Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, dan GPT Image.",
+                settingsHeader: "Pengaturan & Status Lisensi",
+                pricingTitle: "Paket & Harga Berlangganan",
+                accountTitle: "Akun & Status Lisensi",
+                licenseStatus: "Status: Versi Trial 7 Hari (Sisa 7 Hari)",
+                deviceLabel: "Device ID Anda (Ketuk untuk menyalin):",
+                keyLabel: "Masukkan Kode Lisensi dari Telegram Bot Admin:",
+                btnActivate: "Aktifkan Lisensi Sekarang",
+                langTitle: "Bahasa / Language",
+                privacyTitle: "Syarat & Keamanan Privasi",
+                privacyDesc: "Aplikasi ini 100% Offline. Semua ide produk, skrip, dan lisensi tersimpan lokal di perangkat kamu.",
+                supportTitle: "Lapor Kendala / Support",
+                supportDesc: "Butuh bantuan aktivasi atau kendala teknis? Hubungi Tim Pemilik ERMOWO (@erm_ugc_bot).",
+                aboutTitle: "Tentang Aplikasi",
+                navHome: "Home & Settings",
+                navWizard: "Wizard"
+            }
+        };
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.getElementById('btnLangId').className = lang === 'ID' ? 'btn-lang active' : 'btn-lang';
+            document.getElementById('btnLangEn').className = lang === 'EN' ? 'btn-lang active' : 'btn-lang';
+
+            const dict = i18n[lang];
+            for (let key in dict) {
+                const el = document.getElementById(key);
+                if (el) el.innerText = dict[key];
+            }
         }
 
-        function generatePrompt() {
-            const name = document.getElementById('productName').value.trim() || 'Produk Favorit';
-            const cat = document.getElementById('productCategory').value;
-            const angle = document.getElementById('videoAngle').value;
-
-            const generatedText = `===================================================
-🎬 ERMOWO UGC ADS GENERATOR PROMPT - LITE WEBINAR
-===================================================
-
-[ METADATA BRIEF ]
-• Product: ${name}
-• Category: ${cat}
-• Angle Blueprint: ${angle}
-• Aspect Ratio: 9:16 (Vertical Short-Form Video)
-• Target Engine: Google Flow / Veo 3 / Seedance 2.0 / Sora
-
----------------------------------------------------
-📸 1-SHEET CHARACTER BIBLE (SINGLE TURNAROUND SHEET)
----------------------------------------------------
-A professional 1-sheet studio turnaround shot of a 24-year-old Indonesian female UGC creator, natural skin texture, realistic micro-expressions, wearing modern casual minimalist outfit. 3 camera angles on a single horizontal grid: front-facing full view, 45-degree side profile, and back view. Solid neutral grey photo studio backdrop, soft cinematic diffused studio lighting, 8k resolution, photorealistic.
-
----------------------------------------------------
-📽️ STORYBOARD & SHOT LIST
----------------------------------------------------
-[SHOT 1 - HOOK] (Duration: 3s)
-Camera: Close-up (CU) with subtle handheld dynamic micro-shake.
-Visual: Creator holds ${name} close to camera with a shocked & delighted facial expression, pointing at product details.
-Audio/VO: "Jujur aku kaget banget pas pertama kali cobain ${name} ini!"
-
-[SHOT 2 - PROBLEM & DETAIL] (Duration: 4s)
-Camera: Medium Shot (MS), eye-level, natural room ambience.
-Visual: Creator demonstrates applying ${name} smoothly, focusing on product texture and premium packaging.
-Audio/VO: "Dulu sering bingung cari ${cat} yang hasilnya instan tapi tetep aman."
-
-[SHOT 3 - SOLUTION & CALL TO ACTION] (Duration: 3s)
-Camera: Medium Close-Up (MCU), warm sunset lighting.
-Visual: Creator smiles confidently at the camera while tapping the product gently against the screen, showing the yellow shopping cart icon.
-Audio/VO: "Mumpung lagi promo terbatas, mending kalian checkout sekarang di keranjang kuning!"
-
-===================================================
-✨ Copy prompt ini dan tempelkan di platform AI Video pilihan Anda.`;
-
-            document.getElementById('outputPrompt').innerText = generatedText;
-            document.getElementById('resultBox').style.display = 'block';
-            
-            // Scroll otomatis ke hasil
-            document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+        function copyDeviceId() {
+            const id = document.getElementById('deviceIdVal').innerText;
+            navigator.clipboard.writeText(id);
+            alert(currentLang === 'ID' ? 'Device ID berhasil disalin!' : 'Device ID copied!');
         }
 
-        function copyResult() {
-            const text = document.getElementById('outputPrompt').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('✅ Prompt berhasil disalin ke clipboard!');
-            }).catch(err => {
-                alert('Gagal menyalin: ' + err);
-            });
+        function activateLicense() {
+            const val = document.getElementById('keyInput').value.trim();
+            if (!val) {
+                alert(currentLang === 'ID' ? 'Masukkan kode lisensi terlebih dahulu.' : 'Please enter your license key.');
+                return;
+            }
+            alert(currentLang === 'ID' ? 'Kode Lisensi sedang diverifikasi...' : 'Verifying license key...');
         }
     </script>
 </body>
