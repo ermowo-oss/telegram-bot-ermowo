@@ -444,6 +444,17 @@
                 </button>
             </div>
 
+            <!-- Project History Card (Riwayat Project) -->
+            <div class="card card-clickable" onclick="openHistory()">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div class="card-title" id="historyTitle">Riwayat Project</div>
+                        <div class="card-subtitle" id="historyDesc">Buka kembali & kelola project lama yang telah disimpan.</div>
+                    </div>
+                    <div style="color: var(--primary-cyan); font-weight: 700;">→</div>
+                </div>
+            </div>
+
             <!-- Language Selector Card -->
             <div class="card">
                 <div class="card-title" id="langTitle">Bahasa / Language</div>
@@ -536,7 +547,20 @@
             </div>
         </div>
 
-        <!-- ==================== 5. AFFILIATE TEMPLATES SCREEN (20 ITEMS WITH TIER BADGES) ==================== -->
+        <!-- ==================== 5. HISTORY SCREEN (RIWAYAT PROJECT) ==================== -->
+        <div id="screenHistory" class="screen">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div class="section-header" style="margin: 0;" id="historyHeaderTitle">Riwayat Project</div>
+                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('settings')">← Kembali</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title" id="historyEmptyTitle">Belum Ada Riwayat Project</div>
+                <div class="card-subtitle" id="historyEmptyDesc">Project prompt yang kamu buat akan tersimpan di sini secara otomatis.</div>
+            </div>
+        </div>
+
+        <!-- ==================== 6. AFFILIATE TEMPLATES SCREEN (20 ITEMS WITH TIER BADGES) ==================== -->
         <div id="screenAffiliate" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <div class="section-header" style="margin: 0;" id="affiliateHeaderTitle">Pustaka Prompt Affiliate (20 Blueprint)</div>
@@ -557,9 +581,8 @@
 
     <script>
         let currentLang = 'ID';
-        let isTrialExpired = false; // Logika status 7 hari trial
+        let isTrialExpired = false;
 
-        // 20 Blueprint Prompt Resmi Lite Edition (v1.1.1) dengan Tier Access Level
         const affiliate20Templates = [
             { id: "AFF-001", name: "AI Clean Product Showcase (Foto)", cat: "Visual & Setup Guide", tier: "TRIAL", tierLabel: "Free Trial (7 Hari)", text: "A minimalist commercial product shot of [NAMA PRODUK] floating in mid-air. Solid pastel background, soft studio lighting, sharp focus, 8k resolution, high-end advertising, realistic textures --ar 4:5" },
             { id: "AFF-002", name: "AI Model Holding Product (Foto)", cat: "Visual & Setup Guide", tier: "TRIAL", tierLabel: "Free Trial (7 Hari)", text: "A candid lifestyle product photography of a modern [TARGET] model holding [NAMA PRODUK] naturally in hand. Authentic facial expression, soft daylight, warm neutral tone, background blur, highly realistic skin textures, 8k, shot on 85mm lens --ar 9:16" },
@@ -616,6 +639,11 @@
                 aboutTitle: "About App",
                 affiliateHeaderTitle: "Affiliate Prompt Library (20 Blueprints)",
                 pricingHeaderTitle: "Subscription Plans & Pricing",
+                historyTitle: "Project History",
+                historyDesc: "Reopen & manage saved projects",
+                historyHeaderTitle: "Project History",
+                historyEmptyTitle: "No Project History Yet",
+                historyEmptyDesc: "Generated prompt projects will be automatically saved here.",
                 navItemHome: "Home",
                 navItemWizard: "Wizard",
                 navItemSettings: "Settings"
@@ -652,6 +680,11 @@
                 aboutTitle: "Tentang Aplikasi",
                 affiliateHeaderTitle: "Pustaka Prompt Affiliate (20 Blueprint)",
                 pricingHeaderTitle: "Paket & Harga Berlangganan",
+                historyTitle: "Riwayat Project",
+                historyDesc: "Buka kembali & kelola project lama yang telah disimpan.",
+                historyHeaderTitle: "Riwayat Project",
+                historyEmptyTitle: "Belum Ada Riwayat Project",
+                historyEmptyDesc: "Project prompt yang kamu buat akan tersimpan di sini secara otomatis.",
                 navItemHome: "Home",
                 navItemWizard: "Wizard",
                 navItemSettings: "Settings"
@@ -706,6 +739,11 @@
         function openPricing() {
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             document.getElementById('screenPricing').classList.add('active');
+        }
+
+        function openHistory() {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById('screenHistory').classList.add('active');
         }
 
         function startWizardOrCheckTrial() {
