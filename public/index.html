@@ -684,7 +684,7 @@
             <button class="btn-primary" style="margin-top: 10px;" onclick="goToStep3()" id="btnNextStep2">Next →</button>
         </div>
 
-        <!-- ==================== 4. WIZARD STEP 3 SCREEN (CREATOR & AI ENGINE v1.1 MURNI) ==================== -->
+        <!-- ==================== 4. WIZARD STEP 3 SCREEN ==================== -->
         <div id="screenWizardStep3" class="screen">
             <!-- Header Nav Bar Dengan Tombol Back Ke Step 2 -->
             <div class="step-header-nav">
@@ -712,7 +712,7 @@
                 </div>
             </div>
 
-            <!-- Container Profil Kreator (Hanya Tampak Jika Gender Bukan NO_CREATOR) -->
+            <!-- Container Profil Kreator -->
             <div id="creatorProfileContainer">
                 <!-- Form 2: Age Group -->
                 <div class="form-group">
@@ -760,7 +760,7 @@
                 <input type="text" class="input-text" id="inputCustomVideoEngine" style="display: none; margin-top: 8px;" placeholder="Specify custom AI Video Engine">
             </div>
 
-            <!-- Form 6: AI Image Engine -->
+            <!-- Form 6: AI Image Engine (Aturan Kunci Line 1321) -->
             <div class="form-group">
                 <span class="form-label" id="imageEngineLabel">5. AI Image / Storyboard Engine</span>
                 <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openImageEngineModal()">
@@ -768,6 +768,18 @@
                     <span style="color: var(--primary-cyan); font-size: 12px;">▼</span>
                 </div>
                 <input type="text" class="input-text" id="inputCustomImageEngine" style="display: none; margin-top: 8px;" placeholder="Specify custom AI Image Engine">
+            </div>
+
+            <!-- Form 7: Visual Style & Lighting (Posisi Digembok Emas v1.2 Sesuai Line 1363 InputScreen.kt v1.1) -->
+            <div class="form-group">
+                <span class="form-label" id="visualStyleLabel">6. Visual Style & Lighting</span>
+                <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center; border-color: var(--gold);" onclick="openVisualStyleModal()">
+                    <div>
+                        <div id="selectedVisualStyleTitle" style="font-weight: 700; color: var(--text-primary);">Ultra Hyper-Realistic 8K Commercial Studio</div>
+                        <div id="selectedVisualStyleDesc" style="font-size: 11px; color: var(--gold); font-weight: 600;">🔒 Locked (Tap Option to Upgrade to Version 1.2)</div>
+                    </div>
+                    <span style="color: var(--gold); font-size: 12px; margin-left: 8px;">▼</span>
+                </div>
             </div>
 
             <!-- Single Full Width Generate Button -->
@@ -901,7 +913,7 @@
                 <ul class="pricing-features">
                     <li>500 Prompt Generations / Month</li>
                     <li>FULL Ultra Affiliate Prompt Library (Full Access)</li>
-                    <li>7 Video Shots / 7 Photo Frames per Project</li>
+                    <li>7 Video Shots / 7 Frame Foto per Project</li>
                     <li>ALL Product Categories (Unlimited)</li>
                     <li>ALL Video & Photo Platforms</li>
                     <li>No Watermark</li>
@@ -974,6 +986,7 @@
         let selectedPersonaIndex = 5; // Casual
         let selectedVideoEngineIndex = 0; // Google Flow
         let selectedImageEngineIndex = 0; // Nano Banana
+        let selectedVisualStyleIndex = 0; // Ultra Hyper-Realistic 8K
 
         const categories12 = [
             { id: "beauty", nameId: "Kecantikan & Skincare", nameEn: "Beauty & Skincare", tier: 1 },
@@ -1037,7 +1050,6 @@
             { name: "Standard (4:3)", ratio: "4:3" }
         ];
 
-        // Step 3 Data Enums Asli Models.kt v1.1
         const ageGroups5 = [
             { nameEn: "Teenager (15-20 y.o)", nameId: "Remaja (15-20 thn)" },
             { nameEn: "Young Adult (21-30 y.o)", nameId: "Dewasa Muda (21-30 thn)" },
@@ -1056,7 +1068,6 @@
             { nameEn: "Other (Custom)", nameId: "Lainnya (Tulis Kustom)" }
         ];
 
-        // AI Video Engines + Lock Rules Asli InputScreen.kt v1.1 (Line 1234)
         const videoEngines12 = [
             { name: "Google Flow (Veo 3.1 / 3)", reqTier: "TRIAL" },
             { name: "Seedance 2.5", reqTier: "PRO" },
@@ -1072,13 +1083,25 @@
             { name: "Lainnya / Other", reqTier: "ULTRA" }
         ];
 
+        // AI Image Engines + Lock Rules Asli Line 1321
         const imageEngines6 = [
-            { name: "Nano Banana (Pro / 2 / Lite)" },
-            { name: "Midjourney" },
-            { name: "GPT Image 2" },
-            { name: "Grok Imagine" },
-            { name: "FLUX Kontext" },
-            { name: "Lainnya / Other" }
+            { name: "Nano Banana (Pro / 2 / Lite)", reqTier: "TRIAL" },
+            { name: "Midjourney", reqTier: "PRO" },
+            { name: "GPT Image 2", reqTier: "TRIAL" },
+            { name: "Grok Imagine", reqTier: "PRO" },
+            { name: "FLUX Kontext", reqTier: "PRO" },
+            { name: "Lainnya / Other", reqTier: "ULTRA" }
+        ];
+
+        // 7 Visual Styles Asli VisualStyles.kt v1.1.1 (Digembok v1.2 di v1.1.1)
+        const visualStyles7 = [
+            { name: "Ultra Hyper-Realistic 8K Commercial Studio" },
+            { name: "Luxury Amber Glow & High-End Gold Accent" },
+            { name: "Cinematic Dark Elegance / Midnight Luxury" },
+            { name: "Pixar 3D Warm Animation" },
+            { name: "Moody Editorial High-Fashion" },
+            { name: "Studio Ghibli Anime" },
+            { name: "Kartun 2D Flat Illustration" }
         ];
 
         const affiliate20Templates = [
@@ -1140,6 +1163,7 @@
                 uploadCreatorLabel: "👤 Upload Creator Face Photos (Gallery)",
                 videoEngineLabel: "4. AI Video Engine",
                 imageEngineLabel: "5. AI Image / Storyboard Engine",
+                visualStyleLabel: "6. Visual Style & Lighting",
                 btnNextStep: "Next →",
                 btnNextStep2: "Next →",
                 btnGenerate: "⚡ Generate Ads Project",
@@ -1202,6 +1226,7 @@
                 uploadCreatorLabel: "👤 Upload Foto Wajah Kreator (Galeri HP)",
                 videoEngineLabel: "4. Engine AI Video",
                 imageEngineLabel: "5. Engine AI Gambar / Storyboard",
+                visualStyleLabel: "6. Gaya Visual & Pencahayaan (Visual Style)",
                 btnNextStep: "Lanjut →",
                 btnNextStep2: "Lanjut →",
                 btnGenerate: "⚡ Generate Project Iklan",
@@ -1412,13 +1437,36 @@
         function openImageEngineModal() {
             document.getElementById('modalGeneralHeader').innerText = '5. AI Image / Storyboard Engine';
             const list = document.getElementById('modalGeneralList');
-            list.innerHTML = imageEngines6.map((img, idx) => `
-                <div class="modal-item ${idx === selectedImageEngineIndex ? 'active' : ''}" onclick="selectImageEngine(${idx})">
-                    <span>${img.name}</span>
-                    ${idx === selectedImageEngineIndex ? '<span>✓</span>' : ''}
+            list.innerHTML = imageEngines6.map((img, idx) => {
+                const isLocked = isTrialExpired && img.reqTier !== 'TRIAL';
+                return `
+                    <div class="modal-item ${idx === selectedImageEngineIndex ? 'active' : ''} ${isLocked ? 'disabled' : ''}" onclick="${isLocked ? "alert('Engine AI Gambar ini terkunci untuk paket langganan kamu. Silakan upgrade.')" : `selectImageEngine(${idx})`}">
+                        <span>${img.name}</span>
+                        ${isLocked ? '<span style="color:var(--locked-red);">🔒</span>' : (idx === selectedImageEngineIndex ? '<span>✓</span>' : '')}
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('modalGeneral').classList.add('active');
+        }
+
+        // Section 6 Visual Style (Gembok Emas v1.2 Sesuai Kode Android v1.1.1)
+        function openVisualStyleModal() {
+            document.getElementById('modalGeneralHeader').innerText = '6. Visual Style & Lighting';
+            const list = document.getElementById('modalGeneralList');
+            list.innerHTML = visualStyles7.map((vs, idx) => `
+                <div class="modal-item" onclick="triggerV12UpgradePopup()">
+                    <span style="opacity: 0.6;">${vs.name}</span>
+                    <span style="color:var(--gold); font-size:11px; font-weight:700;">🔒 v1.2</span>
                 </div>
             `).join('');
             document.getElementById('modalGeneral').classList.add('active');
+        }
+
+        function triggerV12UpgradePopup() {
+            closeGeneralModal();
+            alert(currentLang === 'ID' 
+                ? '🔒 Masa Trial 7 Hari Selesai\n\nMasa Trial 7 Hari gratis telah berakhir.\n\nModul Visual Style & Lighting ini khusus disajikan secara permanen pada APK Versi 1.2 Remastered Directing OS.\n\nSilakan reinstall menggunakan APK Versi 1.2 untuk membuka kembali fitur ini selamanya!'
+                : '🔒 7-Day Trial Ended\n\nThe 7-Day Free Trial period has ended.\n\nThis Visual Style & Lighting module is permanently available in APK Version 1.2 Remastered Directing OS.\n\nPlease reinstall using APK Version 1.2 to unlock this feature forever!');
         }
 
         function closeGeneralModal() {
