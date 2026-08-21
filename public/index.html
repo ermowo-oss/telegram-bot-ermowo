@@ -39,6 +39,14 @@
             margin: 0 auto;
         }
 
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
         /* Top Header Card */
         .hero-card {
             background: linear-gradient(180deg, rgba(13, 34, 53, 0.9) 0%, var(--card-bg) 100%);
@@ -203,6 +211,51 @@
             border-color: var(--primary-cyan);
         }
 
+        /* Affiliate Item Box */
+        .template-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .template-tag {
+            display: inline-block;
+            background: rgba(0, 187, 249, 0.15);
+            color: var(--electric-blue);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        .template-code {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #E2E8F0;
+            margin-top: 8px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .btn-copy-template {
+            background: transparent;
+            border: 1px solid var(--primary-cyan);
+            color: var(--primary-cyan);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            float: right;
+        }
+
         /* Bottom Nav Bar */
         .bottom-nav {
             position: fixed;
@@ -221,10 +274,11 @@
         .nav-item {
             text-align: center;
             color: var(--text-secondary);
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             flex: 1;
+            padding: 4px 0;
         }
 
         .nav-item.active {
@@ -236,115 +290,159 @@
 
     <div class="container">
         
-        <!-- 1. Hero Card -->
-        <div class="hero-card">
-            <div class="badge-os">AI DIRECTING OS</div>
-            <div class="hero-title">UGC Ads Generator</div>
-            <div class="hero-desc" id="heroDesc">
-                Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.
-            </div>
-            <button class="btn-primary" id="btnStart" onclick="alert('Form Wizard Step 1 akan dibuka pada tahap selanjutnya.')">
-                Mulai Buat Project Prompt Baru
-            </button>
-        </div>
-
-        <!-- 2. Affiliate Banner Card -->
-        <div class="card card-clickable" onclick="alert('Pustaka Affiliate akan dibuka pada tahap selanjutnya.')">
-            <div class="card-title" id="affiliateTitle">Pustaka Prompt Affiliate</div>
-            <div class="card-subtitle" id="affiliateDesc">Salin cepat 20+ blueprint prompt siap pakai untuk iklan AI.</div>
-        </div>
-
-        <!-- 3. Directing OS Features Section -->
-        <div class="section-header" id="featuresHeader">Keunggulan Directing OS</div>
-
-        <div class="card">
-            <div class="card-title" id="f1Title">Sinematografi & Multi-Shot Engine</div>
-            <div class="card-subtitle" id="f1Desc">Struktur 3-4 Shot sinematik presisi (Hook, Focus, Action & CTA) dengan durasi per shot 4s/6s/8s/10s.</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title" id="f2Title">Psikologi Hook & Storytelling</div>
-            <div class="card-subtitle" id="f2Desc">4 Angle Iklan Teruji (Problem Solver, Honest Review, Storytelling, & Lifestyle Unboxing) dengan retensi tinggi.</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title" id="f3Title">Dukungan Dual Project (Video & Foto)</div>
-            <div class="card-subtitle" id="f3Desc">Hasilkan prompt video gerak sinematik atau prompt photoshoot gambar 4K untuk katalog & paid social.</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title" id="f4Title">Optimasi Lintas AI Platform</div>
-            <div class="card-subtitle" id="f4Desc">Sintaks khusus yang disesuaikan dengan Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, dan GPT Image.</div>
-        </div>
-
-        <!-- 4. Settings & License Section -->
-        <div class="section-header" id="settingsHeader">Pengaturan & Status Lisensi</div>
-
-        <!-- Pricing Card Link -->
-        <div class="card card-clickable" onclick="alert('Pilihan Paket Berlangganan (Starter, Pro, Ultra) akan ditampilkan.')">
-            <div class="card-title" id="pricingTitle">Paket & Harga Berlangganan</div>
-            <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;">Starter · Pro · Ultra VIP</div>
-        </div>
-
-        <!-- License & Account Card -->
-        <div class="card">
-            <div class="card-title" id="accountTitle">Akun & Status Lisensi</div>
-            <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;" id="licenseStatus">
-                Status: Versi Trial 7 Hari (Sisa 7 Hari)
-            </div>
-
-            <div class="device-box" onclick="copyDeviceId()">
-                <div>
-                    <div style="font-size: 11px; color: var(--text-secondary);" id="deviceLabel">Device ID Anda (Ketuk untuk menyalin):</div>
-                    <div class="device-id-text" id="deviceIdVal">WEB-88A1-90F2</div>
+        <!-- ==================== 1. HOME SCREEN ==================== -->
+        <div id="screenHome" class="screen active">
+            <!-- Hero Card -->
+            <div class="hero-card">
+                <div class="badge-os">AI DIRECTING OS</div>
+                <div class="hero-title">UGC Ads Generator</div>
+                <div class="hero-desc" id="heroDesc">
+                    Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.
                 </div>
-                <div style="color: var(--primary-cyan); font-size: 12px; font-weight: 700;">SALIN</div>
+                <button class="btn-primary" id="btnStart" onclick="switchNav('wizard')">
+                    Mulai Buat Project Prompt Baru
+                </button>
             </div>
 
-            <div class="form-group">
-                <span class="form-label" id="keyLabel">Masukkan Kode Lisensi dari Telegram Bot Admin:</span>
-                <input type="text" class="input-text" id="keyInput" placeholder="PRO-XXXX-XXXX">
+            <!-- Affiliate Banner Card -->
+            <div class="card card-clickable" onclick="openAffiliateTemplates()">
+                <div class="card-title" id="affiliateTitle">Pustaka Prompt Affiliate</div>
+                <div class="card-subtitle" id="affiliateDesc">Salin cepat 20+ blueprint prompt siap pakai untuk iklan AI.</div>
             </div>
-            <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="activateLicense()" id="btnActivate">
-                Aktifkan Lisensi Sekarang
-            </button>
-        </div>
 
-        <!-- Language Selector Card -->
-        <div class="card">
-            <div class="card-title" id="langTitle">Bahasa / Language</div>
-            <div class="lang-group">
-                <button class="btn-lang active" id="btnLangId" onclick="setLang('ID')">Bahasa Indonesia</button>
-                <button class="btn-lang" id="btnLangEn" onclick="setLang('EN')">English</button>
+            <!-- Directing OS Features Section -->
+            <div class="section-header" id="featuresHeader">Keunggulan Directing OS</div>
+
+            <div class="card">
+                <div class="card-title" id="f1Title">Sinematografi & Multi-Shot Engine</div>
+                <div class="card-subtitle" id="f1Desc">Struktur 3-4 Shot sinematik presisi (Hook, Focus, Action & CTA) dengan durasi per shot 4s/6s/8s/10s.</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title" id="f2Title">Psikologi Hook & Storytelling</div>
+                <div class="card-subtitle" id="f2Desc">4 Angle Iklan Teruji (Problem Solver, Honest Review, Storytelling, & Lifestyle Unboxing) dengan retensi tinggi.</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title" id="f3Title">Dukungan Dual Project (Video & Foto)</div>
+                <div class="card-subtitle" id="f3Desc">Hasilkan prompt video gerak sinematik atau prompt photoshoot gambar 4K untuk katalog & paid social.</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title" id="f4Title">Optimasi Lintas AI Platform</div>
+                <div class="card-subtitle" id="f4Desc">Sintaks khusus yang disesuaikan dengan Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, dan GPT Image.</div>
             </div>
         </div>
 
-        <!-- Privacy & Support Cards -->
-        <div class="card card-clickable" onclick="alert('Aplikasi ini 100% Offline & Lokal. Tidak ada data bisnis yang dikirim ke internet.')">
-            <div class="card-title" id="privacyTitle">Syarat & Keamanan Privasi</div>
-            <div class="card-subtitle" id="privacyDesc">Aplikasi ini 100% Offline. Semua ide produk, skrip, dan lisensi tersimpan lokal di perangkat kamu.</div>
+        <!-- ==================== 2. WIZARD SCREEN ==================== -->
+        <div id="screenWizard" class="screen">
+            <div class="section-header" style="margin-top: 0;" id="wizardHeader">Wizard Project Baru</div>
+            <div class="card">
+                <div class="card-title" id="wizardNoticeTitle">Form Wizard Step 1 - 3</div>
+                <div class="card-subtitle" id="wizardNoticeDesc">Pengembangan Form Wizard Step 1 akan diproses pada tahap selanjutnya.</div>
+            </div>
         </div>
 
-        <div class="card card-clickable" onclick="window.open('https://t.me/erm_ugc_bot', '_blank')">
-            <div class="card-title" id="supportTitle">Lapor Kendala / Support</div>
-            <div class="card-subtitle" id="supportDesc">Butuh bantuan aktivasi atau kendala teknis? Hubungi Tim Pemilik ERMOWO (@erm_ugc_bot).</div>
+        <!-- ==================== 3. SETTINGS SCREEN ==================== -->
+        <div id="screenSettings" class="screen">
+            <div class="section-header" style="margin-top: 0;" id="settingsHeader">Pengaturan & Status Lisensi</div>
+
+            <!-- Pricing Card Link -->
+            <div class="card card-clickable" onclick="alert('Pilihan Paket Berlangganan (Starter, Pro, Ultra) akan ditampilkan.')">
+                <div class="card-title" id="pricingTitle">Paket & Harga Berlangganan</div>
+                <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;">Starter · Pro · Ultra VIP</div>
+            </div>
+
+            <!-- License & Account Card -->
+            <div class="card">
+                <div class="card-title" id="accountTitle">Akun & Status Lisensi</div>
+                <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;" id="licenseStatus">
+                    Status: Versi Trial 7 Hari (Sisa 7 Hari)
+                </div>
+
+                <div class="device-box" onclick="copyDeviceId()">
+                    <div>
+                        <div style="font-size: 11px; color: var(--text-secondary);" id="deviceLabel">Device ID Anda (Ketuk untuk menyalin):</div>
+                        <div class="device-id-text" id="deviceIdVal">WEB-88A1-90F2</div>
+                    </div>
+                    <div style="color: var(--primary-cyan); font-size: 12px; font-weight: 700;">SALIN</div>
+                </div>
+
+                <div class="form-group">
+                    <span class="form-label" id="keyLabel">Masukkan Kode Lisensi dari Telegram Bot Admin:</span>
+                    <input type="text" class="input-text" id="keyInput" placeholder="PRO-XXXX-XXXX">
+                </div>
+                <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="activateLicense()" id="btnActivate">
+                    Aktifkan Lisensi Sekarang
+                </button>
+            </div>
+
+            <!-- Language Selector Card -->
+            <div class="card">
+                <div class="card-title" id="langTitle">Bahasa / Language</div>
+                <div class="lang-group">
+                    <button class="btn-lang active" id="btnLangId" onclick="setLang('ID')">Bahasa Indonesia</button>
+                    <button class="btn-lang" id="btnLangEn" onclick="setLang('EN')">English</button>
+                </div>
+            </div>
+
+            <!-- Privacy & Support Cards -->
+            <div class="card card-clickable" onclick="alert('Aplikasi ini 100% Offline & Lokal. Tidak ada data bisnis yang dikirim ke internet.')">
+                <div class="card-title" id="privacyTitle">Syarat & Keamanan Privasi</div>
+                <div class="card-subtitle" id="privacyDesc">Aplikasi ini 100% Offline. Semua ide produk, skrip, dan lisensi tersimpan lokal di perangkat kamu.</div>
+            </div>
+
+            <div class="card card-clickable" onclick="window.open('https://t.me/erm_ugc_bot', '_blank')">
+                <div class="card-title" id="supportTitle">Lapor Kendala / Support</div>
+                <div class="card-subtitle" id="supportDesc">Butuh bantuan aktivasi atau kendala teknis? Hubungi Tim Pemilik ERMOWO (@erm_ugc_bot).</div>
+            </div>
+
+            <!-- About App Card -->
+            <div class="card">
+                <div class="card-title" id="aboutTitle">Tentang Aplikasi</div>
+                <div class="card-subtitle" style="line-height: 1.8; margin-top: 6px;">
+                    <b>Versi:</b> v1.1.1 (Protected Web Edition)<br>
+                    <b>Sistem Keamanan:</b> Hardware Locking + RSA Signed
+                </div>
+            </div>
         </div>
 
-        <!-- About App Card -->
-        <div class="card">
-            <div class="card-title" id="aboutTitle">Tentang Aplikasi</div>
-            <div class="card-subtitle" style="line-height: 1.8; margin-top: 6px;">
-                <b>Versi:</b> v1.1.1 (Protected Web Edition)<br>
-                <b>Sistem Keamanan:</b> Hardware Locking + RSA Signed
+        <!-- ==================== 4. AFFILIATE TEMPLATES SCREEN ==================== -->
+        <div id="screenAffiliate" class="screen">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div class="section-header" style="margin: 0;" id="affiliateHeaderTitle">Pustaka Prompt Affiliate</div>
+                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('home')">← Kembali</button>
+            </div>
+
+            <div class="template-item">
+                <button class="btn-copy-template" onclick="copyTemplate('temp1')">SALIN</button>
+                <div class="template-tag">Skincare · Problem Solution</div>
+                <div class="card-title" style="font-size: 14px;">Serum Glowing Instan</div>
+                <div class="template-code" id="temp1">A 24-year-old Indonesian female UGC creator holding serum bottle close to camera, natural skin texture, photo studio lighting, 8k --ar 9:16</div>
+            </div>
+
+            <div class="template-item">
+                <button class="btn-copy-template" onclick="copyTemplate('temp2')">SALIN</button>
+                <div class="template-tag">Fashion · Outfit Review</div>
+                <div class="card-title" style="font-size: 14px;">OOTD Hijab Casual Minimalist</div>
+                <div class="template-code" id="temp2">Full body shot of 22-year-old Indonesian female wearing modern pastel hijab outfit walking in aesthetic cafe, warm daylight, 8k --ar 9:16</div>
+            </div>
+
+            <div class="template-item">
+                <button class="btn-copy-template" onclick="copyTemplate('temp3')">SALIN</button>
+                <div class="template-tag">Food · Unboxing & Taste Test</div>
+                <div class="card-title" style="font-size: 14px;">Snack Crispy Crunch Review</div>
+                <div class="template-code" id="temp3">Close up shot opening snack packaging, crispy texture details, delighted smile expression, shallow depth of field, 8k --ar 9:16</div>
             </div>
         </div>
 
     </div>
 
-    <!-- Bottom Navigation Bar (2 Clean Menus) -->
+    <!-- Bottom Navigation Bar (3 Clean Menus) -->
     <div class="bottom-nav">
-        <div class="nav-item active" id="navHome">Home & Settings</div>
-        <div class="nav-item" id="navWizard" onclick="alert('Form Wizard Step 1 akan dibuka pada tahap selanjutnya.')">Wizard</div>
+        <div class="nav-item active" id="navItemHome" onclick="switchNav('home')">Home</div>
+        <div class="nav-item" id="navItemWizard" onclick="switchNav('wizard')">Wizard</div>
+        <div class="nav-item" id="navItemSettings" onclick="switchNav('settings')">Settings</div>
     </div>
 
     <script>
@@ -365,6 +463,9 @@
                 f3Desc: "Generate cinematic motion video prompts or studio 4K photoshoot image prompts for catalog & paid social.",
                 f4Title: "Cross-Platform AI Optimization",
                 f4Desc: "Engine-tailored syntax for Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, and GPT Image 2.",
+                wizardHeader: "New Project Wizard",
+                wizardNoticeTitle: "Step 1 - 3 Wizard Form",
+                wizardNoticeDesc: "Step 1 Form Wizard development will be processed in the next step.",
                 settingsHeader: "Settings & License Status",
                 pricingTitle: "Subscription Plans & Pricing",
                 accountTitle: "Account & License Status",
@@ -378,8 +479,10 @@
                 supportTitle: "Report Problem / Support",
                 supportDesc: "Need activation help or technical support? Contact ERMOWO Support Team (@erm_ugc_bot).",
                 aboutTitle: "About App",
-                navHome: "Home & Settings",
-                navWizard: "Wizard"
+                affiliateHeaderTitle: "Affiliate Prompt Library",
+                navItemHome: "Home",
+                navItemWizard: "Wizard",
+                navItemSettings: "Settings"
             },
             ID: {
                 heroDesc: "Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.",
@@ -395,6 +498,9 @@
                 f3Desc: "Hasilkan prompt video gerak sinematik atau prompt photoshoot gambar 4K untuk katalog & paid social.",
                 f4Title: "Optimasi Lintas AI Platform",
                 f4Desc: "Sintaks khusus yang disesuaikan dengan Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, dan GPT Image.",
+                wizardHeader: "Wizard Project Baru",
+                wizardNoticeTitle: "Form Wizard Step 1 - 3",
+                wizardNoticeDesc: "Pengembangan Form Wizard Step 1 akan diproses pada tahap selanjutnya.",
                 settingsHeader: "Pengaturan & Status Lisensi",
                 pricingTitle: "Paket & Harga Berlangganan",
                 accountTitle: "Akun & Status Lisensi",
@@ -408,10 +514,39 @@
                 supportTitle: "Lapor Kendala / Support",
                 supportDesc: "Butuh bantuan aktivasi atau kendala teknis? Hubungi Tim Pemilik ERMOWO (@erm_ugc_bot).",
                 aboutTitle: "Tentang Aplikasi",
-                navHome: "Home & Settings",
-                navWizard: "Wizard"
+                affiliateHeaderTitle: "Pustaka Prompt Affiliate",
+                navItemHome: "Home",
+                navItemWizard: "Wizard",
+                navItemSettings: "Settings"
             }
         };
+
+        function switchNav(targetScreen) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            if (targetScreen === 'home') {
+                document.getElementById('screenHome').classList.add('active');
+                document.getElementById('navItemHome').classList.add('active');
+            } else if (targetScreen === 'wizard') {
+                document.getElementById('screenWizard').classList.add('active');
+                document.getElementById('navItemWizard').classList.add('active');
+            } else if (targetScreen === 'settings') {
+                document.getElementById('screenSettings').classList.add('active');
+                document.getElementById('navItemSettings').classList.add('active');
+            }
+        }
+
+        function openAffiliateTemplates() {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById('screenAffiliate').classList.add('active');
+        }
+
+        function copyTemplate(id) {
+            const code = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(code);
+            alert(currentLang === 'ID' ? 'Blueprint prompt disalin!' : 'Prompt blueprint copied!');
+        }
 
         function setLang(lang) {
             currentLang = lang;
