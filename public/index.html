@@ -196,34 +196,50 @@
             margin-top: 4px;
         }
 
-        /* Duration Slider Styling Lebar Penuh (Full Width 100%) */
+        /* Duration Slider Styling Lebar Penuh dengan Active Cyan Track Fill */
         .slider-container {
             width: 100%;
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--card-border);
             border-radius: 14px;
-            padding: 16px;
+            padding: 18px 16px;
             margin-top: 6px;
         }
 
         .slider-input {
             width: 100%;
             -webkit-appearance: none;
+            appearance: none;
             height: 6px;
             border-radius: 3px;
-            background: #1E293B;
+            background: linear-gradient(to right, var(--primary-cyan) 0%, var(--primary-cyan) 53.33%, #1E293B 53.33%, #1E293B 100%);
             outline: none;
         }
 
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             background: var(--primary-cyan);
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5);
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.8);
+            transition: transform 0.1s;
+        }
+
+        .slider-input::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+        }
+
+        .slider-input::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary-cyan);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.8);
         }
 
         .slider-labels {
@@ -695,7 +711,7 @@
                 </div>
             </div>
 
-            <!-- Form 4: Duration per Shot Slider (Diperbaiki Lebar Penuh 100%) -->
+            <!-- Form 4: Duration per Shot Slider (Dengan Dynamic Cyan Fill) -->
             <div class="form-group">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span class="form-label" style="margin: 0;" id="durationLabel">Duration per Shot</span>
@@ -1074,7 +1090,6 @@
             { count: 7, labelEn: "7 Shot (Extended Storytelling)", labelId: "7 Shot (Extended Storytelling)", reqTier: "ULTRA" }
         ];
 
-        // Platforms Lengkap Dengan Rasio Layar Asli Models.kt Line 178
         const videoPlatformsList = [
             { name: "TikTok (9:16)", ratio: "9:16" },
             { name: "Instagram Reels (9:16)", ratio: "9:16" },
@@ -1303,7 +1318,6 @@
             document.getElementById('typePhoto').className = type === 'PHOTO' ? 'project-type-card active' : 'project-type-card';
             document.getElementById('videoEngineGroup').style.display = type === 'VIDEO' ? 'block' : 'none';
 
-            // Automatic platform list switch based on project type
             selectedPlatformIndex = 0;
             const targetList = type === 'VIDEO' ? videoPlatformsList : photoPlatformsList;
             document.getElementById('selectedPlatformText').innerText = targetList[0].name;
@@ -1325,9 +1339,14 @@
             document.getElementById('descCounter').innerText = val.length + '/200';
         }
 
+        // Dynamic Gradient Cyan Fill Update saat slider digeser
         function updateDurationValue(val) {
             selectedDurationSec = val;
             document.getElementById('durationVal').innerText = val + ' seconds';
+            
+            const slider = document.getElementById('inputDurationSlider');
+            const pct = (val / slider.max) * 100;
+            slider.style.background = `linear-gradient(to right, var(--primary-cyan) 0%, var(--primary-cyan) ${pct}%, #1E293B ${pct}%, #1E293B 100%)`;
         }
 
         function onPhotoSelected(input) {
@@ -1738,6 +1757,8 @@
 
         // Initialize Render
         renderAffiliateTemplates();
+        // Trigger initial slider gradient fill
+        updateDurationValue(8);
     </script>
 </body>
 </html>
