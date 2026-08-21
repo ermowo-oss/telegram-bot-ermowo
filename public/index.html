@@ -49,7 +49,7 @@
             display: block;
         }
 
-        /* Header Navigation Bar dengan Tombol Back */
+        /* Header Navigation Bar dengan Tombol Back Single Presisi Android */
         .step-header-nav {
             display: flex;
             align-items: center;
@@ -271,7 +271,7 @@
             backdrop-filter: blur(8px);
             z-index: 200;
             justify-content: center;
-            align-items: center; /* CENTER POSITIONING SO IT NEVER CUTS OFF ON WIDE/DESKTOP */
+            align-items: center;
             padding: 20px;
         }
 
@@ -536,7 +536,7 @@
 
         <!-- ==================== 2. WIZARD STEP 1 SCREEN ==================== -->
         <div id="screenWizard" class="screen">
-            <!-- Header Nav Bar Dengan Tombol Back Ke Home (Sama Seperti Step 2) -->
+            <!-- Header Nav Bar Dengan Tombol Back Ke Home -->
             <div class="step-header-nav">
                 <button class="btn-back-header" onclick="switchNav('home')">←</button>
                 <div class="section-header" id="wizardStepTitle">Step 1: Project Specs</div>
@@ -589,7 +589,7 @@
                 <div class="counter-text" id="descCounter">0/200</div>
             </div>
 
-            <!-- Bottom Next Button -->
+            <!-- Single Full Width Button Next -> Persis Android -->
             <button class="btn-primary" style="margin-top: 10px;" onclick="goToStep2()" id="btnNextStep">Next →</button>
         </div>
 
@@ -677,11 +677,8 @@
                 </div>
             </div>
 
-            <!-- Buttons Step 2 -->
-            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button class="btn-primary" style="flex: 1; background: transparent; border: 1px solid var(--card-border); color: var(--text-primary);" onclick="switchNav('wizard')">← Back</button>
-                <button class="btn-primary" style="flex: 2;" onclick="goToStep3()" id="btnNextStep2">Move to Step 3 →</button>
-            </div>
+            <!-- Single Full Width Button Next -> Persis Android v1.1 -->
+            <button class="btn-primary" style="margin-top: 10px;" onclick="goToStep3()" id="btnNextStep2">Next →</button>
         </div>
 
         <!-- ==================== 4. SETTINGS SCREEN ==================== -->
@@ -846,7 +843,7 @@
 
     </div>
 
-    <!-- ==================== MODAL OVERLAY GENERAL (CENTERED MODAL FOR ALL SCREEN SIZES) ==================== -->
+    <!-- ==================== MODAL OVERLAY GENERAL ==================== -->
     <div id="modalGeneral" class="modal-overlay" onclick="closeModalOnOverlay(event)">
         <div class="modal-content">
             <div class="modal-header">
@@ -989,7 +986,7 @@
                 durationLabel: "Duration per Shot",
                 platformLabel: "4. Target Platform & Aspect Ratio",
                 btnNextStep: "Next →",
-                btnNextStep2: "Move to Step 3 →",
+                btnNextStep2: "Next →",
                 settingsHeader: "Settings & License Status",
                 pricingTitle: "Subscription Plans & Pricing",
                 accountTitle: "Account & License Status",
@@ -1041,7 +1038,7 @@
                 durationLabel: "Durasi per Shot",
                 platformLabel: "4. Target Platform & Rasio Layar",
                 btnNextStep: "Lanjut →",
-                btnNextStep2: "Lanjut ke Step 3 →",
+                btnNextStep2: "Lanjut →",
                 settingsHeader: "Pengaturan & Status Lisensi",
                 pricingTitle: "Paket & Harga Berlangganan",
                 accountTitle: "Akun & Status Lisensi",
