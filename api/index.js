@@ -107,13 +107,23 @@ bot.start((ctx) => {
     const payload = ctx.message.text.split(' ')[1] || 'pro';
     const msg = getPaymentMessage(payload);
 
+    const keyboard = {
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    { text: "📱 Buka Web App (iPhone / Web)", url: "https://telegram-bot-ermowo.vercel.app/app" }
+                ]
+            ]
+        }
+    };
+
     if (fs.existsSync(qrisImagePath)) {
         return ctx.replyWithPhoto(
             { source: qrisImagePath },
-            { caption: msg, parse_mode: 'HTML' }
+            { caption: msg, parse_mode: 'HTML', ...keyboard }
         );
     } else {
-        return ctx.replyWithHTML(msg);
+        return ctx.replyWithHTML(msg, keyboard);
     }
 });
 
