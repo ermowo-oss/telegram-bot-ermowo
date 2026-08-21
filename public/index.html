@@ -196,6 +196,45 @@
             margin-top: 4px;
         }
 
+        /* Duration Slider Styling Lebar Penuh (Full Width 100%) */
+        .slider-container {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 6px;
+        }
+
+        .slider-input {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #1E293B;
+            outline: none;
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-cyan);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
         .device-box {
             background: rgba(0, 245, 212, 0.05);
             border: 1px solid rgba(0, 245, 212, 0.3);
@@ -656,9 +695,9 @@
                 </div>
             </div>
 
-            <!-- Form 4: Duration per Shot Slider -->
+            <!-- Form 4: Duration per Shot Slider (Diperbaiki Lebar Penuh 100%) -->
             <div class="form-group">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <span class="form-label" style="margin: 0;" id="durationLabel">Duration per Shot</span>
                     <span style="color: var(--primary-cyan); font-weight: 700; font-size: 14px;" id="durationVal">8 seconds</span>
                 </div>
@@ -671,7 +710,7 @@
                 </div>
             </div>
 
-            <!-- Form 5: Target Platform & Aspect Ratio -->
+            <!-- Form 5: Target Platform & Aspect Ratio (Lengkap Rasio 100%) -->
             <div class="form-group">
                 <span class="form-label" id="platformLabel">4. Target Platform & Aspect Ratio</span>
                 <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openPlatformModal()">
@@ -1035,17 +1074,21 @@
             { count: 7, labelEn: "7 Shot (Extended Storytelling)", labelId: "7 Shot (Extended Storytelling)", reqTier: "ULTRA" }
         ];
 
-        const platforms12 = [
+        // Platforms Lengkap Dengan Rasio Layar Asli Models.kt Line 178
+        const videoPlatformsList = [
             { name: "TikTok (9:16)", ratio: "9:16" },
             { name: "Instagram Reels (9:16)", ratio: "9:16" },
             { name: "Facebook Reels (9:16)", ratio: "9:16" },
             { name: "YouTube Shorts (9:16)", ratio: "9:16" },
-            { name: "Meta Ads (IG & FB)", ratio: "9:16" },
-            { name: "Threads Media", ratio: "9:16" },
+            { name: "Meta Ads (IG & FB) (9:16)", ratio: "9:16" },
+            { name: "Threads Media (9:16)", ratio: "9:16" },
+            { name: "YouTube (Landscape) (16:9)", ratio: "16:9" }
+        ];
+
+        const photoPlatformsList = [
             { name: "Instagram Feed (1:1)", ratio: "1:1" },
             { name: "Facebook Feed (1:1)", ratio: "1:1" },
-            { name: "YouTube (Landscape)", ratio: "16:9" },
-            { name: "Marketplace Listing / A+", ratio: "1:1" },
+            { name: "Marketplace Listing / A+ (1:1)", ratio: "1:1" },
             { name: "Portrait (3:4)", ratio: "3:4" },
             { name: "Standard (4:3)", ratio: "4:3" }
         ];
@@ -1083,7 +1126,6 @@
             { name: "Lainnya / Other", reqTier: "ULTRA" }
         ];
 
-        // AI Image Engines + Lock Rules Asli Line 1321
         const imageEngines6 = [
             { name: "Nano Banana (Pro / 2 / Lite)", reqTier: "TRIAL" },
             { name: "Midjourney", reqTier: "PRO" },
@@ -1093,7 +1135,6 @@
             { name: "Lainnya / Other", reqTier: "ULTRA" }
         ];
 
-        // 7 Visual Styles Asli VisualStyles.kt v1.1.1 (Digembok v1.2 di v1.1.1)
         const visualStyles7 = [
             { name: "Ultra Hyper-Realistic 8K Commercial Studio" },
             { name: "Luxury Amber Glow & High-End Gold Accent" },
@@ -1261,6 +1302,11 @@
             document.getElementById('typeVideo').className = type === 'VIDEO' ? 'project-type-card active' : 'project-type-card';
             document.getElementById('typePhoto').className = type === 'PHOTO' ? 'project-type-card active' : 'project-type-card';
             document.getElementById('videoEngineGroup').style.display = type === 'VIDEO' ? 'block' : 'none';
+
+            // Automatic platform list switch based on project type
+            selectedPlatformIndex = 0;
+            const targetList = type === 'VIDEO' ? videoPlatformsList : photoPlatformsList;
+            document.getElementById('selectedPlatformText').innerText = targetList[0].name;
         }
 
         function setGender(gender) {
@@ -1386,9 +1432,10 @@
         function openPlatformModal() {
             document.getElementById('modalGeneralHeader').innerText = '4. Target Platform & Aspect Ratio';
             const list = document.getElementById('modalGeneralList');
-            list.innerHTML = platforms12.map((p, idx) => `
+            const targetPlatforms = selectedProjectType === 'VIDEO' ? videoPlatformsList : photoPlatformsList;
+            list.innerHTML = targetPlatforms.map((p, idx) => `
                 <div class="modal-item ${idx === selectedPlatformIndex ? 'active' : ''}" onclick="selectPlatform(${idx})">
-                    <span>${p.name}</span>
+                    <span>📱 ${p.name}</span>
                     ${idx === selectedPlatformIndex ? '<span>✓</span>' : ''}
                 </div>
             `).join('');
@@ -1449,7 +1496,6 @@
             document.getElementById('modalGeneral').classList.add('active');
         }
 
-        // Section 6 Visual Style (Gembok Emas v1.2 Sesuai Kode Android v1.1.1)
         function openVisualStyleModal() {
             document.getElementById('modalGeneralHeader').innerText = '6. Visual Style & Lighting';
             const list = document.getElementById('modalGeneralList');
@@ -1513,7 +1559,8 @@
 
         function selectPlatform(idx) {
             selectedPlatformIndex = idx;
-            document.getElementById('selectedPlatformText').innerText = platforms12[idx].name;
+            const targetList = selectedProjectType === 'VIDEO' ? videoPlatformsList : photoPlatformsList;
+            document.getElementById('selectedPlatformText').innerText = targetList[idx].name;
             closeGeneralModal();
         }
 
