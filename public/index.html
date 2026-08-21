@@ -431,6 +431,22 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        /* History Project Item Box */
+        .history-card-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .history-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
         /* Lang Button Group */
         .lang-group {
             display: flex;
@@ -1060,10 +1076,7 @@
                 <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('settings')">← Back</button>
             </div>
 
-            <div class="card">
-                <div class="card-title" id="historyEmptyTitle">No Project History Yet</div>
-                <div class="card-subtitle" id="historyEmptyDesc">Generated prompt projects will be automatically saved here.</div>
-            </div>
+            <div id="historyListContainer"></div>
         </div>
 
         <!-- ==================== 9. AFFILIATE TEMPLATES SCREEN ==================== -->
@@ -1119,6 +1132,17 @@
         // Result Screen Active Tab
         let activeResultTabIndex = 0;
         let generatedPackageData = null;
+        let savedProjectHistory = [];
+
+        // Load History from localStorage on init
+        try {
+            const stored = localStorage.getItem('ermowo_project_history');
+            if (stored) {
+                savedProjectHistory = JSON.parse(stored);
+            }
+        } catch (e) {
+            console.error('Failed to load history:', e);
+        }
 
         const categories12 = [
             { id: "beauty", nameId: "Kecantikan & Skincare", nameEn: "Beauty & Skincare", tier: 1 },
@@ -1899,10 +1923,16 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
             `.trim();
 
             // Construct Package Data
+            const now = new Date();
+            const timeFormatted = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
             generatedPackageData = {
+                id: Date.now(),
+                createdAt: timeFormatted,
                 productName: productName,
                 projectType: selectedProjectType,
                 shotCount: shotCount,
+                targetPlatformName: targetPlatform.name,
                 creatorPrompt: creatorPromptText,
                 storyboardPrompt: storyboardText,
                 shotList: shotListText,
@@ -1911,6 +1941,14 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
                 audioBlueprint: audioBlueprintText,
                 copywritingAdvice: copywritingText
             };
+
+            // Save to History LocalStorage
+            savedProjectHistory.unshift(generatedPackageData);
+            try {
+                localStorage.setItem('ermowo_project_history', JSON.stringify(savedProjectHistory));
+            } catch (e) {
+                console.error('Failed to save project history:', e);
+            }
 
             // Switch to Result Screen
             activeResultTabIndex = 0;
@@ -1976,6 +2014,60 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
             }, 2000);
         }
 
+        function renderHistoryList() {
+            const container = document.getElementById('historyListContainer');
+            if (!savedProjectHistory || savedProjectHistory.length === 0) {
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-title" id="historyEmptyTitle">${currentLang === 'ID' ? 'Belum Ada Riwayat Project' : 'No Saved Projects Yet'}</div>
+                        <div class="card-subtitle" id="historyEmptyDesc">${currentLang === 'ID' ? 'Project prompt yang kamu buat akan tersimpan di sini secara otomatis.' : 'Generated prompt projects will be automatically saved here.'}</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = savedProjectHistory.map((item, idx) => `
+                <div class="history-card-item">
+                    <div class="history-card-header">
+                        <div style="font-weight: 800; font-size: 15px; color: var(--primary-cyan);">${item.productName}</div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">${item.createdAt}</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                        📌 Type: ${item.projectType} · ${item.shotCount} Shots · ${item.targetPlatformName || 'TikTok (9:16)'}
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button style="flex: 1; background: rgba(0, 245, 212, 0.15); border: 1px solid var(--primary-cyan); color: var(--primary-cyan); border-radius: 8px; padding: 8px; font-size: 12px; font-weight: 700; cursor: pointer;" onclick="reopenHistoryProject(${item.id})">
+                            ${currentLang === 'ID' ? 'Buka Project' : 'Open Project'}
+                        </button>
+                        <button style="background: transparent; border: 1px solid var(--locked-red); color: var(--locked-red); border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer;" onclick="deleteHistoryProject(${item.id})">
+                            ${currentLang === 'ID' ? 'Hapus' : 'Delete'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function reopenHistoryProject(id) {
+            const found = savedProjectHistory.find(p => p.id === id);
+            if (found) {
+                generatedPackageData = found;
+                activeResultTabIndex = 0;
+                renderResultScreen();
+                document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+                document.getElementById('screenResult').classList.add('active');
+            }
+        }
+
+        function deleteHistoryProject(id) {
+            if (confirm(currentLang === 'ID' ? 'Hapus project ini dari riwayat?' : 'Delete this project from history?')) {
+                savedProjectHistory = savedProjectHistory.filter(p => p.id !== id);
+                try {
+                    localStorage.setItem('ermowo_project_history', JSON.stringify(savedProjectHistory));
+                } catch (e) {}
+                renderHistoryList();
+            }
+        }
+
         function renderAffiliateTemplates() {
             const container = document.getElementById('affiliateListContainer');
             container.innerHTML = affiliate20Templates.map((t, idx) => {
@@ -2027,6 +2119,7 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
         }
 
         function openHistory() {
+            renderHistoryList();
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             document.getElementById('screenHistory').classList.add('active');
         }
