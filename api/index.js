@@ -12,22 +12,35 @@ const qrisImagePath = path.join(__dirname, '..', 'qris.png');
 // Private Key RSA-2048 Resmi Proyek ERMOWO
 const RSA_PRIVATE_KEY_BASE64 = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCZ92UaKPvMYuRCYeJ9FqDamI0Q89gnTEeeCxnLJhtc/mljna/6xtLN1uwNYCurvFYU8RbZyXDzPyjUnzgMhT4AC9Ge6qJwki+xv1umPBqOVVLmJK81Qlhfb52Xifv34lTU2sSb0MqK0v+8UKN+eUPWVJY7ah4/MHWfKszr5DoaeE15wrLypui5NqAlvWr1xNvkYeOZ/6pnFVEWOB3MjYHwRWUFZScHKHxisP9hVMBRa+2uf1HmAz/MsugNi8+vvSOzpPKX/tJGDnpjWttXSDEKS/wTDPJC/m5fj3NpTa2tRYSLgqix5nQdTGSmDpX7+KvtCRxk3O9Q/TSrxcHmmnTvAgMBAAECggEACGgaT+KRH+rZh1ITViFJYdYkX2PNoKcbOawcx4AKg3D+JI9/zUPCBiNV0cO3brZwV/OqRPSpI13PsEYL2nlxaGg8y8Ljzq+QIPah5vA4eYygGn2LSF0ZplBZxdHu2LZIAn1DJ6Ovnt63Lc2UgOAgTeKrLiBQQp5IY4sWE7nGoq0h7Sb4gVM3XNBbk6DYNWeIPQwvIYmI+U/GdFm5+0CDPiWTGeSUMO4r6VR0N7yvX7DJ++4lD3t9ZLXRtfpRyIDGW1PA85gUfeLvviF57OsYJ13b/+aIYotfE5J6hPC2p8aMvSQ48NrNkBZi22S/D974N9RnMFU8Nub49FWkGZGKGQKBgQC+9ACJBvD4tA+o1KWVogI2ULuQwh2Ipg+0KvqamQGkvTZQ9Y/SfZrBkjii2q1/VmkOzJCVVVQ1/rt7CFLZ+qGy+osFgyy7aEGs0r0lK4nRGnlbdDEbmN3jgnUxuPfbQU5/t4T8yYsaJVH+ki8QkxUnrEUwWVPxwr6fqy9/OlVwOQKBgQDOafonZ+aOjaRmpraPJI0swiWVKAiLJ8c1wfk+WX6IP4kUS0v3EB39E6RDjf5GmaxAnNMjPkZfRuGpnCGjncvCMOOd2aDWV/9eRxoeJKOjg/ALqIO1wqMfPoMf1c5h6zondfaFj6dinNAOMI8SNGP7oPWKJ5mcNCpyxf40THC+ZwKBgHFB2ftsMYrhiZQypA+vKq66jbVbXRcKn6/V+hOuAsqKK2gzbd2EAEElkBAPse4f+2n6rRrVpH/uGZbspe+B91xnvANF/UcenC18RRGB1FlA4Y/7x5C9x4XEf+xA8EmMX5ni6K7if22/ivV6EQ48nsSMKfF2WhK/1j5v01kb6UcJAoGALbATaKl8xMzhOL9p5SEoBmIqw2sLCRIS6/k1W/GfKjU1+EH6XIM6wAua7kD9qU7Wa67KpSBhnzEnPc2LPJXuxdrgZs4G5aqwoYOHamidt9G6TjpMfOzKAl5p06AVgGL6ikV3/XQgjpk7DAj/gf4Kq2WjM6M0Qvjg9GqSq6zHv70CgYEAqkOoL2Nr4J9BGUH58VcpA9zTG1lxFWqE9VHVzkuyv4hKua21GHl8oOsfbyPs60MDr1oVjKWRWX5crY9ylno9gPs9p/Ygh5BFsDz3jH2v+qujCse13qMBHagLfCGrwwEh61FFZq78EbbTiLQ+URzWtFkwSPEqtqxeCGPJPXk7h8w=";
 
-const paymentMessage = `Selamat datang di Sistem Berlangganan Official UGC Ads Generator!
+// Generator Pesan QRIS Khusus Per Paket
+function getPaymentMessage(planStr) {
+    const p = (planStr || '').toLowerCase();
+    let planName = "Pro Plan";
+    let planPrice = "Rp 50.000,-";
+    
+    if (p.includes("starter") || p.includes("standard")) {
+        planName = "Standard Plan";
+        planPrice = "Rp 25.000,-";
+    } else if (p.includes("ultra")) {
+        planName = "Ultra Plan";
+        planPrice = "Rp 100.000,-";
+    } else {
+        planName = "Pro Plan";
+        planPrice = "Rp 50.000,-";
+    }
 
-Untuk menyelesaikan aktivasi lisensi aplikasi Anda:
+    return `Selamat datang di Sistem Berlangganan Official UGC Ads Generator!\n\n` +
+           `Anda akan berlangganan <b>${planName}</b> sebesar <b>${planPrice}/bulan</b>. Untuk menyelesaikan aktivasi lisensi aplikasi Anda:\n\n` +
+           `1. Silakan lakukan scan & pembayaran <b>${planPrice}</b> via Kode QRIS Resmi UGC Ads generator di atas.\n\n` +
+           `2. Kirimkan BUKTI TRANSFER & DEVICE ID Anda (Device ID dapat dilihat di menu Settings aplikasi) di obrolan chat ini.\n\n` +
+           `Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin dalam 1-5 menit setelah verifikasi!`;
+}
 
-1. Silakan lakukan scan & pembayaran via Kode QRIS Resmi UGC Ads generator di atas.
-
-2. Kirimkan BUKTI TRANSFER & DEVICE ID Anda (Device ID dapat dilihat di menu Settings aplikasi) di obrolan chat ini.
-
-Kunci Lisensi (License Key) Anda akan langsung dikirimkan oleh Admin dalam 1-5 menit setelah verifikasi!`;
-
-// Fungsi Generator RSA-2048 Resmi (Presisi Sesuai APK v1.1 & v1.2)
+// Fungsi Generator RSA-2048 Resmi
 function generateRsaLicense(deviceIdInput, tierInput, durationDays = 30) {
     const cleanId = deviceIdInput.trim().toUpperCase();
     const cleanTier = tierInput.trim().toUpperCase();
 
-    // Hitung tanggal kadaluarsa (YYYYMMDD)
     const now = new Date();
     now.setDate(now.getDate() + parseInt(durationDays));
     const year = now.getFullYear();
@@ -37,7 +50,6 @@ function generateRsaLicense(deviceIdInput, tierInput, durationDays = 30) {
 
     const payload = `${cleanId}|${cleanTier}|${expiryYyyyMmDd}`;
 
-    // Sign SHA256withRSA
     const pemHeader = "-----BEGIN PRIVATE KEY-----\n";
     const pemFooter = "\n-----END PRIVATE KEY-----";
     const pemKey = pemHeader + RSA_PRIVATE_KEY_BASE64.match(/.{1,64}/g).join('\n') + pemFooter;
@@ -52,7 +64,7 @@ function generateRsaLicense(deviceIdInput, tierInput, durationDays = 30) {
     return `${cleanTier}.${payloadBase64}.${sigBase64}`;
 }
 
-// Command Admin /sendkey (Semi-Otomatis: Admin Cek Mutasi -> Tap Command Ini)
+// Command Admin /sendkey
 bot.command('sendkey', async (ctx) => {
     const fromUser = ctx.from;
     if (String(fromUser.id) !== ADMIN_CHAT_ID) {
@@ -72,7 +84,6 @@ bot.command('sendkey', async (ctx) => {
         return ctx.reply(`⚠️ Target User ID harus berupa ANGKA.\nAnda memasukkan: "${targetUserId}"\n\nContoh Benar:\n/sendkey 123456789 UGC-88A1-90F2 PRO`);
     }
     
-    // Generate Kode RSA-2048 Sah
     const rsaKey = generateRsaLicense(deviceId, tier, 30);
     
     const userMsg = `🎉 <b>LISENSI APLIKASI ANDA TELAH AKTIF!</b>\n\n` +
@@ -91,25 +102,30 @@ bot.command('sendkey', async (ctx) => {
     }
 });
 
+// Penanganan /start dengan Deep Link Parameter (?start=starter, ?start=pro, ?start=ultra)
 bot.start((ctx) => {
+    const payload = ctx.message.text.split(' ')[1] || 'pro';
+    const msg = getPaymentMessage(payload);
+
     if (fs.existsSync(qrisImagePath)) {
         return ctx.replyWithPhoto(
             { source: qrisImagePath },
-            { caption: paymentMessage }
+            { caption: msg, parse_mode: 'HTML' }
         );
     } else {
-        return ctx.reply(paymentMessage);
+        return ctx.replyWithHTML(msg);
     }
 });
 
 bot.command('langganan', (ctx) => {
+    const msg = getPaymentMessage('pro');
     if (fs.existsSync(qrisImagePath)) {
         return ctx.replyWithPhoto(
             { source: qrisImagePath },
-            { caption: paymentMessage }
+            { caption: msg, parse_mode: 'HTML' }
         );
     } else {
-        return ctx.reply(paymentMessage);
+        return ctx.replyWithHTML(msg);
     }
 });
 
@@ -119,7 +135,7 @@ bot.on('photo', async (ctx) => {
     const isFromAdmin = String(fromUser.id) === ADMIN_CHAT_ID;
     
     if (!isFromAdmin) {
-        await ctx.reply('Bukti transfer & foto Anda telah diterima!\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci lisensi akan dikirimkan di sini dalam 1-5 menit.');
+        await ctx.reply('✅ Bukti transfer & foto Anda telah diterima!\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci lisensi akan dikirimkan di sini dalam 1-5 menit.');
         
         try {
             const userInfo = `${fromUser.first_name || ''} ${fromUser.last_name || ''}`.trim() + 
@@ -165,7 +181,6 @@ bot.on('text', async (ctx) => {
             const match = text.match(/UGC-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
             const detectedDeviceId = match ? match[0].toUpperCase() : null;
 
-            // Balasan Ramah ke Konsumen (Bukan QRIS Berulang)
             if (detectedDeviceId) {
                 await ctx.reply(`✅ Terima kasih! Device ID Anda (<code>${detectedDeviceId}</code>) telah kami terima.\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci Lisensi resmi akan dikirimkan di sini dalam 1-5 menit.`, { parse_mode: 'HTML' });
             } else {
