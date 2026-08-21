@@ -161,28 +161,24 @@ bot.on('text', async (ctx) => {
         const isFromAdmin = String(fromUser.id) === ADMIN_CHAT_ID;
         
         if (!isFromAdmin) {
-            if (fs.existsSync(qrisImagePath)) {
-                await ctx.replyWithPhoto(
-                    { source: qrisImagePath },
-                    { caption: paymentMessage }
-                );
+            const text = ctx.message.text || '';
+            const match = text.match(/UGC-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
+            const detectedDeviceId = match ? match[0].toUpperCase() : null;
+
+            // Balasan Ramah ke Konsumen (Bukan QRIS Berulang)
+            if (detectedDeviceId) {
+                await ctx.reply(`✅ Terima kasih! Device ID Anda (<code>${detectedDeviceId}</code>) telah kami terima.\n\nAdmin sedang memverifikasi pembayaran Anda. Kunci Lisensi resmi akan dikirimkan di sini dalam 1-5 menit.`, { parse_mode: 'HTML' });
             } else {
-                await ctx.reply(paymentMessage);
+                await ctx.reply(`✅ Pesan Anda telah diterima!\n\nJika Anda sudah melakukan pembayaran, pastikan mencantumkan Device ID (contoh: <code>UGC-88A1-90F2</code>) agar lisensi dapat segera diproses oleh Admin.`, { parse_mode: 'HTML' });
             }
             
             try {
                 const userInfo = `${fromUser.first_name || ''} ${fromUser.last_name || ''}`.trim() + 
                                  (fromUser.username ? ` (@${fromUser.username})` : '') + 
                                  ` [ID: ${fromUser.id}]`;
-                const text = ctx.message.text || '';
                 
-                const match = text.match(/UGC-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
-                const detectedDeviceId = match ? match[0].toUpperCase() : 'DEVICE_ID';
-                
-                let deviceIdDisplay = `Detected: <code>${detectedDeviceId}</code>`;
-                if (detectedDeviceId === 'DEVICE_ID') {
-                    deviceIdDisplay = `<i>(Tidak terdeteksi otomatis, silakan cek manual)</i>`;
-                }
+                let deviceIdDisplay = detectedDeviceId ? `Detected: <code>${detectedDeviceId}</code>` : `<i>(Tidak terdeteksi otomatis, silakan cek manual)</i>`;
+                const finalDevId = detectedDeviceId || 'DEVICE_ID';
 
                 const adminMsg = `💬 <b>PESAN KONSUMEN MASUK!</b>\n\n` +
                                  `Dari: <b>${userInfo}</b>\n` +
@@ -190,7 +186,7 @@ bot.on('text', async (ctx) => {
                                  `Pesan: ${text}\n\n` +
                                  `Device ID: ${deviceIdDisplay}\n\n` +
                                  `Salin & edit perintah di bawah ini untuk kirim lisensi:\n` +
-                                 `<code>/sendkey ${fromUser.id} ${detectedDeviceId} PRO</code>`;
+                                 `<code>/sendkey ${fromUser.id} ${finalDevId} PRO</code>`;
                                  
                 await bot.telegram.sendMessage(ADMIN_CHAT_ID, adminMsg, { parse_mode: 'HTML' });
             } catch (err) {
