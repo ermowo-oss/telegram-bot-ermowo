@@ -513,7 +513,7 @@
             <div class="form-group">
                 <span class="form-label" id="nameLabel">Nama Produk *</span>
                 <div style="display: flex; gap: 8px;">
-                    <input type="text" class="input-text" id="inputProductName" maxlength="50" placeholder="Skintific Barrier Repair" oninput="updateNameCounter(this.value)">
+                    <input type="text" class="input-text" id="inputProductName" maxlength="50" placeholder="" oninput="updateNameCounter(this.value)">
                     <button style="width: 50px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; color: var(--primary-cyan); font-size: 20px; font-weight: 700; cursor: pointer;" onclick="document.getElementById('fileProductPhoto').click()" id="btnUploadPhoto">+</button>
                     <input type="file" id="fileProductPhoto" accept="image/*" style="display: none;" onchange="onPhotoSelected(this)">
                 </div>
