@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -475,46 +475,46 @@
                 <div class="badge-os">AI DIRECTING OS</div>
                 <div class="hero-title">UGC Ads Generator</div>
                 <div class="hero-desc" id="heroDesc">
-                    Generator Prompt UGC No.1 berbasis Directing OS. Hasikan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.
+                    The #1 Directing OS UGC Prompt Generator. Build cinematic, multi-shot structured prompts optimized for Google Veo 3, Kling 3.0, Seedance & FLUX.
                 </div>
                 <button class="btn-primary" id="btnStart" onclick="startWizardOrCheckTrial()">
-                    Mulai Buat Project Prompt Baru
+                    Create New UGC Prompt Project
                 </button>
             </div>
 
             <!-- Affiliate Banner Card -->
             <div class="card card-clickable" onclick="openAffiliateTemplates()">
-                <div class="card-title" id="affiliateTitle">Pustaka Prompt Affiliate</div>
-                <div class="card-subtitle" id="affiliateDesc">Salin cepat 20 blueprint prompt siap pakai untuk iklan AI.</div>
+                <div class="card-title" id="affiliateTitle">Affiliate Prompt Library</div>
+                <div class="card-subtitle" id="affiliateDesc">Quickly copy 20 ready-to-use AI ad prompt blueprints.</div>
             </div>
 
             <!-- Directing OS Features Section -->
-            <div class="section-header" id="featuresHeader">Keunggulan Directing OS</div>
+            <div class="section-header" id="featuresHeader">Directing OS Features</div>
 
             <div class="card">
-                <div class="card-title" id="f1Title">Sinematografi & Multi-Shot Engine</div>
-                <div class="card-subtitle" id="f1Desc">Struktur 3-4 Shot sinematik presisi (Hook, Focus, Action & CTA) dengan durasi per shot 4s/6s/8s/10s.</div>
+                <div class="card-title" id="f1Title">Cinematography & Multi-Shot Engine</div>
+                <div class="card-subtitle" id="f1Desc">Precision 3-4 cinematic shot structure (Hook, Focus, Action & CTA) with customizable shot duration.</div>
             </div>
 
             <div class="card">
-                <div class="card-title" id="f2Title">Psikologi Hook & Storytelling</div>
-                <div class="card-subtitle" id="f2Desc">4 Angle Iklan Teruji (Problem Solver, Honest Review, Storytelling, & Lifestyle Unboxing) dengan retensi tinggi.</div>
+                <div class="card-title" id="f2Title">Hook Psychology & Storytelling</div>
+                <div class="card-subtitle" id="f2Desc">4 Proven Ad Angles (Problem Solver, Honest Review, Storytelling, & Lifestyle Unboxing) built for high retention.</div>
             </div>
 
             <div class="card">
-                <div class="card-title" id="f3Title">Dukungan Dual Project (Video & Foto)</div>
-                <div class="card-subtitle" id="f3Desc">Hasilkan prompt video gerak sinematik atau prompt photoshoot gambar 4K untuk katalog & paid social.</div>
+                <div class="card-title" id="f3Title">Dual Project Support (Video & Photo)</div>
+                <div class="card-subtitle" id="f3Desc">Generate cinematic motion video prompts or studio 4K photoshoot image prompts for catalog & paid social.</div>
             </div>
 
             <div class="card">
-                <div class="card-title" id="f4Title">Optimasi Lintas AI Platform</div>
-                <div class="card-subtitle" id="f4Desc">Sintaks khusus yang disesuaikan dengan Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, dan GPT Image.</div>
+                <div class="card-title" id="f4Title">Cross-Platform AI Optimization</div>
+                <div class="card-subtitle" id="f4Desc">Engine-tailored syntax for Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, and GPT Image 2.</div>
             </div>
         </div>
 
-        <!-- ==================== 2. WIZARD SCREEN (STEP 1 FORM LENGKAP) ==================== -->
+        <!-- ==================== 2. WIZARD STEP 1 SCREEN ==================== -->
         <div id="screenWizard" class="screen">
-            <div class="section-header" style="margin-top: 0;" id="wizardStepTitle">Langkah 1: Spesifikasi Project</div>
+            <div class="section-header" style="margin-top: 0;" id="wizardStepTitle">Step 1: Project Specs</div>
             
             <!-- Step Progress Indicator Bar -->
             <div style="display: flex; gap: 8px; margin-bottom: 16px;">
@@ -525,20 +525,20 @@
 
             <!-- Form 1: Tipe Project -->
             <div class="form-group">
-                <span class="form-label" id="typeLabel">Tipe Project *</span>
+                <span class="form-label" id="typeLabel">Project Type *</span>
                 <div class="project-type-group">
                     <div class="project-type-card active" id="typeVideo" onclick="setProjectType('VIDEO')">
-                        Video UGC Motion
+                        UGC Video Ads Project
                     </div>
                     <div class="project-type-card" id="typePhoto" onclick="setProjectType('PHOTO')">
-                        Photoshoot Studio 4K
+                        UGC Photo & Photoshoot Project
                     </div>
                 </div>
             </div>
 
             <!-- Form 2: Nama Produk + Upload Photo -->
             <div class="form-group">
-                <span class="form-label" id="nameLabel">Nama Produk *</span>
+                <span class="form-label" id="nameLabel">Product Name *</span>
                 <div style="display: flex; gap: 8px;">
                     <input type="text" class="input-text" id="inputProductName" maxlength="50" placeholder="" oninput="updateNameCounter(this.value)">
                     <button style="width: 50px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; color: var(--primary-cyan); font-size: 20px; font-weight: 700; cursor: pointer;" onclick="document.getElementById('fileProductPhoto').click()" id="btnUploadPhoto">+</button>
@@ -547,9 +547,9 @@
                 <div class="counter-text" id="nameCounter">0/50</div>
             </div>
 
-            <!-- Form 3: Kategori Produk (Modal Dropdown Selector) -->
+            <!-- Form 3: Kategori Produk -->
             <div class="form-group">
-                <span class="form-label" id="categoryLabel">Kategori Produk *</span>
+                <span class="form-label" id="categoryLabel">Product Category *</span>
                 <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openCategoryModal()">
                     <span id="selectedCategoryText" style="font-weight: 700; color: var(--primary-cyan);">Beauty & Skincare</span>
                     <span style="color: var(--primary-cyan); font-size: 12px;">▼</span>
@@ -558,18 +558,18 @@
 
             <!-- Form 4: Deskripsi Produk -->
             <div class="form-group">
-                <span class="form-label" id="descLabel">Deskripsi Produk *</span>
-                <textarea class="input-text" id="inputProductDesc" rows="3" maxlength="200" style="resize: none;" placeholder="Tuliskan kegunaan & keunggulan utama produk agar AI tidak halusinasi" oninput="updateDescCounter(this.value)"></textarea>
+                <span class="form-label" id="descLabel">Product Description *</span>
+                <textarea class="input-text" id="inputProductDesc" rows="3" maxlength="200" style="resize: none;" placeholder="Write key benefits & usage so AI doesn't hallucinate" oninput="updateDescCounter(this.value)"></textarea>
                 <div class="counter-text" id="descCounter">0/200</div>
             </div>
 
             <!-- Bottom Next Button -->
-            <button class="btn-primary" style="margin-top: 10px;" onclick="goToStep2()" id="btnNextStep">Lanjut →</button>
+            <button class="btn-primary" style="margin-top: 10px;" onclick="goToStep2()" id="btnNextStep">Next →</button>
         </div>
 
-        <!-- ==================== 3. WIZARD STEP 2 SCREEN (CONCEPT & ANGLE) ==================== -->
+        <!-- ==================== 3. WIZARD STEP 2 SCREEN ==================== -->
         <div id="screenWizardStep2" class="screen">
-            <div class="section-header" style="margin-top: 0;" id="wizardStep2Title">Langkah 2: Konsep & Angle</div>
+            <div class="section-header" style="margin-top: 0;" id="wizardStep2Title">Step 2: Concept & Angle</div>
             
             <!-- Step Progress Indicator Bar (Step 2 Aktif) -->
             <div style="display: flex; gap: 8px; margin-bottom: 16px;">
@@ -590,7 +590,7 @@
                 </div>
             </div>
 
-            <!-- Form 2: Persuasion Angle (5 Angle Asli) -->
+            <!-- Form 2: Persuasion Angle -->
             <div class="form-group">
                 <span class="form-label" id="angleLabel">2. Select Persuasion Angle</span>
                 <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openAngleModal()">
@@ -602,7 +602,19 @@
                 </div>
             </div>
 
-            <!-- Form 3: Shot Count / Photo Frame Count (dengan Kunci Tier) -->
+            <!-- Form 2B: Storytelling Framework (5 Framework Asli v1.1.1) -->
+            <div class="form-group">
+                <span class="form-label" id="frameworkLabel">2B. Storytelling Framework</span>
+                <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openFrameworkModal()">
+                    <div>
+                        <div id="selectedFrameworkTitle" style="font-weight: 700; color: var(--primary-cyan);">Before & After Transformation</div>
+                        <div id="selectedFrameworkDesc" style="font-size: 11px; color: var(--text-secondary);">Showcases sharp contrast between problem before and solution after using product</div>
+                    </div>
+                    <span style="color: var(--primary-cyan); font-size: 12px; margin-left: 8px;">▼</span>
+                </div>
+            </div>
+
+            <!-- Form 3: Shot Count / Photo Frame Count -->
             <div class="form-group">
                 <span class="form-label" id="shotCountLabel">3. Shot Count / Photo Frame Count</span>
                 <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openShotModal()">
@@ -626,7 +638,7 @@
                 </div>
             </div>
 
-            <!-- Form 5: Target Platform & Aspect Ratio (12 Item Asli Models.kt) -->
+            <!-- Form 5: Target Platform & Aspect Ratio -->
             <div class="form-group">
                 <span class="form-label" id="platformLabel">4. Target Platform & Aspect Ratio</span>
                 <div class="input-text card-clickable" style="display: flex; justify-content: space-between; align-items: center;" onclick="openPlatformModal()">
@@ -638,50 +650,50 @@
             <!-- Buttons Step 2 -->
             <div style="display: flex; gap: 10px; margin-top: 10px;">
                 <button class="btn-primary" style="flex: 1; background: transparent; border: 1px solid var(--card-border); color: var(--text-primary);" onclick="switchNav('wizard')">← Back</button>
-                <button class="btn-primary" style="flex: 2;" onclick="goToStep3()" id="btnNextStep2">Lanjut ke Step 3 →</button>
+                <button class="btn-primary" style="flex: 2;" onclick="goToStep3()" id="btnNextStep2">Move to Step 3 →</button>
             </div>
         </div>
 
         <!-- ==================== 4. SETTINGS SCREEN ==================== -->
         <div id="screenSettings" class="screen">
-            <div class="section-header" style="margin-top: 0;" id="settingsHeader">Pengaturan & Status Lisensi</div>
+            <div class="section-header" style="margin-top: 0;" id="settingsHeader">Settings & License Status</div>
 
             <!-- Pricing Card Link -->
             <div class="card card-clickable" onclick="openPricing()">
-                <div class="card-title" id="pricingTitle">Paket & Harga Berlangganan</div>
+                <div class="card-title" id="pricingTitle">Subscription Plans & Pricing</div>
                 <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;">Starter · Pro · Ultra VIP</div>
             </div>
 
             <!-- License & Account Card -->
             <div class="card">
-                <div class="card-title" id="accountTitle">Akun & Status Lisensi</div>
+                <div class="card-title" id="accountTitle">Account & License Status</div>
                 <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;" id="licenseStatus">
-                    Status: Versi Trial 7 Hari (Sisa 7 Hari)
+                    Status: 7-Day Free Trial (7 Days Left)
                 </div>
 
                 <div class="device-box" onclick="copyDeviceId()">
                     <div>
-                        <div style="font-size: 11px; color: var(--text-secondary);" id="deviceLabel">Device ID Anda (Ketuk untuk menyalin):</div>
+                        <div style="font-size: 11px; color: var(--text-secondary);" id="deviceLabel">Your Device ID (Tap to copy):</div>
                         <div class="device-id-text" id="deviceIdVal">WEB-88A1-90F2</div>
                     </div>
-                    <div style="color: var(--primary-cyan); font-size: 12px; font-weight: 700;">SALIN</div>
+                    <div style="color: var(--primary-cyan); font-size: 12px; font-weight: 700;">COPY</div>
                 </div>
 
                 <div class="form-group" style="margin-top: 10px;">
-                    <span class="form-label" id="keyLabel">Masukkan Kode Lisensi dari Telegram Bot Admin:</span>
+                    <span class="form-label" id="keyLabel">Enter License Key from Telegram Support Bot:</span>
                     <input type="text" class="input-text" id="keyInput" placeholder="PRO-XXXX-XXXX">
                 </div>
                 <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="activateLicense()" id="btnActivate">
-                    Aktifkan Lisensi Sekarang
+                    Activate License Now
                 </button>
             </div>
 
-            <!-- Project History Card (Riwayat Project) -->
+            <!-- Project History Card -->
             <div class="card card-clickable" onclick="openHistory()">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <div class="card-title" id="historyTitle">Riwayat Project</div>
-                        <div class="card-subtitle" id="historyDesc">Buka kembali & kelola project lama yang telah disimpan.</div>
+                        <div class="card-title" id="historyTitle">Project History</div>
+                        <div class="card-subtitle" id="historyDesc">Reopen & manage saved projects</div>
                     </div>
                     <div style="color: var(--primary-cyan); font-weight: 700;">→</div>
                 </div>
@@ -689,114 +701,114 @@
 
             <!-- Language Selector Card -->
             <div class="card">
-                <div class="card-title" id="langTitle">Bahasa / Language</div>
+                <div class="card-title" id="langTitle">Language / Bahasa</div>
                 <div class="lang-group">
-                    <button class="btn-lang active" id="btnLangId" onclick="setLang('ID')">Bahasa Indonesia</button>
-                    <button class="btn-lang" id="btnLangEn" onclick="setLang('EN')">English</button>
+                    <button class="btn-lang" id="btnLangId" onclick="setLang('ID')">Bahasa Indonesia</button>
+                    <button class="btn-lang active" id="btnLangEn" onclick="setLang('EN')">English (US)</button>
                 </div>
             </div>
 
             <!-- Privacy & Support Cards -->
-            <div class="card card-clickable" onclick="alert('Aplikasi ini 100% Offline & Lokal. Tidak ada data bisnis yang dikirim ke internet.')">
-                <div class="card-title" id="privacyTitle">Syarat & Keamanan Privasi</div>
-                <div class="card-subtitle" id="privacyDesc">Aplikasi ini 100% Offline. Semua ide produk, skrip, dan lisensi tersimpan lokal di perangkat kamu.</div>
+            <div class="card card-clickable" onclick="alert('This app is 100% Offline. All product ideas, prompts, and licenses are stored locally on your device.')">
+                <div class="card-title" id="privacyTitle">Terms & Privacy Policy</div>
+                <div class="card-subtitle" id="privacyDesc">This app is 100% Offline. All product ideas, prompts, and licenses are stored locally on your device.</div>
             </div>
 
             <div class="card card-clickable" onclick="window.open('https://t.me/erm_ugc_bot', '_blank')">
-                <div class="card-title" id="supportTitle">Lapor Kendala / Support</div>
-                <div class="card-subtitle" id="supportDesc">Butuh bantuan aktivasi atau kendala teknis? Hubungi Tim Pemilik ERMOWO (@erm_ugc_bot).</div>
+                <div class="card-title" id="supportTitle">Report Problem / Support</div>
+                <div class="card-subtitle" id="supportDesc">Need activation help or technical support? Contact ERMOWO Support Team (@erm_ugc_bot).</div>
             </div>
 
             <!-- About App Card -->
             <div class="card">
-                <div class="card-title" id="aboutTitle">Tentang Aplikasi</div>
+                <div class="card-title" id="aboutTitle">About App</div>
                 <div class="card-subtitle" style="line-height: 1.8; margin-top: 6px;">
-                    <b>Versi:</b> v1.1.1 (Protected Web Edition)<br>
-                    <b>Sistem Keamanan:</b> Hardware Locking + RSA Signed
+                    <b>Version:</b> v1.1.1 (Protected Web Edition)<br>
+                    <b>Security System:</b> Hardware Locking + RSA Signed
                 </div>
             </div>
         </div>
 
-        <!-- ==================== 5. PRICING / SUBSCRIPTION PLAN SCREEN ==================== -->
+        <!-- ==================== 5. PRICING SCREEN ==================== -->
         <div id="screenPricing" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <div class="section-header" style="margin: 0;" id="pricingHeaderTitle">Paket & Harga Berlangganan</div>
-                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('settings')">← Kembali</button>
+                <div class="section-header" style="margin: 0;" id="pricingHeaderTitle">Subscription Plans & Pricing</div>
+                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('settings')">← Back</button>
             </div>
 
             <!-- Starter Plan Card -->
             <div class="pricing-card">
                 <div class="card-title" style="font-size: 18px;">Standard Plan</div>
-                <div class="pricing-price">Rp 25.000,- / bulan</div>
+                <div class="pricing-price">Rp 25.000,- / month</div>
                 <ul class="pricing-features">
-                    <li>Kuota 30 Generation Prompt / Bulan</li>
-                    <li>Pustaka Prompt Affiliate Starter (5 Prompt)</li>
-                    <li>3 Shot Video / 3 Frame Foto per Project</li>
-                    <li>3 Kategori (Fashion, Skincare, Food)</li>
-                    <li>Platform TikTok 9:16 saja</li>
-                    <li>Watermark Icon Logo App (Kecil)</li>
+                    <li>30 Prompt Generations / Month</li>
+                    <li>Starter Affiliate Prompt Library (5 Prompts)</li>
+                    <li>3 Video Shots / 3 Photo Frames per Project</li>
+                    <li>3 Categories (Fashion, Skincare, Food)</li>
+                    <li>TikTok 9:16 Platform Only</li>
+                    <li>Small App Logo Watermark</li>
                 </ul>
                 <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="window.open('https://t.me/erm_ugc_bot?start=starter', '_blank')">
-                    Langganan Sekarang
+                    Subscribe Now
                 </button>
             </div>
 
             <!-- Pro Plan Card -->
             <div class="pricing-card popular">
-                <div class="pricing-badge">PALING LARIS</div>
+                <div class="pricing-badge">MOST POPULAR</div>
                 <div class="card-title" style="font-size: 18px;">Pro Plan</div>
-                <div class="pricing-price" style="color: var(--electric-blue);">Rp 50.000,- / bulan</div>
+                <div class="pricing-price" style="color: var(--electric-blue);">Rp 50.000,- / month</div>
                 <ul class="pricing-features">
-                    <li>Kuota 100 Generation Prompt / Bulan</li>
-                    <li>Pustaka Prompt Affiliate Pro (15 Prompt)</li>
-                    <li>5 Shot Video / 5 Frame Foto per Project</li>
-                    <li>6 Kategori (+ Tech, Home Decor, Kids)</li>
-                    <li>3 Platform (TikTok, Reels, Shorts)</li>
-                    <li>Tanpa Watermark</li>
-                    <li>Ekspor Prompt ke TXT & JSON</li>
+                    <li>100 Prompt Generations / Month</li>
+                    <li>Pro Affiliate Prompt Library (15 Prompts)</li>
+                    <li>5 Video Shots / 5 Photo Frames per Project</li>
+                    <li>6 Categories (+ Tech, Home, Kids)</li>
+                    <li>3 Platforms (TikTok, Reels, Shorts)</li>
+                    <li>No Watermark</li>
+                    <li>Export Prompts to TXT & JSON</li>
                 </ul>
                 <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--electric-blue);" onclick="window.open('https://t.me/erm_ugc_bot?start=pro', '_blank')">
-                    Langganan Sekarang
+                    Subscribe Now
                 </button>
             </div>
 
             <!-- Ultra Plan Card -->
             <div class="pricing-card">
                 <div class="card-title" style="font-size: 18px;">Ultra Plan</div>
-                <div class="pricing-price" style="color: var(--gold);">Rp 100.000,- / bulan</div>
+                <div class="pricing-price" style="color: var(--gold);">Rp 100.000,- / month</div>
                 <ul class="pricing-features">
-                    <li>Kuota 500 Generation Prompt / Bulan</li>
-                    <li>FULL Pustaka Prompt Affiliate Ultra (Bebas Akses)</li>
-                    <li>7 Shot Video / 7 Frame Foto per Project</li>
-                    <li>SEMUA Kategori Produk (Unlimited)</li>
-                    <li>SEMUA Platform Video & Foto</li>
-                    <li>Tanpa Watermark</li>
-                    <li>Ekspor PDF Pitch Deck Lengkap</li>
+                    <li>500 Prompt Generations / Month</li>
+                    <li>FULL Ultra Affiliate Prompt Library (Full Access)</li>
+                    <li>7 Video Shots / 7 Photo Frames per Project</li>
+                    <li>ALL Product Categories (Unlimited)</li>
+                    <li>ALL Video & Photo Platforms</li>
+                    <li>No Watermark</li>
+                    <li>Full PDF Pitch Deck Export</li>
                 </ul>
                 <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--gold); color: #000;" onclick="window.open('https://t.me/erm_ugc_bot?start=ultra', '_blank')">
-                    Langganan Sekarang
+                    Subscribe Now
                 </button>
             </div>
         </div>
 
-        <!-- ==================== 6. HISTORY SCREEN (RIWAYAT PROJECT) ==================== -->
+        <!-- ==================== 6. HISTORY SCREEN ==================== -->
         <div id="screenHistory" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <div class="section-header" style="margin: 0;" id="historyHeaderTitle">Riwayat Project</div>
-                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('settings')">← Kembali</button>
+                <div class="section-header" style="margin: 0;" id="historyHeaderTitle">Project History</div>
+                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('settings')">← Back</button>
             </div>
 
             <div class="card">
-                <div class="card-title" id="historyEmptyTitle">Belum Ada Riwayat Project</div>
-                <div class="card-subtitle" id="historyEmptyDesc">Project prompt yang kamu buat akan tersimpan di sini secara otomatis.</div>
+                <div class="card-title" id="historyEmptyTitle">No Project History Yet</div>
+                <div class="card-subtitle" id="historyEmptyDesc">Generated prompt projects will be automatically saved here.</div>
             </div>
         </div>
 
         <!-- ==================== 7. AFFILIATE TEMPLATES SCREEN ==================== -->
         <div id="screenAffiliate" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <div class="section-header" style="margin: 0;" id="affiliateHeaderTitle">Pustaka Prompt Affiliate (20 Blueprint)</div>
-                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('home')">← Kembali</button>
+                <div class="section-header" style="margin: 0;" id="affiliateHeaderTitle">Affiliate Prompt Library (20 Blueprints)</div>
+                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('home')">← Back</button>
             </div>
 
             <div id="affiliateListContainer"></div>
@@ -808,14 +820,14 @@
     <div id="modalGeneral" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="card-title" style="margin: 0;" id="modalGeneralHeader">Pilihan Options</div>
+                <div class="card-title" style="margin: 0;" id="modalGeneralHeader">Select Options</div>
                 <button style="background: transparent; border: none; color: var(--text-secondary); font-size: 18px; cursor: pointer;" onclick="closeGeneralModal()">✕</button>
             </div>
             <div id="modalGeneralList"></div>
         </div>
     </div>
 
-    <!-- Bottom Navigation Bar (3 Clean Menus) -->
+    <!-- Bottom Navigation Bar -->
     <div class="bottom-nav">
         <div class="nav-item active" id="navItemHome" onclick="switchNav('home')">Home</div>
         <div class="nav-item" id="navItemWizard" onclick="switchNav('wizard')">Wizard</div>
@@ -823,71 +835,76 @@
     </div>
 
     <script>
-        let currentLang = 'ID';
+        let currentLang = 'EN'; // DEFAULT ENGLISH BAKU UNIFORM
         let isTrialExpired = false;
         let selectedProjectType = 'VIDEO';
         let selectedCategoryIndex = 0;
         let selectedConceptIndex = 0;
         let selectedAngleIndex = 0;
-        let selectedShotIndex = 1; // 3 Shot default
+        let selectedFrameworkIndex = 0;
+        let selectedShotIndex = 1;
         let selectedDurationSec = 8;
         let selectedPlatformIndex = 0;
 
-        // 12 Kategori Produk Asli Models.kt
         const categories12 = [
-            { id: "beauty", nameId: "Beauty & Skincare", nameEn: "Beauty & Skincare", tier: 1 },
-            { id: "fashion", nameId: "Fashion & Apparel", nameEn: "Fashion & Apparel", tier: 1 },
-            { id: "food_beverage", nameId: "Food, Beverage & Supplements", nameEn: "Food, Beverage & Supplements", tier: 1 },
-            { id: "tech", nameId: "Tech & Electronics", nameEn: "Tech & Electronics", tier: 2 },
-            { id: "home_living", nameId: "Home & Decor", nameEn: "Home & Decor", tier: 2 },
-            { id: "baby_kids", nameId: "Baby, Kids & Parenting", nameEn: "Baby, Kids & Parenting", tier: 2 },
-            { id: "automotive", nameId: "Automotive & Vehicles", nameEn: "Automotive & Vehicles", tier: 3 },
-            { id: "sports", nameId: "Sports & Fitness", nameEn: "Sports & Fitness", tier: 3 },
-            { id: "toys_hobbies", nameId: "Toys, Hobbies & Collectibles", nameEn: "Toys, Hobbies & Collectibles", tier: 3 },
-            { id: "stationery", nameId: "Stationery, Books & Office", nameEn: "Stationery, Books & Office", tier: 3 },
-            { id: "gifts_crafts", nameId: "Gifts, Souvenirs & Crafts", nameEn: "Gifts, Souvenirs & Crafts", tier: 3 },
-            { id: "cleaning", nameId: "Home Cleaning & Hygiene", nameEn: "Home Cleaning & Hygiene", tier: 3 }
+            { id: "beauty", nameId: "Kecantikan & Skincare", nameEn: "Beauty & Skincare", tier: 1 },
+            { id: "fashion", nameId: "Fashion & Aksesoris", nameEn: "Fashion & Apparel", tier: 1 },
+            { id: "food_beverage", nameId: "Makanan & Suplemen", nameEn: "Food, Beverage & Supplements", tier: 1 },
+            { id: "tech", nameId: "Gadget & Elektronik", nameEn: "Tech & Electronics", tier: 2 },
+            { id: "home_living", nameId: "Rumah & Dekorasi", nameEn: "Home & Decor", tier: 2 },
+            { id: "baby_kids", nameId: "Bayi & Anak-Anak", nameEn: "Baby, Kids & Parenting", tier: 2 },
+            { id: "automotive", nameId: "Otomotif & Kendaraan", nameEn: "Automotive & Vehicles", tier: 3 },
+            { id: "sports", nameId: "Olahraga & Kebugaran", nameEn: "Sports & Fitness", tier: 3 },
+            { id: "toys_hobbies", nameId: "Mainan, Hobi & Koleksi", nameEn: "Toys, Hobbies & Collectibles", tier: 3 },
+            { id: "stationery", nameId: "Buku & Alat Tulis", nameEn: "Stationery, Books & Office", tier: 3 },
+            { id: "gifts_crafts", nameId: "Souvenir & Hadiah", nameEn: "Gifts, Souvenirs & Crafts", tier: 3 },
+            { id: "cleaning", nameId: "Kebersihan Rumah", nameEn: "Home Cleaning & Hygiene", tier: 3 }
         ];
 
-        // 6 Visual Concepts Asli Models.kt
         const concepts6 = [
-            { title: "Talking Head / Testimonial", desc: "Creator speaks directly to camera sharing personal experience" },
-            { title: "Unboxing & First Impression", desc: "Unboxing packaging, first impression, and physical detail inspection" },
-            { title: "Vlog & On-The-Go", desc: "Casual in-car vlog, outdoor trip, or mobile active lifestyle" },
-            { title: "Lifestyle & Daily Demo", desc: "Real-life product usage demonstration in daily routine" },
-            { title: "ASMR & Aesthetic Focus", desc: "Focus on texture beauty, cinematic detail, and product sound FX" },
-            { title: "Before vs After Transformation", desc: "Instant comparison of before vs after product transformation" }
+            { title: "Talking Head / Testimonial", descId: "Kreator berbicara langsung ke depan kamera menceritakan pengalaman", descEn: "Creator speaks directly to camera sharing personal experience" },
+            { title: "Unboxing & First Impression", descId: "Membuka kemasan produk, impresi pertama, dan inspeksi detail fisik", descEn: "Unboxing packaging, first impression, and physical detail inspection" },
+            { title: "Vlog & On-The-Go", descId: "Aktivitas kasual di mobil, perjalanan outdoor, atau suasana mobile", descEn: "Casual in-car vlog, outdoor trip, or mobile active lifestyle" },
+            { title: "Lifestyle & Daily Demo", descId: "Demonstrasi penggunaan produk secara nyata dalam rutinitas sehari-hari", descEn: "Real-life product usage demonstration in daily routine" },
+            { title: "ASMR & Aesthetic Focus", descId: "Fokus pada keindahan tekstur, detail sinematik, dan efek suara produk", descEn: "Focus on texture beauty, cinematic detail, and product sound FX" },
+            { title: "Before vs After Transformation", descId: "Perbandingan instan sebelum vs sesudah transformasi produk", descEn: "Instant comparison of before vs after product transformation" }
         ];
 
-        // 5 Angle Persuasi Asli Screenshots
         const angles5 = [
-            { title: "Testimonial", desc: "Creator speaks directly to camera about experience and real results" },
-            { title: "Car / On-the-Go", desc: "Creator in car, highlighting product practicality on the go" },
-            { title: "Unboxing", desc: "Creator opens package and reacts to product naturally" },
-            { title: "Lifestyle Demo", desc: "Product naturally integrated into creator's daily routine" },
-            { title: "Problem-Solution", desc: "Before-after: from problem condition to real solution with product" }
+            { title: "Testimonial", descId: "Kreator berbicara langsung ke kamera tentang pengalaman & hasil nyata", descEn: "Creator speaks directly to camera about experience and real results" },
+            { title: "Car / On-the-Go", descId: "Kreator di dalam mobil, menonjolkan kepraktisan produk saat bepergian", descEn: "Creator in car, highlighting product practicality on the go" },
+            { title: "Unboxing", descId: "Kreator membuka paket dan bereaksi terhadap produk secara alami", descEn: "Creator opens package and reacts to product naturally" },
+            { title: "Lifestyle Demo", descId: "Produk terintegrasi secara alami dalam rutinitas harian kreator", descEn: "Product naturally integrated into creator's daily routine" },
+            { title: "Problem-Solution", descId: "Before-after: dari kondisi masalah ke solusi nyata dengan produk", descEn: "Before-after: from problem condition to real solution with product" }
         ];
 
-        // Shot Counts & Tier Locks
+        // 5 Framework Asli v1.1 Dari StorytellingFrameworks.kt
+        const frameworks5 = [
+            { title: "Before & After Transformation", descId: "Menampilkan kontras tajam masalah sebelum dan solusi setelah pakai produk.", descEn: "Showcases sharp contrast between problem before and solution after using product." },
+            { title: "Mistake & Lesson Learned", descId: "Pendekatan edukatif membagikan kesalahan umum pembeli dan cara menghindarinya.", descEn: "Educational approach sharing common buyer mistakes and how to avoid them." },
+            { title: "Behind The Scenes (BTS) Authentic", descId: "Gaya mentah dan jujur di balik layar produksi / penggunaan sehari-hari.", descEn: "Raw, honest behind-the-scenes look at production or daily routine use." },
+            { title: "Client / Customer Real Experience", descId: "Cerita testimoni emosional pengalaman nyata pengguna produk.", descEn: "Emotional story testimonial of a real user experiencing the product." },
+            { title: "Unpopular Truth / Counter-Intuitive", descId: "Membuka opini mengejutkan yang bertentangan dengan anggapan umum.", descEn: "Opens with a surprising opinion counter to common belief." }
+        ];
+
         const shotCounts4 = [
-            { count: 1, label: "1 Shot (Single Hero / Spotlight)", reqTier: "TRIAL" },
-            { count: 3, label: "3 Shot (Quick Ad)", reqTier: "TRIAL" },
-            { count: 5, label: "5 Shot (Standard UGC Ad)", reqTier: "PRO" },
-            { count: 7, label: "7 Shot (Extended Storytelling)", reqTier: "ULTRA" }
+            { count: 1, labelEn: "1 Shot (Single Hero / Spotlight)", labelId: "1 Shot (Single Hero / Spotlight)", reqTier: "TRIAL" },
+            { count: 3, labelEn: "3 Shot (Quick Ad)", labelId: "3 Shot (Ringkas / Quick Ad)", reqTier: "TRIAL" },
+            { count: 5, labelEn: "5 Shot (Standard UGC Ad)", labelId: "5 Shot (Standar UGC Ad)", reqTier: "PRO" },
+            { count: 7, labelEn: "7 Shot (Extended Storytelling)", labelId: "7 Shot (Extended Storytelling)", reqTier: "ULTRA" }
         ];
 
-        // 12 Target Platforms Asli Models.kt
         const platforms12 = [
             { name: "TikTok (9:16)", ratio: "9:16" },
             { name: "Instagram Reels (9:16)", ratio: "9:16" },
             { name: "Facebook Reels (9:16)", ratio: "9:16" },
             { name: "YouTube Shorts (9:16)", ratio: "9:16" },
-            { name: "Meta Ads - IG & FB (9:16)", ratio: "9:16" },
-            { name: "Threads Media (9:16)", ratio: "9:16" },
+            { name: "Meta Ads (IG & FB)", ratio: "9:16" },
+            { name: "Threads Media", ratio: "9:16" },
             { name: "Instagram Feed (1:1)", ratio: "1:1" },
             { name: "Facebook Feed (1:1)", ratio: "1:1" },
-            { name: "YouTube Landscape (16:9)", ratio: "16:9" },
-            { name: "Marketplace Listing / A+ (1:1)", ratio: "1:1" },
+            { name: "YouTube (Landscape)", ratio: "16:9" },
+            { name: "Marketplace Listing / A+", ratio: "1:1" },
             { name: "Portrait (3:4)", ratio: "3:4" },
             { name: "Standard (4:3)", ratio: "4:3" }
         ];
@@ -938,6 +955,7 @@
                 descLabel: "Product Description *",
                 visualConceptLabel: "1. Select Visual Concept (Format)",
                 angleLabel: "2. Select Persuasion Angle",
+                frameworkLabel: "2B. Storytelling Framework",
                 shotCountLabel: "3. Shot Count / Photo Frame Count",
                 durationLabel: "Duration per Shot",
                 platformLabel: "4. Target Platform & Aspect Ratio",
@@ -968,7 +986,7 @@
                 navItemSettings: "Settings"
             },
             ID: {
-                heroDesc: "Generator Prompt UGC No.1 berbasis Directing OS. Hasikan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.",
+                heroDesc: "Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.",
                 btnStart: "Mulai Buat Project Prompt Baru",
                 affiliateTitle: "Pustaka Prompt Affiliate",
                 affiliateDesc: "Salin cepat 20 blueprint prompt siap pakai untuk iklan AI.",
@@ -989,6 +1007,7 @@
                 descLabel: "Deskripsi Produk *",
                 visualConceptLabel: "1. Pilih Konsep Visual (Format)",
                 angleLabel: "2. Pilih Angle Persuasi Iklan",
+                frameworkLabel: "2B. Framework Storytelling",
                 shotCountLabel: "3. Jumlah Shot Video / Frame Foto",
                 durationLabel: "Durasi per Shot",
                 platformLabel: "4. Target Platform & Rasio Layar",
@@ -1067,7 +1086,7 @@
                 <div class="modal-item ${idx === selectedConceptIndex ? 'active' : ''}" onclick="selectConcept(${idx})">
                     <div>
                         <div style="font-weight:700;">${c.title}</div>
-                        <div style="font-size:11px; color:var(--text-secondary);">${c.desc}</div>
+                        <div style="font-size:11px; color:var(--text-secondary);">${currentLang === 'ID' ? c.descId : c.descEn}</div>
                     </div>
                     ${idx === selectedConceptIndex ? '<span>✓</span>' : ''}
                 </div>
@@ -1082,9 +1101,24 @@
                 <div class="modal-item ${idx === selectedAngleIndex ? 'active' : ''}" onclick="selectAngle(${idx})">
                     <div>
                         <div style="font-weight:700;">${a.title}</div>
-                        <div style="font-size:11px; color:var(--text-secondary);">${a.desc}</div>
+                        <div style="font-size:11px; color:var(--text-secondary);">${currentLang === 'ID' ? a.descId : a.descEn}</div>
                     </div>
                     ${idx === selectedAngleIndex ? '<span>✓</span>' : ''}
+                </div>
+            `).join('');
+            document.getElementById('modalGeneral').classList.add('active');
+        }
+
+        function openFrameworkModal() {
+            document.getElementById('modalGeneralHeader').innerText = '2B. Storytelling Framework';
+            const list = document.getElementById('modalGeneralList');
+            list.innerHTML = frameworks5.map((f, idx) => `
+                <div class="modal-item ${idx === selectedFrameworkIndex ? 'active' : ''}" onclick="selectFramework(${idx})">
+                    <div>
+                        <div style="font-weight:700;">${f.title}</div>
+                        <div style="font-size:11px; color:var(--text-secondary);">${currentLang === 'ID' ? f.descId : f.descEn}</div>
+                    </div>
+                    ${idx === selectedFrameworkIndex ? '<span>✓</span>' : ''}
                 </div>
             `).join('');
             document.getElementById('modalGeneral').classList.add('active');
@@ -1095,9 +1129,10 @@
             const list = document.getElementById('modalGeneralList');
             list.innerHTML = shotCounts4.map((s, idx) => {
                 const isLocked = isTrialExpired && s.reqTier !== 'TRIAL';
+                const label = currentLang === 'ID' ? s.labelId : s.labelEn;
                 return `
                     <div class="modal-item ${idx === selectedShotIndex ? 'active' : ''} ${isLocked ? 'disabled' : ''}" onclick="${isLocked ? "alert('Shot ini terkunci untuk paket langganan kamu. Silakan upgrade.')" : `selectShot(${idx})`}">
-                        <span>${s.label}</span>
+                        <span>${label}</span>
                         ${isLocked ? '<span style="color:var(--locked-red);">🔒</span>' : (idx === selectedShotIndex ? '<span>✓</span>' : '')}
                     </div>
                 `;
@@ -1133,7 +1168,7 @@
             selectedConceptIndex = idx;
             const c = concepts6[idx];
             document.getElementById('selectedConceptTitle').innerText = c.title;
-            document.getElementById('selectedConceptDesc').innerText = c.desc;
+            document.getElementById('selectedConceptDesc').innerText = currentLang === 'ID' ? c.descId : c.descEn;
             closeGeneralModal();
         }
 
@@ -1141,13 +1176,21 @@
             selectedAngleIndex = idx;
             const a = angles5[idx];
             document.getElementById('selectedAngleTitle').innerText = a.title;
-            document.getElementById('selectedAngleDesc').innerText = a.desc;
+            document.getElementById('selectedAngleDesc').innerText = currentLang === 'ID' ? a.descId : a.descEn;
+            closeGeneralModal();
+        }
+
+        function selectFramework(idx) {
+            selectedFrameworkIndex = idx;
+            const f = frameworks5[idx];
+            document.getElementById('selectedFrameworkTitle').innerText = f.title;
+            document.getElementById('selectedFrameworkDesc').innerText = currentLang === 'ID' ? f.descId : f.descEn;
             closeGeneralModal();
         }
 
         function selectShot(idx) {
             selectedShotIndex = idx;
-            document.getElementById('selectedShotText').innerText = shotCounts4[idx].label;
+            document.getElementById('selectedShotText').innerText = currentLang === 'ID' ? shotCounts4[idx].labelId : shotCounts4[idx].labelEn;
             closeGeneralModal();
         }
 
@@ -1266,6 +1309,10 @@
                 if (el) el.innerText = dict[key];
             }
             document.getElementById('selectedCategoryText').innerText = lang === 'ID' ? categories12[selectedCategoryIndex].nameId : categories12[selectedCategoryIndex].nameEn;
+            document.getElementById('selectedConceptDesc').innerText = lang === 'ID' ? concepts6[selectedConceptIndex].descId : concepts6[selectedConceptIndex].descEn;
+            document.getElementById('selectedAngleDesc').innerText = lang === 'ID' ? angles5[selectedAngleIndex].descId : angles5[selectedAngleIndex].descEn;
+            document.getElementById('selectedFrameworkDesc').innerText = lang === 'ID' ? frameworks5[selectedFrameworkIndex].descId : frameworks5[selectedFrameworkIndex].descEn;
+            document.getElementById('selectedShotText').innerText = lang === 'ID' ? shotCounts4[selectedShotIndex].labelId : shotCounts4[selectedShotIndex].labelEn;
         }
 
         function copyDeviceId() {
