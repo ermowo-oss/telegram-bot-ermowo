@@ -49,6 +49,27 @@
             display: block;
         }
 
+        /* Header Navigation Bar dengan Tombol Back */
+        .step-header-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .btn-back-header {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* Top Header Card */
         .hero-card {
             background: linear-gradient(180deg, rgba(13, 34, 53, 0.9) 0%, var(--card-bg) 100%);
@@ -135,10 +156,9 @@
         }
 
         .section-header {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-primary);
-            margin: 20px 0 12px 4px;
         }
 
         /* Form Controls */
@@ -242,16 +262,17 @@
             margin-top: 6px;
         }
 
-        /* Custom Modal Popup Dropdown */
+        /* Custom Modal Popup Dropdown - Center Popup Position */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
             z-index: 200;
             justify-content: center;
-            align-items: flex-end;
+            align-items: center; /* CENTER POSITIONING SO IT NEVER CUTS OFF ON WIDE/DESKTOP */
+            padding: 20px;
         }
 
         .modal-overlay.active {
@@ -260,13 +281,14 @@
 
         .modal-content {
             width: 100%;
-            max-width: 600px;
+            max-width: 520px;
             background: #0D151D;
-            border-top: 1px solid var(--card-border);
-            border-radius: 24px 24px 0 0;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
             padding: 20px;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .modal-header {
@@ -489,7 +511,7 @@
             </div>
 
             <!-- Directing OS Features Section -->
-            <div class="section-header" id="featuresHeader">Directing OS Features</div>
+            <div class="section-header" style="margin: 20px 0 12px 4px;" id="featuresHeader">Directing OS Features</div>
 
             <div class="card">
                 <div class="card-title" id="f1Title">Cinematography & Multi-Shot Engine</div>
@@ -514,7 +536,11 @@
 
         <!-- ==================== 2. WIZARD STEP 1 SCREEN ==================== -->
         <div id="screenWizard" class="screen">
-            <div class="section-header" style="margin-top: 0;" id="wizardStepTitle">Step 1: Project Specs</div>
+            <!-- Header Nav Bar Dengan Tombol Back Ke Home (Sama Seperti Step 2) -->
+            <div class="step-header-nav">
+                <button class="btn-back-header" onclick="switchNav('home')">←</button>
+                <div class="section-header" id="wizardStepTitle">Step 1: Project Specs</div>
+            </div>
             
             <!-- Step Progress Indicator Bar -->
             <div style="display: flex; gap: 8px; margin-bottom: 16px;">
@@ -569,7 +595,11 @@
 
         <!-- ==================== 3. WIZARD STEP 2 SCREEN ==================== -->
         <div id="screenWizardStep2" class="screen">
-            <div class="section-header" style="margin-top: 0;" id="wizardStep2Title">Step 2: Concept & Angle</div>
+            <!-- Header Nav Bar Dengan Tombol Back Ke Step 1 -->
+            <div class="step-header-nav">
+                <button class="btn-back-header" onclick="switchNav('wizard')">←</button>
+                <div class="section-header" id="wizardStep2Title">Step 2: Concept & Angle</div>
+            </div>
             
             <!-- Step Progress Indicator Bar (Step 2 Aktif) -->
             <div style="display: flex; gap: 8px; margin-bottom: 16px;">
@@ -656,7 +686,7 @@
 
         <!-- ==================== 4. SETTINGS SCREEN ==================== -->
         <div id="screenSettings" class="screen">
-            <div class="section-header" style="margin-top: 0;" id="settingsHeader">Settings & License Status</div>
+            <div class="section-header" style="margin-top: 0; margin-bottom: 12px;" id="settingsHeader">Settings & License Status</div>
 
             <!-- Pricing Card Link -->
             <div class="card card-clickable" onclick="openPricing()">
@@ -816,8 +846,8 @@
 
     </div>
 
-    <!-- ==================== MODAL OVERLAY GENERAL ==================== -->
-    <div id="modalGeneral" class="modal-overlay">
+    <!-- ==================== MODAL OVERLAY GENERAL (CENTERED MODAL FOR ALL SCREEN SIZES) ==================== -->
+    <div id="modalGeneral" class="modal-overlay" onclick="closeModalOnOverlay(event)">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title" style="margin: 0;" id="modalGeneralHeader">Select Options</div>
@@ -835,7 +865,7 @@
     </div>
 
     <script>
-        let currentLang = 'EN'; // DEFAULT ENGLISH BAKU UNIFORM
+        let currentLang = 'EN';
         let isTrialExpired = false;
         let selectedProjectType = 'VIDEO';
         let selectedCategoryIndex = 0;
@@ -878,7 +908,6 @@
             { title: "Problem-Solution", descId: "Before-after: dari kondisi masalah ke solusi nyata dengan produk", descEn: "Before-after: from problem condition to real solution with product" }
         ];
 
-        // 5 Framework Asli v1.1 Dari StorytellingFrameworks.kt
         const frameworks5 = [
             { title: "Before & After Transformation", descId: "Menampilkan kontras tajam masalah sebelum dan solusi setelah pakai produk.", descEn: "Showcases sharp contrast between problem before and solution after using product." },
             { title: "Mistake & Lesson Learned", descId: "Pendekatan edukatif membagikan kesalahan umum pembeli dan cara menghindarinya.", descEn: "Educational approach sharing common buyer mistakes and how to avoid them." },
@@ -986,7 +1015,7 @@
                 navItemSettings: "Settings"
             },
             ID: {
-                heroDesc: "Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.",
+                heroDesc: "Generator Prompt UGC No.1 berbasis Directing OS. Hasikan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.",
                 btnStart: "Mulai Buat Project Prompt Baru",
                 affiliateTitle: "Pustaka Prompt Affiliate",
                 affiliateDesc: "Salin cepat 20 blueprint prompt siap pakai untuk iklan AI.",
@@ -996,7 +1025,7 @@
                 f2Title: "Psikologi Hook & Storytelling",
                 f2Desc: "4 Angle Iklan Teruji (Problem Solver, Honest Review, Storytelling, & Lifestyle Unboxing) dengan retensi tinggi.",
                 f3Title: "Dukungan Dual Project (Video & Foto)",
-                f3Desc: "Hasilkan prompt video gerak sinematik atau prompt photoshoot gambar 4K untuk katalog & paid social.",
+                f3Desc: "Hantikan prompt video gerak sinematik atau prompt photoshoot gambar 4K untuk katalog & paid social.",
                 f4Title: "Optimasi Lintas AI Platform",
                 f4Desc: "Sintaks khusus yang disesuaikan dengan Google Veo 3, Kling 3.0, Seedance 2.0, Wan 2.1, FLUX, dan GPT Image.",
                 wizardStepTitle: "Langkah 1: Spesifikasi Project",
@@ -1063,6 +1092,12 @@
                 document.getElementById('btnUploadPhoto').innerText = '✓ ' + input.files.length;
                 document.getElementById('btnUploadPhoto').style.background = 'var(--primary-cyan)';
                 document.getElementById('btnUploadPhoto').style.color = 'var(--dark-bg)';
+            }
+        }
+
+        function closeModalOnOverlay(e) {
+            if (e.target.id === 'modalGeneral') {
+                closeGeneralModal();
             }
         }
 
