@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ERMOWO UGC Ads Generator</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #0A1118;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --primary: #00F5D4;
+            --accent: #00BBF9;
+            --text-main: #FFFFFF;
+            --text-sub: #A0AEC0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        .badge-lite {
+            display: inline-block;
+            background: rgba(0, 245, 212, 0.15);
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(0, 245, 212, 0.2);
+        }
+
+        button.btn-generate {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #050B10;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 245, 212, 0.3);
+            transition: transform 0.1s active;
+        }
+
+        button.btn-generate:active {
+            transform: scale(0.98);
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        pre {
+            background: #05090D;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #E2E8F0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-top: auto;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="badge-lite">⚡ LITE WEBINAR EDITION (v1.1.1)</div>
+        <h1>ERMOWO UGC Ads Generator</h1>
+        <p>Solusi Pembuat Prompt UGC Ads Konten Affiliate & Komersial</p>
+    </div>
+
+    <div class="card">
+        <div class="form-group">
+            <label>Nama Produk / Brand</label>
+            <input type="text" id="productName" placeholder="Contoh: Skincare Serum Brightening ERMOWO">
+        </div>
+
+        <div class="form-group">
+            <label>Kategori Produk</label>
+            <select id="productCategory">
+                <option value="Skincare & Beauty">Skincare & Beauty</option>
+                <option value="Fashion & Outfit">Fashion & Outfit</option>
+                <option value="Food & Beverage">Food & Beverage</option>
+                <option value="Gadget & Tech">Gadget & Tech</option>
+                <option value="Home & Living">Home & Living</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Gaya Video / Angle Utama</label>
+            <select id="videoAngle">
+                <option value="Problem Solution">Problem - Solution (Masalah ke Solusi)</option>
+                <option value="Unboxing & Honest Review">Unboxing & Honest Review</option>
+                <option value="Before vs After Transformation">Before vs After Transformation</option>
+                <option value="Daily Vlog Lifestyle">Daily Vlog Lifestyle (Aesthetic)</option>
+            </select>
+        </div>
+
+        <button class="btn-generate" onclick="generatePrompt()">✨ GENERATE PROMPT MASTER UGC</button>
+    </div>
+
+    <div class="card result-box" id="resultBox">
+        <div class="result-header">
+            <label style="margin:0; color: var(--primary);">PROMPT MASTER AI GENERATOR</label>
+            <button class="btn-copy" onclick="copyResult()">📋 SALIN PROMPT</button>
+        </div>
+        <pre id="outputPrompt"></pre>
+    </div>
+
+    <div class="footer">
+        Powered by ERMOWO Creative AI OS • Compatible with iOS & Android
+    </div>
+
+    <script>
+        // Init Telegram Web App API jika dibuka via Telegram
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.ready();
+            window.Telegram.WebApp.expand();
+        }
+
+        function generatePrompt() {
+            const name = document.getElementById('productName').value.trim() || 'Produk Favorit';
+            const cat = document.getElementById('productCategory').value;
+            const angle = document.getElementById('videoAngle').value;
+
+            const generatedText = `===================================================
+🎬 ERMOWO UGC ADS GENERATOR PROMPT - LITE WEBINAR
+===================================================
+
+[ METADATA BRIEF ]
+• Product: ${name}
+• Category: ${cat}
+• Angle Blueprint: ${angle}
+• Aspect Ratio: 9:16 (Vertical Short-Form Video)
+• Target Engine: Google Flow / Veo 3 / Seedance 2.0 / Sora
+
+---------------------------------------------------
+📸 1-SHEET CHARACTER BIBLE (SINGLE TURNAROUND SHEET)
+---------------------------------------------------
+A professional 1-sheet studio turnaround shot of a 24-year-old Indonesian female UGC creator, natural skin texture, realistic micro-expressions, wearing modern casual minimalist outfit. 3 camera angles on a single horizontal grid: front-facing full view, 45-degree side profile, and back view. Solid neutral grey photo studio backdrop, soft cinematic diffused studio lighting, 8k resolution, photorealistic.
+
+---------------------------------------------------
+📽️ STORYBOARD & SHOT LIST
+---------------------------------------------------
+[SHOT 1 - HOOK] (Duration: 3s)
+Camera: Close-up (CU) with subtle handheld dynamic micro-shake.
+Visual: Creator holds ${name} close to camera with a shocked & delighted facial expression, pointing at product details.
+Audio/VO: "Jujur aku kaget banget pas pertama kali cobain ${name} ini!"
+
+[SHOT 2 - PROBLEM & DETAIL] (Duration: 4s)
+Camera: Medium Shot (MS), eye-level, natural room ambience.
+Visual: Creator demonstrates applying ${name} smoothly, focusing on product texture and premium packaging.
+Audio/VO: "Dulu sering bingung cari ${cat} yang hasilnya instan tapi tetep aman."
+
+[SHOT 3 - SOLUTION & CALL TO ACTION] (Duration: 3s)
+Camera: Medium Close-Up (MCU), warm sunset lighting.
+Visual: Creator smiles confidently at the camera while tapping the product gently against the screen, showing the yellow shopping cart icon.
+Audio/VO: "Mumpung lagi promo terbatas, mending kalian checkout sekarang di keranjang kuning!"
+
+===================================================
+✨ Copy prompt ini dan tempelkan di platform AI Video pilihan Anda.`;
+
+            document.getElementById('outputPrompt').innerText = generatedText;
+            document.getElementById('resultBox').style.display = 'block';
+            
+            // Scroll otomatis ke hasil
+            document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyResult() {
+            const text = document.getElementById('outputPrompt').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Prompt berhasil disalin ke clipboard!');
+            }).catch(err => {
+                alert('Gagal menyalin: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
