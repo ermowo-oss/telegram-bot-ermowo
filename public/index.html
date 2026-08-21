@@ -12,10 +12,12 @@
             --card-border: rgba(255, 255, 255, 0.12);
             --primary-cyan: #00F5D4;
             --electric-blue: #00BBF9;
+            --gold: #FFD700;
             --text-primary: #FFFFFF;
             --text-secondary: #94A3B8;
             --success: #10B981;
             --dark-bg: #050B10;
+            --locked-red: #EF4444;
         }
 
         * {
@@ -139,7 +141,7 @@
             margin: 20px 0 12px 4px;
         }
 
-        /* Input & Form Controls */
+        /* Form Controls */
         .form-group {
             margin-top: 10px;
             margin-bottom: 12px;
@@ -231,6 +233,21 @@
             margin-bottom: 6px;
         }
 
+        .tier-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-left: 6px;
+            margin-bottom: 6px;
+        }
+
+        .tier-trial { background: rgba(0, 245, 212, 0.2); color: var(--primary-cyan); }
+        .tier-starter { background: rgba(38, 166, 154, 0.2); color: #26A69A; }
+        .tier-pro { background: rgba(0, 187, 249, 0.2); color: var(--electric-blue); }
+        .tier-ultra { background: rgba(255, 215, 0, 0.2); color: var(--gold); }
+
         .template-code {
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid var(--card-border);
@@ -254,6 +271,56 @@
             font-weight: 700;
             cursor: pointer;
             float: right;
+        }
+
+        .btn-copy-template.locked {
+            border-color: var(--locked-red);
+            color: var(--locked-red);
+        }
+
+        /* Pricing Plan Cards */
+        .pricing-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--electric-blue);
+            background: linear-gradient(180deg, rgba(13, 34, 53, 0.8) 0%, var(--card-bg) 100%);
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            background: var(--electric-blue);
+            color: var(--dark-bg);
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .pricing-price {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary-cyan);
+            margin-top: 4px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 16px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .pricing-features li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 4px 0;
         }
 
         /* Bottom Nav Bar */
@@ -299,7 +366,7 @@
                 <div class="hero-desc" id="heroDesc">
                     Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.
                 </div>
-                <button class="btn-primary" id="btnStart" onclick="switchNav('wizard')">
+                <button class="btn-primary" id="btnStart" onclick="startWizardOrCheckTrial()">
                     Mulai Buat Project Prompt Baru
                 </button>
             </div>
@@ -307,7 +374,7 @@
             <!-- Affiliate Banner Card -->
             <div class="card card-clickable" onclick="openAffiliateTemplates()">
                 <div class="card-title" id="affiliateTitle">Pustaka Prompt Affiliate</div>
-                <div class="card-subtitle" id="affiliateDesc">Salin cepat 20+ blueprint prompt siap pakai untuk iklan AI.</div>
+                <div class="card-subtitle" id="affiliateDesc">Salin cepat 20 blueprint prompt siap pakai untuk iklan AI.</div>
             </div>
 
             <!-- Directing OS Features Section -->
@@ -348,7 +415,7 @@
             <div class="section-header" style="margin-top: 0;" id="settingsHeader">Pengaturan & Status Lisensi</div>
 
             <!-- Pricing Card Link -->
-            <div class="card card-clickable" onclick="alert('Pilihan Paket Berlangganan (Starter, Pro, Ultra) akan ditampilkan.')">
+            <div class="card card-clickable" onclick="openPricing()">
                 <div class="card-title" id="pricingTitle">Paket & Harga Berlangganan</div>
                 <div class="card-subtitle" style="color: var(--primary-cyan); font-weight: 700;">Starter · Pro · Ultra VIP</div>
             </div>
@@ -407,33 +474,76 @@
             </div>
         </div>
 
-        <!-- ==================== 4. AFFILIATE TEMPLATES SCREEN ==================== -->
+        <!-- ==================== 4. PRICING / SUBSCRIPTION PLAN SCREEN ==================== -->
+        <div id="screenPricing" class="screen">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div class="section-header" style="margin: 0;" id="pricingHeaderTitle">Paket & Harga Berlangganan</div>
+                <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('settings')">← Kembali</button>
+            </div>
+
+            <!-- Starter Plan Card -->
+            <div class="pricing-card">
+                <div class="card-title" style="font-size: 18px;">Standard Plan</div>
+                <div class="pricing-price">Rp 25.000,- / bulan</div>
+                <ul class="pricing-features">
+                    <li>Kuota 30 Generation Prompt / Bulan</li>
+                    <li>Pustaka Prompt Affiliate Starter (5 Prompt)</li>
+                    <li>3 Shot Video / 3 Frame Foto per Project</li>
+                    <li>3 Kategori (Fashion, Skincare, Food)</li>
+                    <li>Platform TikTok 9:16 saja</li>
+                    <li>Watermark Icon Logo App (Kecil)</li>
+                </ul>
+                <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="window.open('https://t.me/erm_ugc_bot?start=starter', '_blank')">
+                    Langganan Sekarang
+                </button>
+            </div>
+
+            <!-- Pro Plan Card -->
+            <div class="pricing-card popular">
+                <div class="pricing-badge">PALING LARIS</div>
+                <div class="card-title" style="font-size: 18px;">Pro Plan</div>
+                <div class="pricing-price" style="color: var(--electric-blue);">Rp 50.000,- / bulan</div>
+                <ul class="pricing-features">
+                    <li>Kuota 100 Generation Prompt / Bulan</li>
+                    <li>Pustaka Prompt Affiliate Pro (15 Prompt)</li>
+                    <li>5 Shot Video / 5 Frame Foto per Project</li>
+                    <li>6 Kategori (+ Tech, Home Decor, Kids)</li>
+                    <li>3 Platform (TikTok, Reels, Shorts)</li>
+                    <li>Tanpa Watermark</li>
+                    <li>Ekspor Prompt ke TXT & JSON</li>
+                </ul>
+                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--electric-blue);" onclick="window.open('https://t.me/erm_ugc_bot?start=pro', '_blank')">
+                    Langganan Sekarang
+                </button>
+            </div>
+
+            <!-- Ultra Plan Card -->
+            <div class="pricing-card">
+                <div class="card-title" style="font-size: 18px;">Ultra Plan</div>
+                <div class="pricing-price" style="color: var(--gold);">Rp 100.000,- / bulan</div>
+                <ul class="pricing-features">
+                    <li>Kuota 500 Generation Prompt / Bulan</li>
+                    <li>FULL Pustaka Prompt Affiliate Ultra (Bebas Akses)</li>
+                    <li>7 Shot Video / 7 Frame Foto per Project</li>
+                    <li>SEMUA Kategori Produk (Unlimited)</li>
+                    <li>SEMUA Platform Video & Foto</li>
+                    <li>Tanpa Watermark</li>
+                    <li>Ekspor PDF Pitch Deck Lengkap</li>
+                </ul>
+                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--gold); color: #000;" onclick="window.open('https://t.me/erm_ugc_bot?start=ultra', '_blank')">
+                    Langganan Sekarang
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== 5. AFFILIATE TEMPLATES SCREEN (20 ITEMS WITH TIER BADGES) ==================== -->
         <div id="screenAffiliate" class="screen">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <div class="section-header" style="margin: 0;" id="affiliateHeaderTitle">Pustaka Prompt Affiliate</div>
+                <div class="section-header" style="margin: 0;" id="affiliateHeaderTitle">Pustaka Prompt Affiliate (20 Blueprint)</div>
                 <button style="background: transparent; border: none; color: var(--primary-cyan); font-weight: 700; cursor: pointer;" onclick="switchNav('home')">← Kembali</button>
             </div>
 
-            <div class="template-item">
-                <button class="btn-copy-template" onclick="copyTemplate('temp1')">SALIN</button>
-                <div class="template-tag">Skincare · Problem Solution</div>
-                <div class="card-title" style="font-size: 14px;">Serum Glowing Instan</div>
-                <div class="template-code" id="temp1">A 24-year-old Indonesian female UGC creator holding serum bottle close to camera, natural skin texture, photo studio lighting, 8k --ar 9:16</div>
-            </div>
-
-            <div class="template-item">
-                <button class="btn-copy-template" onclick="copyTemplate('temp2')">SALIN</button>
-                <div class="template-tag">Fashion · Outfit Review</div>
-                <div class="card-title" style="font-size: 14px;">OOTD Hijab Casual Minimalist</div>
-                <div class="template-code" id="temp2">Full body shot of 22-year-old Indonesian female wearing modern pastel hijab outfit walking in aesthetic cafe, warm daylight, 8k --ar 9:16</div>
-            </div>
-
-            <div class="template-item">
-                <button class="btn-copy-template" onclick="copyTemplate('temp3')">SALIN</button>
-                <div class="template-tag">Food · Unboxing & Taste Test</div>
-                <div class="card-title" style="font-size: 14px;">Snack Crispy Crunch Review</div>
-                <div class="template-code" id="temp3">Close up shot opening snack packaging, crispy texture details, delighted smile expression, shallow depth of field, 8k --ar 9:16</div>
-            </div>
+            <div id="affiliateListContainer"></div>
         </div>
 
     </div>
@@ -447,13 +557,38 @@
 
     <script>
         let currentLang = 'ID';
+        let isTrialExpired = false; // Logika status 7 hari trial
+
+        // 20 Blueprint Prompt Resmi Lite Edition (v1.1.1) dengan Tier Access Level
+        const affiliate20Templates = [
+            { id: "AFF-001", name: "AI Clean Product Showcase (Foto)", cat: "Visual & Setup Guide", tier: "TRIAL", tierLabel: "Free Trial (7 Hari)", text: "A minimalist commercial product shot of [NAMA PRODUK] floating in mid-air. Solid pastel background, soft studio lighting, sharp focus, 8k resolution, high-end advertising, realistic textures --ar 4:5" },
+            { id: "AFF-002", name: "AI Model Holding Product (Foto)", cat: "Visual & Setup Guide", tier: "TRIAL", tierLabel: "Free Trial (7 Hari)", text: "A candid lifestyle product photography of a modern [TARGET] model holding [NAMA PRODUK] naturally in hand. Authentic facial expression, soft daylight, warm neutral tone, background blur, highly realistic skin textures, 8k, shot on 85mm lens --ar 9:16" },
+            { id: "AFF-003", name: "AI Basic Motion Product (Video)", cat: "UGC Video Script", tier: "TRIAL", tierLabel: "Free Trial (7 Hari)", text: "Cinematic video of [NAMA PRODUK] sitting on a sleek wooden tabletop. The camera performs a slow, smooth tracking pan from left to right, focusing on the details of the product label. Soft volumetric window light, dust particles floating, photo-real 3D render look, 60fps." },
+            { id: "AFF-004", name: "AI Before vs After Transition (Video)", cat: "UGC Video Script", tier: "STANDARD", tierLabel: "Starter Plan", text: "A fast-cut transition video for [NAMA PRODUK]. Frame 1: Model looking slightly concerned, showing a problem area in natural dull light. Frame 2: Instant match cut to the model smiling brightly with glowing healthy skin, holding [NAMA PRODUK] proudly. Smooth linear motion transform, high contrast, clean commercial aesthetic, vertical 9:16." },
+            { id: "AFF-005", name: "AI Simple Handheld Feel (Video)", cat: "UGC Video Script", tier: "STANDARD", tierLabel: "Starter Plan", text: "UGC-style video showing a first-person perspective (POV) holding [NAMA PRODUK]. The camera has a subtle handheld breathing movement, slight organic shake. The model's hands gently interact with the product packaging in a modern bedroom setting. Warm overhead light, ultra photorealistic, casual authentic vibe." },
+            { id: "AFF-006", name: "AI Ethereal/Aesthetic Product (Foto/Video)", cat: "Visual & Setup Guide", tier: "PRO", tierLabel: "Pro Plan", text: "An aesthetic product cinematic for [NAMA PRODUK]. Surrounded by organic botanical elements, soft studio fog, glowing backlight casting beautiful rim light. Minimalist platform, clean water ripples reflecting the product, calm luxury mood, 8k, hyper-detailed." },
+            { id: "AFF-007", name: "AI Character Emotion Lock (Foto/Video)", cat: "Visual & Setup Guide", tier: "PRO", tierLabel: "Pro Plan", text: "Model with highly expressive, authentic happy emotion, eyes closed, smiling genuinely after using [NAMA PRODUK]. Close up shot focusing on skin textures and true joyful micro-expression. Consistent facial structure, soft-focus background, clean portrait framing." },
+            { id: "AFF-008", name: "AI Product Unboxing Motion (Video)", cat: "UGC Video Script", tier: "PRO", tierLabel: "Pro Plan", text: "A smooth unboxing sequence for [NAMA PRODUK]. Elegant hands slowly opening a textured cardboard packaging box. Reveal the product inside snugged in a clean minimalist layout. Soft ASMR feel, close up focus on textures, warm studio light." },
+            { id: "AFF-009", name: "AI Macro Texture Close-up (Foto/Video)", cat: "Visual & Setup Guide", tier: "PRO", tierLabel: "Pro Plan", text: "Extreme macro close-up shot of [NAMA PRODUK] liquid texture dripping down the side of a glass container. Showing tiny bubbles, rich consistency, and glossy highlights. Professional cosmetic product lighting, high depth of field, sharp focus, 8k." },
+            { id: "AFF-010", name: "AI Slow-Mo Cinematic (Video)", cat: "Visual & Setup Guide", tier: "PRO", tierLabel: "Pro Plan", text: "High-speed slow-motion video. [NAMA PRODUK] being placed on a wet marble surface, causing small, clean water droplets to splash in slow motion. Volumetric side-lighting, dark elegant background, extreme detail, realistic physics simulation, 120fps." },
+            { id: "AFF-011", name: "Prompt Script Soft Selling (Text)", cat: "Copywriting Booster", tier: "PRO", tierLabel: "Pro Plan", text: "Buat script video TikTok affiliate durasi 30 detik untuk produk [NAMA PRODUK] dengan target [TARGET]. Gaya: natural, tidak hard-selling, seperti rekomendasi teman, santai. Struktur: 1. Hook (masalah relate), 2. Pengalaman pakai, 3. Solusi/keunggulan produk, 4. CTA natural." },
+            { id: "AFF-012", name: "Prompt Hook Viral (Text)", cat: "Copywriting Booster", tier: "PRO", tierLabel: "Pro Plan", text: "Buat 20 hook kalimat pembuka video TikTok viral untuk produk [NAMA PRODUK] yang menargetkan [TARGET]. Hook harus memicu rasa penasaran, pendek (di bawah 10 kata), emosional, dan menggunakan gaya bahasa percakapan sehari-hari di Indonesia." },
+            { id: "AFF-013", name: "Prompt Review Produk (Text)", cat: "Copywriting Booster", tier: "PRO", tierLabel: "Pro Plan", text: "Buat naskah review jujur produk [NAMA PRODUK] ala content creator. Tuliskan impresi pertama, satu kelebihan utama, satu kekurangan kecil yang wajar (agar dinilai jujur), dan rekomendasi siapa yang cocok membeli produk ini." },
+            { id: "AFF-014", name: "Prompt Konten 15 Detik (Text)", cat: "Copywriting Booster", tier: "PRO", tierLabel: "Pro Plan", text: "Buat script video iklan singkat 15 detik untuk [NAMA PRODUK]. Tuliskan Hook super cepat di 2 detik pertama, visualisasi aksi penggunaan produk, dan diakhiri dengan CTA yang jelas untuk checkout di keranjang kuning." },
+            { id: "AFF-015", name: "Prompt Perbandingan Produk (Text)", cat: "Copywriting Booster", tier: "PRO", tierLabel: "Pro Plan", text: "Buat script video perbandingan: 'Produk Biasa yang Bikin Repot' vs '[NAMA PRODUK] yang Solutif'. Tunjukkan kontras efisiensi waktu, kemudahan pakai, dan hasil akhir yang jauh lebih memuaskan." },
+            { id: "AFF-016", name: "AI Mecha/Sci-Fi Product Reveal (Video)", cat: "Visual & Setup Guide", tier: "ULTRA", tierLabel: "Ultra VIP", text: "Sci-fi high-tech commercial video for [NAMA PRODUK]. The product transforms or unlocks its packaging using complex mechanical parts folding out in a futuristic lab. Blue laser scans, glowing LED lights, concrete surface, extreme visual precision, 8k, Transformers style." },
+            { id: "AFF-017", name: "AI Multi-Angle Character Sheet (Foto)", cat: "Visual & Setup Guide", tier: "ULTRA", tierLabel: "Ultra VIP", text: "Character model turnaround sheet, 3 view angles in a single image (Front View, Left Profile, Right Profile). A modern [TARGET] model, clean studio gray backdrop, uniform lighting, highly consistent facial features across all views, raw photography --ar 16:9" },
+            { id: "AFF-018", name: "AI Split-Screen Grid Storyboard (Foto)", cat: "Visual & Setup Guide", tier: "ULTRA", tierLabel: "Ultra VIP", text: "A 4-panel storyboard grid sheet for [NAMA PRODUK] commercial. Panel 1: Closeup of product. Panel 2: Model looking curious. Panel 3: Product in action. Panel 4: Happy result. Professional advertising storyboard sketch style, clean white borders, descriptive labels, high-end production." },
+            { id: "AFF-019", name: "AI Advanced Physical Interaction (Video)", cat: "UGC Video Script", tier: "ULTRA", tierLabel: "Ultra VIP", text: "Detailed video of model interacting with [NAMA PRODUK]. Model is applying/using the product on skin or hands, showing natural texture absorption. The camera is very close, smooth tracking focus, soft studio lighting, realistic human anatomy, 8k, photorealistic." },
+            { id: "AFF-020", name: "AI E-Commerce A+ Banner Layout (Foto)", cat: "Visual & Setup Guide", tier: "ULTRA", tierLabel: "Ultra VIP", text: "Commercial banner photography featuring [NAMA PRODUK] placed on the lower-right section. The entire left and upper-left sections of the image are clean, empty negative space on a soft textured cream wall backdrop. Soft shadows, high-end editorial layout, 8k, --ar 4:5" }
+        ];
 
         const i18n = {
             EN: {
                 heroDesc: "The #1 Directing OS UGC Prompt Generator. Build cinematic, multi-shot structured prompts optimized for Google Veo 3, Kling 3.0, Seedance & FLUX.",
                 btnStart: "Create New UGC Prompt Project",
                 affiliateTitle: "Affiliate Prompt Library",
-                affiliateDesc: "Quickly copy 20+ ready-to-use AI ad prompt blueprints.",
+                affiliateDesc: "Quickly copy 20 ready-to-use AI ad prompt blueprints.",
                 featuresHeader: "Directing OS Features",
                 f1Title: "Cinematography & Multi-Shot Engine",
                 f1Desc: "Precision 3-4 cinematic shot structure (Hook, Focus, Action & CTA) with customizable shot duration.",
@@ -479,7 +614,8 @@
                 supportTitle: "Report Problem / Support",
                 supportDesc: "Need activation help or technical support? Contact ERMOWO Support Team (@erm_ugc_bot).",
                 aboutTitle: "About App",
-                affiliateHeaderTitle: "Affiliate Prompt Library",
+                affiliateHeaderTitle: "Affiliate Prompt Library (20 Blueprints)",
+                pricingHeaderTitle: "Subscription Plans & Pricing",
                 navItemHome: "Home",
                 navItemWizard: "Wizard",
                 navItemSettings: "Settings"
@@ -488,7 +624,7 @@
                 heroDesc: "Generator Prompt UGC No.1 berbasis Directing OS. Hasilkan prompt sinematik terstruktur siap pakai untuk Google Veo 3, Kling, Seedance, Wan 2.1 & FLUX.",
                 btnStart: "Mulai Buat Project Prompt Baru",
                 affiliateTitle: "Pustaka Prompt Affiliate",
-                affiliateDesc: "Salin cepat 20+ blueprint prompt siap pakai untuk iklan AI.",
+                affiliateDesc: "Salin cepat 20 blueprint prompt siap pakai untuk iklan AI.",
                 featuresHeader: "Keunggulan Directing OS",
                 f1Title: "Sinematografi & Multi-Shot Engine",
                 f1Desc: "Struktur 3-4 Shot sinematik presisi (Hook, Focus, Action & CTA) dengan durasi per shot 4s/6s/8s/10s.",
@@ -514,12 +650,37 @@
                 supportTitle: "Lapor Kendala / Support",
                 supportDesc: "Butuh bantuan aktivasi atau kendala teknis? Hubungi Tim Pemilik ERMOWO (@erm_ugc_bot).",
                 aboutTitle: "Tentang Aplikasi",
-                affiliateHeaderTitle: "Pustaka Prompt Affiliate",
+                affiliateHeaderTitle: "Pustaka Prompt Affiliate (20 Blueprint)",
+                pricingHeaderTitle: "Paket & Harga Berlangganan",
                 navItemHome: "Home",
                 navItemWizard: "Wizard",
                 navItemSettings: "Settings"
             }
         };
+
+        function renderAffiliateTemplates() {
+            const container = document.getElementById('affiliateListContainer');
+            container.innerHTML = affiliate20Templates.map((t, idx) => {
+                let badgeClass = 'tier-trial';
+                if (t.tier === 'STANDARD') badgeClass = 'tier-starter';
+                if (t.tier === 'PRO') badgeClass = 'tier-pro';
+                if (t.tier === 'ULTRA') badgeClass = 'tier-ultra';
+
+                const isLockedItem = isTrialExpired && t.tier !== 'TRIAL';
+                const copyBtnText = isLockedItem ? 'TERKUNCI' : 'SALIN';
+                const copyBtnClass = isLockedItem ? 'btn-copy-template locked' : 'btn-copy-template';
+
+                return `
+                    <div class="template-item">
+                        <button class="${copyBtnClass}" onclick="copyTemplate('${t.tier}', 'temp_${idx}')">${copyBtnText}</button>
+                        <div class="template-tag">${t.cat}</div>
+                        <div class="tier-badge ${badgeClass}">${t.tierLabel}</div>
+                        <div class="card-title" style="font-size: 14px;">${t.name}</div>
+                        <div class="template-code" id="temp_${idx}">${t.text}</div>
+                    </div>
+                `;
+            }).join('');
+        }
 
         function switchNav(targetScreen) {
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
@@ -542,7 +703,30 @@
             document.getElementById('screenAffiliate').classList.add('active');
         }
 
-        function copyTemplate(id) {
+        function openPricing() {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById('screenPricing').classList.add('active');
+        }
+
+        function startWizardOrCheckTrial() {
+            if (isTrialExpired) {
+                alert(currentLang === 'ID' 
+                    ? 'Masa Free Trial 7 Hari Anda telah berakhir. Silakan masukkan Kode Lisensi atau berlangganan Paket untuk melanjutkan.'
+                    : 'Your 7-Day Free Trial has expired. Please enter a License Key or subscribe to continue.');
+                switchNav('settings');
+                return;
+            }
+            switchNav('wizard');
+        }
+
+        function copyTemplate(itemTier, id) {
+            if (isTrialExpired && itemTier !== 'TRIAL') {
+                alert(currentLang === 'ID' 
+                    ? 'Prompt ini terkunci karena masa Free Trial 7 Hari telah berakhir. Silakan beli paket berlangganan untuk membuka.'
+                    : 'This prompt is locked because your 7-Day Free Trial has ended. Please subscribe to unlock.');
+                openPricing();
+                return;
+            }
             const code = document.getElementById(id).innerText;
             navigator.clipboard.writeText(code);
             alert(currentLang === 'ID' ? 'Blueprint prompt disalin!' : 'Prompt blueprint copied!');
@@ -574,6 +758,9 @@
             }
             alert(currentLang === 'ID' ? 'Kode Lisensi sedang diverifikasi...' : 'Verifying license key...');
         }
+
+        // Initialize Templates Render
+        renderAffiliateTemplates();
     </script>
 </body>
 </html>
