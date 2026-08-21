@@ -107,23 +107,13 @@ bot.start((ctx) => {
     const payload = ctx.message.text.split(' ')[1] || 'pro';
     const msg = getPaymentMessage(payload);
 
-    const keyboard = {
-        reply_markup: {
-            inline_keyboard: [
-                [
-                    { text: "📱 Buka Web App (iPhone / Web)", url: "https://telegram-bot-ermowo.vercel.app/app" }
-                ]
-            ]
-        }
-    };
-
     if (fs.existsSync(qrisImagePath)) {
         return ctx.replyWithPhoto(
             { source: qrisImagePath },
-            { caption: msg, parse_mode: 'HTML', ...keyboard }
+            { caption: msg, parse_mode: 'HTML' }
         );
     } else {
-        return ctx.replyWithHTML(msg, keyboard);
+        return ctx.replyWithHTML(msg);
     }
 });
 
@@ -223,6 +213,14 @@ bot.on('text', async (ctx) => {
 
 module.exports = async (req, res) => {
     try {
+        if (req.url === '/app' || req.url === '/app/') {
+            const htmlPath = path.join(__dirname, '..', 'public', 'index.html');
+            if (fs.existsSync(htmlPath)) {
+                res.setHeader('Content-Type', 'text/html; charset=utf-8');
+                return res.status(200).send(fs.readFileSync(htmlPath, 'utf8'));
+            }
+        }
+
         if (req.method === 'POST') {
             await bot.handleUpdate(req.body);
             res.status(200).send('OK');
