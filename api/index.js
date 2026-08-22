@@ -146,7 +146,7 @@ bot.on('photo', async (ctx) => {
             const highestPhoto = photos[photos.length - 1].file_id;
             const captionText = ctx.message.caption || '';
             
-            const match = captionText.match(/UGC-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
+            const match = captionText.match(/(?:TG|HW|WEB|UGC)-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
             const detectedDeviceId = match ? match[0].toUpperCase() : 'DEVICE_ID';
             
             let deviceIdDisplay = `Detected: <code>${detectedDeviceId}</code>`;
@@ -178,7 +178,7 @@ bot.on('text', async (ctx) => {
         
         if (!isFromAdmin) {
             const text = ctx.message.text || '';
-            const match = text.match(/UGC-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
+            const match = text.match(/(?:TG|HW|WEB|UGC)-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
             const detectedDeviceId = match ? match[0].toUpperCase() : null;
 
             if (detectedDeviceId) {
