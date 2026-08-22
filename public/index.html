@@ -2195,15 +2195,25 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
             const currentDevId = document.getElementById('deviceIdVal').innerText || '';
             const targetUrl = `https://t.me/erm_ugc_bot?start=${plan}`;
             
-            // Auto copy Device ID to clipboard for user convenience
+            // 1. Copy Device ID to clipboard
             if (navigator.clipboard && currentDevId) {
-                navigator.clipboard.writeText(currentDevId);
+                try { navigator.clipboard.writeText(currentDevId); } catch(e) {}
             }
 
+            const alertMsg = currentLang === 'ID' 
+                ? `📋 Device ID kamu (${currentDevId}) telah tersalin otomatis!\n\nJendela Web App ini akan ditutup agar kamu bisa melihat Kode QRIS Pembayaran di chat Bot Telegram.`
+                : `📋 Your Device ID (${currentDevId}) has been copied automatically!\n\nThis Web App window will close so you can view the QRIS Payment code in the Telegram Bot chat.`;
+
+            alert(alertMsg);
+
+            // 2. Tutup WebApp agar pengguna kembali ke chat bot yang sudah ada pesan QRIS
             try {
                 if (window.Telegram && window.Telegram.WebApp) {
                     if (typeof window.Telegram.WebApp.openTelegramLink === 'function') {
                         window.Telegram.WebApp.openTelegramLink(targetUrl);
+                    }
+                    if (typeof window.Telegram.WebApp.close === 'function') {
+                        window.Telegram.WebApp.close();
                         return;
                     }
                 }
