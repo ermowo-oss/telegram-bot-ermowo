@@ -1033,7 +1033,7 @@
                     <li>TikTok 9:16 Platform Only</li>
                     <li>Small App Logo Watermark</li>
                 </ul>
-                <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="window.open('https://t.me/erm_ugc_bot?start=starter', '_blank')">
+                <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="openSubscribeLink('starter')">
                     Subscribe Now
                 </button>
             </div>
@@ -1052,7 +1052,7 @@
                     <li>No Watermark</li>
                     <li>Export Prompts to TXT & JSON</li>
                 </ul>
-                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--electric-blue);" onclick="window.open('https://t.me/erm_ugc_bot?start=pro', '_blank')">
+                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--electric-blue);" onclick="openSubscribeLink('pro')">
                     Subscribe Now
                 </button>
             </div>
@@ -1070,7 +1070,7 @@
                     <li>No Watermark</li>
                     <li>Full PDF Pitch Deck Export</li>
                 </ul>
-                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--gold); color: #000;" onclick="window.open('https://t.me/erm_ugc_bot?start=ultra', '_blank')">
+                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--gold); color: #000;" onclick="openSubscribeLink('ultra')">
                     Subscribe Now
                 </button>
             </div>
@@ -2189,6 +2189,27 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
                 return;
             }
             alert(currentLang === 'ID' ? 'Kode Lisensi sedang diverifikasi...' : 'Verifying license key...');
+        }
+
+        function openSubscribeLink(plan) {
+            const currentDevId = document.getElementById('deviceIdVal').innerText || '';
+            const targetUrl = `https://t.me/erm_ugc_bot?start=${plan}`;
+            
+            // Auto copy Device ID to clipboard for user convenience
+            if (navigator.clipboard && currentDevId) {
+                navigator.clipboard.writeText(currentDevId);
+            }
+
+            try {
+                if (window.Telegram && window.Telegram.WebApp) {
+                    if (typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+                        window.Telegram.WebApp.openTelegramLink(targetUrl);
+                        return;
+                    }
+                }
+            } catch(e) {}
+
+            window.open(targetUrl, '_blank');
         }
 
         // Dynamic Hardware & Browser Fingerprint Generator (Safe JS Only - No Malware Risk)
