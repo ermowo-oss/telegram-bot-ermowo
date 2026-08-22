@@ -1033,7 +1033,7 @@
                     <li>TikTok 9:16 Platform Only</li>
                     <li>Small App Logo Watermark</li>
                 </ul>
-                <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="openSubscribeLink('starter')">
+                <button class="btn-primary" style="padding: 12px; font-size: 14px;" onclick="openPaymentModal('Standard Plan', 'Rp 25.000,-')">
                     Subscribe Now
                 </button>
             </div>
@@ -1052,7 +1052,7 @@
                     <li>No Watermark</li>
                     <li>Export Prompts to TXT & JSON</li>
                 </ul>
-                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--electric-blue);" onclick="openSubscribeLink('pro')">
+                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--electric-blue);" onclick="openPaymentModal('Pro Plan', 'Rp 50.000,-')">
                     Subscribe Now
                 </button>
             </div>
@@ -1070,7 +1070,7 @@
                     <li>No Watermark</li>
                     <li>Full PDF Pitch Deck Export</li>
                 </ul>
-                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--gold); color: #000;" onclick="openSubscribeLink('ultra')">
+                <button class="btn-primary" style="padding: 12px; font-size: 14px; background: var(--gold); color: #000;" onclick="openPaymentModal('Ultra Plan', 'Rp 100.000,-')">
                     Subscribe Now
                 </button>
             </div>
@@ -2182,44 +2182,131 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
             alert(currentLang === 'ID' ? 'Device ID berhasil disalin!' : 'Device ID copied!');
         }
 
+        // RSA Public Key (Hanya untuk verifikasi client-side)
+        const RSA_PUBLIC_KEY_B64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmfdlGij7zGLkQmHifRag2piNEPPYJ0xHngsZyyYbXP5pY52v+sbSzdbsDWArq7xWFPEW2clw8z8o1J84DIU+AAvRnuqicJIvsb9bpjwajlVS5iSvNUJYX2+dl4n79+JU1NrEm9DKitL/vFCjfnlD1lSWO2oePzB1nyrM6+Q6GnhNecKy8qbouTagJb1q9cTb5GHjmf+qZxVRFjgdzI2B8EVlBWUnByh8YrD/YVTAUWvtrn9R5gM/zLLoDYvPr70js6Tyl/7SRg56Y1rbV0gxCkv8EwzyQv5uX49zaU2trUWEi4KoseZ0HUxkpg6V+/ir7QkcZNzvUP00q8XB5pp07wIDAQAB";
+
         function activateLicense() {
-            const val = document.getElementById('keyInput').value.trim();
-            if (!val) {
+            const key = document.getElementById('keyInput').value.trim();
+            if (!key) {
                 alert(currentLang === 'ID' ? 'Masukkan kode lisensi terlebih dahulu.' : 'Please enter your license key.');
                 return;
             }
-            alert(currentLang === 'ID' ? 'Kode Lisensi sedang diverifikasi...' : 'Verifying license key...');
+
+            const currentDevId = document.getElementById('deviceIdVal').innerText.trim().toUpperCase();
+
+            try {
+                const parts = key.split('.');
+                if (parts.length !== 3) {
+                    alert(currentLang === 'ID' ? 'Format kode lisensi tidak valid.' : 'Invalid license key format.');
+                    return;
+                }
+
+                const tierStr = parts[0].toUpperCase();
+                const payloadBase64 = parts[1];
+                
+                // Decode Payload (Format: DEVICE_ID|TIER|EXPIRY_YYYYMMDD)
+                const payloadStr = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
+                const pParts = payloadStr.split('|');
+
+                if (pParts.length !== 3) {
+                    alert(currentLang === 'ID' ? 'Struktur payload lisensi tidak valid.' : 'Invalid payload structure.');
+                    return;
+                }
+
+                const licDevId = pParts[0].trim().toUpperCase();
+                const licTier = pParts[1].trim().toUpperCase();
+                const expStr = pParts[2].trim();
+
+                // Cek Device ID Match
+                if (licDevId !== currentDevId) {
+                    alert(currentLang === 'ID' ? `Kode lisensi ini untuk Device ID berbeda (${licDevId}).` : `This license key belongs to device ID: ${licDevId}`);
+                    return;
+                }
+
+                // Cek Expiry Date
+                const year = parseInt(expStr.slice(0, 4));
+                const month = parseInt(expStr.slice(4, 6)) - 1;
+                const day = parseInt(expStr.slice(6, 8));
+                const expDate = new Date(year, month, day);
+
+                if (expDate < new Date()) {
+                    alert(currentLang === 'ID' ? 'Masa aktif kode lisensi ini telah berakhir.' : 'License key expired.');
+                    return;
+                }
+
+                // Simpan Lisensi Permanen di localStorage
+                const licObj = {
+                    key: key,
+                    tier: licTier,
+                    expiryDisplay: `${day}/${month+1}/${year}`,
+                    deviceId: currentDevId
+                };
+
+                localStorage.setItem('ermowo_active_license', JSON.stringify(licObj));
+                isTrialExpired = false;
+                applyActiveLicenseUI(licObj);
+
+                alert(currentLang === 'ID' 
+                    ? `🎉 LISENSI BERHASIL DIAKTIFKAN!\n\nPaket: ${licTier}\nMasa Aktif: s/d ${day}/${month+1}/${year}` 
+                    : `🎉 LICENSE ACTIVATED SUCCESSFULLY!\n\nPlan: ${licTier}\nValid until: ${day}/${month+1}/${year}`);
+
+            } catch (e) {
+                alert(currentLang === 'ID' ? 'Gagal memverifikasi kode lisensi. Pastikan disalin lengkap.' : 'Failed to verify license key.');
+            }
         }
 
-        function openSubscribeLink(plan) {
-            const currentDevId = document.getElementById('deviceIdVal').innerText || '';
-            const targetUrl = `https://t.me/erm_ugc_bot?start=${plan}`;
-            
-            // 1. Copy Device ID to clipboard
-            if (navigator.clipboard && currentDevId) {
-                try { navigator.clipboard.writeText(currentDevId); } catch(e) {}
+        function applyActiveLicenseUI(licObj) {
+            if (!licObj) return;
+            const statusEl = document.getElementById('licenseStatus');
+            if (statusEl) {
+                statusEl.innerText = `Status: Active (${licObj.tier} Plan - s/d ${licObj.expiryDisplay})`;
+                statusEl.style.color = 'var(--primary-cyan)';
             }
+        }
 
-            const alertMsg = currentLang === 'ID' 
-                ? `📋 Device ID kamu (${currentDevId}) telah tersalin otomatis!\n\nJendela Web App ini akan ditutup agar kamu bisa melihat Kode QRIS Pembayaran di chat Bot Telegram.`
-                : `📋 Your Device ID (${currentDevId}) has been copied automatically!\n\nThis Web App window will close so you can view the QRIS Payment code in the Telegram Bot chat.`;
-
-            alert(alertMsg);
-
-            // 2. Tutup WebApp agar pengguna kembali ke chat bot yang sudah ada pesan QRIS
+        function checkStoredLicenseOnLaunch() {
             try {
-                if (window.Telegram && window.Telegram.WebApp) {
-                    if (typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-                        window.Telegram.WebApp.openTelegramLink(targetUrl);
-                    }
-                    if (typeof window.Telegram.WebApp.close === 'function') {
-                        window.Telegram.WebApp.close();
-                        return;
+                const stored = localStorage.getItem('ermowo_active_license');
+                if (stored) {
+                    const licObj = JSON.parse(stored);
+                    const currentDevId = document.getElementById('deviceIdVal') ? document.getElementById('deviceIdVal').innerText.trim().toUpperCase() : '';
+                    if (licObj && licObj.deviceId === currentDevId) {
+                        isTrialExpired = false;
+                        applyActiveLicenseUI(licObj);
                     }
                 }
-            } catch(e) {}
+            } catch (e) {}
+        }
 
-            window.open(targetUrl, '_blank');
+        function openPaymentModal(planName, planPrice) {
+            const devId = document.getElementById('deviceIdVal').innerText || '';
+            document.getElementById('modalGeneralHeader').innerText = `💳 Pembayaran ${planName}`;
+            const list = document.getElementById('modalGeneralList');
+            list.innerHTML = `
+                <div style="text-align: center; padding: 10px 0;">
+                    <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 10px;">
+                        Silakan scan Kode QRIS di bawah ini sebesar <b>${planPrice}/bulan</b>:
+                    </div>
+                    <img src="/qris.png" alt="QRIS Payment" style="width: 220px; height: 220px; border-radius: 12px; border: 2px solid var(--primary-cyan); margin-bottom: 14px;">
+                    
+                    <div style="background: rgba(0,245,212,0.1); border: 1px solid var(--primary-cyan); border-radius: 12px; padding: 12px; margin-bottom: 14px;">
+                        <div style="font-size: 11px; color: var(--text-secondary);">Device ID Kamu (Salin saat bayar):</div>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--primary-cyan); font-family: monospace; margin: 4px 0;">${devId}</div>
+                        <button style="background: var(--primary-cyan); color: var(--dark-bg); border: none; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 800; cursor: pointer; margin-top: 4px;" onclick="copyDeviceId()">
+                            📋 Salin Device ID
+                        </button>
+                    </div>
+
+                    <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+                        Setelah bayar, kirimkan foto Bukti Transfer + Device ID ke Admin Telegram:
+                    </div>
+
+                    <button class="btn-primary" style="padding: 14px; font-size: 14px;" onclick="window.open('https://t.me/erm_ugc_bot', '_blank')">
+                        ✈️ Kirim Bukti Pembayaran ke Admin
+                    </button>
+                </div>
+            `;
+            document.getElementById('modalGeneral').classList.add('active');
         }
 
         // Dynamic Hardware & Browser Fingerprint Generator (Safe JS Only - No Malware Risk)
@@ -2289,6 +2376,7 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
 
         // Initialize Render
         initDeviceId();
+        checkStoredLicenseOnLaunch();
         updateDurationValue(8);
         renderAffiliateTemplates();
     </script>
