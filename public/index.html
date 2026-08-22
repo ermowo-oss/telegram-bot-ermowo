@@ -2191,28 +2191,65 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
             alert(currentLang === 'ID' ? 'Kode Lisensi sedang diverifikasi...' : 'Verifying license key...');
         }
 
-        // Dynamic Unique Device ID Generator (Telegram User ID / Browser UUID)
+        // Dynamic Hardware & Browser Fingerprint Generator (Safe JS Only - No Malware Risk)
+        function generateHardwareHash() {
+            try {
+                const screenSpecs = `${screen.width}x${screen.height}x${screen.colorDepth}`;
+                const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+                const navInfo = `${navigator.language}_${navigator.hardwareConcurrency || 4}`;
+                
+                // WebGL GPU Signature
+                let gpuSig = '';
+                try {
+                    const canvas = document.createElement('canvas');
+                    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                    if (gl) {
+                        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                        if (debugInfo) {
+                            gpuSig = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || '';
+                        }
+                    }
+                } catch(e) {}
+
+                const rawSig = `${screenSpecs}_${timeZone}_${navInfo}_${gpuSig}`;
+                
+                // Simple fast string hashing
+                let hash = 0;
+                for (let i = 0; i < rawSig.length; i++) {
+                    const char = rawSig.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash |= 0;
+                }
+                const hexHash = Math.abs(hash).toString(16).toUpperCase().padStart(8, '0');
+                return hexHash.slice(0, 8);
+            } catch(e) {
+                return '88A190F2';
+            }
+        }
+
+        // Dynamic Unique Device ID Generator (Hardware Lock + Telegram/Local Hybrid)
         function initDeviceId() {
             let deviceId = '';
+            const hwHash = generateHardwareHash();
+            const prefix = hwHash.slice(0, 4);
+            const suffix = hwHash.slice(4, 8);
+
             try {
                 // 1. Cek jika dibuka via Telegram Mini App
                 if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
                     const tgUserId = window.Telegram.WebApp.initDataUnsafe.user.id.toString();
-                    const cleanTg = tgUserId.padEnd(8, '0').slice(0, 8);
-                    deviceId = `TG-${cleanTg.slice(0, 4)}-${cleanTg.slice(4, 8)}`;
+                    const tgSuffix = tgUserId.padEnd(4, '0').slice(-4);
+                    deviceId = `TG-${prefix}-${tgSuffix}`;
                 }
             } catch (e) {}
 
-            // 2. Fallback jika dibuka via Web Browser biasa
+            // 2. Fallback untuk Browser / HP Hardware Lock
             if (!deviceId) {
-                let localId = localStorage.getItem('ermowo_unique_device_id');
-                if (!localId) {
-                    const randomHex = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).toUpperCase().padStart(8, '0');
-                    localId = `WEB-${randomHex.slice(0, 4)}-${randomHex.slice(4, 8)}`;
-                    localStorage.setItem('ermowo_unique_device_id', localId);
-                }
-                deviceId = localId;
+                deviceId = `HW-${prefix}-${suffix}`;
             }
+
+            // Simpan permanently di localStorage HP tersebut
+            localStorage.setItem('ermowo_hardware_device_id', deviceId);
 
             const deviceIdEl = document.getElementById('deviceIdVal');
             if (deviceIdEl) deviceIdEl.innerText = deviceId;
