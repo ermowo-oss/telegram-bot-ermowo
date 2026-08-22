@@ -2191,7 +2191,36 @@ Call To Action (CTA): Beli Sekarang / Checkout Sekarang
             alert(currentLang === 'ID' ? 'Kode Lisensi sedang diverifikasi...' : 'Verifying license key...');
         }
 
+        // Dynamic Unique Device ID Generator (Telegram User ID / Browser UUID)
+        function initDeviceId() {
+            let deviceId = '';
+            try {
+                // 1. Cek jika dibuka via Telegram Mini App
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+                    const tgUserId = window.Telegram.WebApp.initDataUnsafe.user.id.toString();
+                    const cleanTg = tgUserId.padEnd(8, '0').slice(0, 8);
+                    deviceId = `TG-${cleanTg.slice(0, 4)}-${cleanTg.slice(4, 8)}`;
+                }
+            } catch (e) {}
+
+            // 2. Fallback jika dibuka via Web Browser biasa
+            if (!deviceId) {
+                let localId = localStorage.getItem('ermowo_unique_device_id');
+                if (!localId) {
+                    const randomHex = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).toUpperCase().padStart(8, '0');
+                    localId = `WEB-${randomHex.slice(0, 4)}-${randomHex.slice(4, 8)}`;
+                    localStorage.setItem('ermowo_unique_device_id', localId);
+                }
+                deviceId = localId;
+            }
+
+            const deviceIdEl = document.getElementById('deviceIdVal');
+            if (deviceIdEl) deviceIdEl.innerText = deviceId;
+            return deviceId;
+        }
+
         // Initialize Render
+        initDeviceId();
         updateDurationValue(8);
         renderAffiliateTemplates();
     </script>
